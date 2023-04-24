@@ -20,10 +20,13 @@ export class RecipeService {
 
     constructor (private slService: ShoppingListService) { }
 
-    getRecipes () {
+    getRecipes() {
         return this.recipes.slice();
     }
-    addIngredientsToList (ingredients: Ingredient []) {
+    addIngredientsToList(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
+    }
+    getRecipe (index: number) {
+        return this.recipes[index];
     }
 }

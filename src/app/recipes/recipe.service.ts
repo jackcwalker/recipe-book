@@ -24,7 +24,7 @@ export class RecipeService {
     getRecipes() {
         return this.recipes.slice();
     }
-    
+
     addIngredientsToList(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
     }
@@ -40,6 +40,11 @@ export class RecipeService {
 
     updateRecipe(index: number, newRecipe: Recipe) {
         this.recipes[index] = newRecipe;
+        this.recipesChanged.emit(this.recipes.slice());
+    }
+
+    deleteRecipe(index: number) {
+        this.recipes.splice(index,1);
         this.recipesChanged.emit(this.recipes.slice());
     }
 }

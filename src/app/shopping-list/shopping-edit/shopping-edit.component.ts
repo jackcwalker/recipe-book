@@ -39,6 +39,13 @@ export class ShoppingEditComponent implements OnInit {
     } else{
       this.slService.addIngredient(newIngredient);
     }
+    this.editMode = false;
+    form.reset();
+  }
+
+  onClear(){
+    this.editMode = false;
+    this.slForm.reset();
   }
 
 }

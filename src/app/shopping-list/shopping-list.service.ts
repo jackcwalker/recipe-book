@@ -23,6 +23,11 @@ export class ShoppingListService{
         this.ingredientsChanged.emit(this.ingredients.slice());
     }
 
+    updateIngredient(index:  number, newIngredient: Ingredient) {
+        this.ingredients[index] = newIngredient;
+        this.ingredientsChanged.emit(this.ingredients.slice());
+    }
+
     addIngredients (ingredients: Ingredient [] ) {
         for (let ingredient of ingredients) {
         this.addIngredient (ingredient);

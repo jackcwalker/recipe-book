@@ -9,11 +9,25 @@ export class RecipeService {
     recipesChanged = new EventEmitter<Recipe[]>();
     
     private  recipes: Recipe[] = [
-        new Recipe('Chicken Biryani', 'This is simply biryani', 'https://geekrobocook.com/wp-content/uploads/2021/05/Muradabadi-chicken-biryani-1200x900.jpg', [
+        new Recipe('Chicken Biryani', 
+        'This is simply biryani', 
+        'https://geekrobocook.com/wp-content/uploads/2021/05/Muradabadi-chicken-biryani-1200x900.jpg', 
+        [
             new Ingredient('Chicken',1),
             new Ingredient('Rice',20)
         ]),
-        new Recipe('Chicken noodles', 'This is simply noodles', 'https://www.licious.in/blog/wp-content/uploads/2020/12/Sesame-Chicken-Noodles.jpg',[
+        new Recipe('Pina Colada Smoothie', 
+        'The Best Smoothie', 
+        'https://geekrobocook.com/wp-content/uploads/2021/05/Muradabadi-chicken-biryani-1200x900.jpg', 
+        [
+            new Ingredient('Pinapple',1),
+            new Ingredient('Coconut',1),
+            new Ingredient('Protein Powder',1)
+        ]),
+        new Recipe('Chicken noodles', 
+        'This is simply noodles', 
+        'https://www.licious.in/blog/wp-content/uploads/2020/12/Sesame-Chicken-Noodles.jpg',
+        [
             new Ingredient('Chicken',1),
             new Ingredient('Noodle',18)
         ])

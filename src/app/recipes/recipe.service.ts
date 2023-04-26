@@ -8,6 +8,8 @@ import { recipeType } from '../shared/recipeType';
 export class RecipeService {
     recipeSelected = new EventEmitter<Recipe> ();
     recipesChanged = new EventEmitter<Recipe[]>();
+    fullScreenChanged = new EventEmitter<boolean> ();
+    fullScreen: boolean = false;
     
     private  recipes: Recipe[] = [
         new Recipe('Chicken Biryani', 
@@ -57,6 +59,11 @@ export class RecipeService {
 
     addIngredientsToList(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
+    }
+
+    toggleFullScreen() {
+        this.fullScreen = !this.fullScreen;
+        this.fullScreenChanged.emit(this.fullScreen);
     }
 
     getRecipe (index: number) {

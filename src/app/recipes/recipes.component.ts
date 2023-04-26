@@ -9,6 +9,7 @@ import { RecipeService } from './recipe.service';
 })
 export class RecipesComponent implements OnInit {
   selectedRecipe: Recipe;
+  fullScreen: boolean;
   
   constructor (private recipeService: RecipeService) { }
 
@@ -16,9 +17,15 @@ export class RecipesComponent implements OnInit {
     this.recipeService.recipeSelected
       .subscribe(
       (recipe: Recipe) => {
-      this.selectedRecipe = recipe;
+        this.selectedRecipe = recipe;
       }
     );
+    this.recipeService.fullScreenChanged
+    .subscribe(
+    (fullScreen: boolean) => {
+      this.fullScreen = fullScreen;
+    }
+  );
   }
 
 }

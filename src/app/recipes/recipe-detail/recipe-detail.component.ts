@@ -19,6 +19,11 @@ export class RecipeDetailComponent {
   onAddToShoppingList ( ) {
     this.recipeService.addIngredientsToList(this.recipe.ingredients);
   }
+
+  onFullScreen ( ) {
+    this.recipeService.toggleFullScreen();
+  }
+
   ngOnInit(){
     this.route.params.subscribe(
       (params: Params) => {

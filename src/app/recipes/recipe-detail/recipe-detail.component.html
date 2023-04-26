@@ -28,8 +28,8 @@
 <div class="row">
     <div class="col-xs-4">
         <h1>Ingredients <button (click)="onAddToShoppingList()" class="btn btn-success" style="cursor: pointer;"><mat-icon>add_shopping_cart</mat-icon></button></h1>
-        <ul class="list-group">
-            <li class="list-group-item" *ngFor="let ingredient of recipe. ingredients">
+        <ul class="list">
+            <li *ngFor="let ingredient of recipe.ingredients">
                 {{ ingredient. amount }} {{ ingredient. name }}
             </li>
         </ul>

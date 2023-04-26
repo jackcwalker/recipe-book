@@ -2,7 +2,7 @@
     <div class="col-md-3" *ngIf="!fullScreen">
         <app-recipe-list></app-recipe-list>
     </div>
-    <div class="col-md-9">
+    <div [ngClass]="(!fullScreen)?'col-md-9':'col-md-12'">
         <router-outlet></router-outlet>
     </div>
 </div>

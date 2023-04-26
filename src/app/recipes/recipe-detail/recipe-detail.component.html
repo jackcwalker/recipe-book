@@ -9,18 +9,22 @@
     </div>
     <div class="col-xs-6">
         <div class="row"><h1>{{ recipe.name }}</h1></div>
-        <div class="row">
-            <button style="cursor: pointer;" class="btn btn-primary" (click)="onEditRecipe()"><mat-icon>edit</mat-icon></button>
-            <button style="cursor: pointer;" class="btn btn-danger" (click)="onDeleteRecipe()"><mat-icon>delete_forever</mat-icon></button>
-        </div>
+        <div class="row">By Jack</div>
+        <br>
         <div class="col-xs-6">
             <div class="row"><mat-icon>access_time</mat-icon>Prep:5 mins</div>
             <div class="row"><mat-icon>timer</mat-icon>Cook:35 mins</div>
         </div>
         <div class="col-xs-6">
-            <div class="row"><mat-icon>person</mat-icon>Author:Jack</div>
             <div class="row"><mat-icon>room_service</mat-icon>Serves:4</div>
             <div class="row"><mat-icon>folder</mat-icon>Category:Breakfast</div>
+        </div>
+        <br>
+        <div class="row">
+            <button style="cursor: pointer;" class="btn btn-primary" (click)="onEditRecipe()"><mat-icon>edit</mat-icon> Edit</button>
+        </div>
+        <div class="row">
+            <button style="cursor: pointer;" class="btn btn-danger" (click)="onDeleteRecipe()"><mat-icon>delete_forever</mat-icon> Delete</button>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
+import { recipeType } from '../shared/recipeType';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +9,10 @@ import {MatIconModule} from '@angular/material/icon';
 })
 
 export class HeaderComponent {
-
-  constructor () { }
+  recipeTypes: string[];
+  constructor () {
+    this.recipeTypes = Object.values(recipeType);
+   }
   ngOnInit(): void {}
 
 }

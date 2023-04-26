@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "./recipe.model";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
+import { recipeType } from '../shared/recipeType';
 
 @Injectable()
 export class RecipeService {
@@ -15,7 +16,12 @@ export class RecipeService {
         [
             new Ingredient('Chicken',1),
             new Ingredient('Rice',20)
-        ]),
+        ],
+        recipeType.main,
+        4,
+        15,
+        35,
+        'Jack'),
         new Recipe('Pina Colada Smoothie', 
         'The Best Smoothie', 
         'https://geekrobocook.com/wp-content/uploads/2021/05/Muradabadi-chicken-biryani-1200x900.jpg', 
@@ -23,14 +29,24 @@ export class RecipeService {
             new Ingredient('Pinapple',1),
             new Ingredient('Coconut',1),
             new Ingredient('Protein Powder',1)
-        ]),
+        ],
+        recipeType.smoothie,
+        4,
+        15,
+        35,
+        'Jack'),
         new Recipe('Chicken noodles', 
         'This is simply noodles', 
         'https://www.licious.in/blog/wp-content/uploads/2020/12/Sesame-Chicken-Noodles.jpg',
         [
             new Ingredient('Chicken',1),
             new Ingredient('Noodle',18)
-        ])
+        ],
+        recipeType.main,
+        4,
+        15,
+        35,
+        'Jack'),
     ];
 
     constructor (private slService: ShoppingListService) { }

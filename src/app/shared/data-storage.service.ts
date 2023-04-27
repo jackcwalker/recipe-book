@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { RecipeService } from "../recipes/recipe.service";
 import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 @Injectable ({ providedIn: 'root' })
 export class DataStorageService {
@@ -51,33 +51,4 @@ export class DataStorageService {
             console.log('Uploaded image!');
         });
       }
-
-    downloadFile(): HTMLElement{
-        // Create a reference with an initial file path and name
-        const storage = getStorage();
-        const pathReference = ref(storage, '16121605.jpeg');
-
-        getDownloadURL(pathReference)
-            .then((url) => {
-                // `url` is the download URL for 'images/stars.jpg'
-
-                // This can be downloaded directly:
-                const xhr = new XMLHttpRequest();
-                xhr.responseType = 'blob';
-                xhr.onload = (event) => {
-                const blob = xhr.response;
-                };
-                xhr.open('GET', url);
-                xhr.send();
-
-                // Or inserted into an <img> element
-                const img = document.getElementById('myimg');
-                img.setAttribute('src', url);
-                return img;
-            })
-            .catch((error) => {
-                // Handle any errors
-            });
-        return null;
-    }
 }

@@ -12,7 +12,7 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 export class RecipeDetailComponent {
   recipe: Recipe;
   id: number;
-  image: HTMLElement;
+  image: string;
 
   constructor (private recipeService: RecipeService, 
     private dataStorageService: DataStorageService,
@@ -34,7 +34,6 @@ export class RecipeDetailComponent {
         this.recipe = this.recipeService.getRecipe(this.id);
       }
     )
-    this.image = this.dataStorageService.downloadFile()
   }
 
   onEditRecipe() {

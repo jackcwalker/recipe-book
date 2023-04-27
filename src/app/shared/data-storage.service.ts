@@ -25,4 +25,8 @@ export class DataStorageService {
             this.recipeService.setRecipes(recipes);
         });
     }
+    uploadFile(formData: FormData) {
+        //const upload$ = this.http.post("/api/thumbnail-upload", formData);
+        //upload$.subscribe();
+      }
 }

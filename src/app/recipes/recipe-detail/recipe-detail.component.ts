@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -11,8 +12,10 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 export class RecipeDetailComponent {
   recipe: Recipe;
   id: number;
+  image: HTMLElement;
 
   constructor (private recipeService: RecipeService, 
+    private dataStorageService: DataStorageService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -31,6 +34,7 @@ export class RecipeDetailComponent {
         this.recipe = this.recipeService.getRecipe(this.id);
       }
     )
+    this.image = this.dataStorageService.downloadFile()
   }
 
   onEditRecipe() {

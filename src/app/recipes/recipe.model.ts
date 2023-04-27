@@ -1,4 +1,3 @@
-import { DataStorageService } from "../shared/data-storage.service";
 import { Ingredient } from "../shared/ingredient.model";
 import { recipeType } from '../shared/recipeType';
 
@@ -24,7 +23,6 @@ export class Recipe {
         prepTime: number,
         cookTime: number,
         author: string,
-        private dataService: DataStorageService,
     ) {
         this.name = name;
         this.description = desc;
@@ -35,6 +33,5 @@ export class Recipe {
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.author = author;
-        this.fullImagePath = dataService.getFullImagePath(imagePath);
     }
 }

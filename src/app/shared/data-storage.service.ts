@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { RecipeService } from "../recipes/recipe.service";
 import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
@@ -8,6 +8,7 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 @Injectable ({ providedIn: 'root' })
 export class DataStorageService {
     private app: FirebaseApp;
+    fileUploaded = new EventEmitter<string> ();
 
     constructor (private http: HttpClient, private recipeService: RecipeService) {
         const firebaseConfig = {
@@ -23,8 +24,6 @@ export class DataStorageService {
     
         this.app = initializeApp(firebaseConfig);
     }
-
-    
 
     storeRecipes() {
         const recipes = this.recipeService.getRecipes();
@@ -44,17 +43,12 @@ export class DataStorageService {
             this.recipeService.setRecipes(recipes);
         });
     }
+
     uploadFile(fileName: string, file: File) {
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
         uploadBytes(storageRef, file).then((snapshot) => {
-            console.log('Uploaded image!');
+            this.fileUploaded.emit(fileName);
         });
       }
-
-      public getFullImagePath(imagePath: string): string{
-        const base = "https://firebasestorage.googleapis.com/v0/b/recipe-book-85758.appspot.com/o/";
-        const key = "?alt=media&token=76e5d494-980e-45e2-b708-0a2118f78770"
-        return (base + imagePath + key);
-    }
 }

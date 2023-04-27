@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import {DataStorageService } from 'src/app/shared/data-storage.service';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -14,6 +14,7 @@ export class RecipeEditComponent implements OnInit {
   editMode = false;
   recipeForm: FormGroup;
   fileName: string;
+  uploadFileName: string;
 
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router, private dataStorageService: DataStorageService) { }
 
@@ -26,6 +27,13 @@ export class RecipeEditComponent implements OnInit {
           this.initForm();
         }
       );
+    this.dataStorageService.fileUploaded
+      .subscribe(
+        (fileName: string) => {
+          this.recipeForm.get('imagePath').setValue(fileName);
+          this.uploadFileName = this.recipeService.getFullImagePath(fileName);
+        }
+      )
   }
 
   private initForm() {

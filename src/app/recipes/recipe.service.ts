@@ -2,7 +2,6 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "./recipe.model";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
-import { DataStorageService } from "../shared/data-storage.service";
 
 @Injectable()
 export class RecipeService {
@@ -14,7 +13,7 @@ export class RecipeService {
     private  recipes: Recipe[] = [];
 
 
-    constructor (private slService: ShoppingListService, private dataService: DataStorageService) { }
+    constructor (private slService: ShoppingListService) { }
 
     getRecipes() {
         return this.recipes.slice();
@@ -23,9 +22,15 @@ export class RecipeService {
     setRecipes (recipes: Recipe[]) {
         this.recipes = recipes;
         for (var recipe of recipes) {
-            recipe.fullImagePath = this.dataService.getFullImagePath(recipe.imagePath);
+            recipe.fullImagePath = this.getFullImagePath(recipe.imagePath);
         }
         this.recipesChanged.emit(this.recipes.slice());
+    }
+
+    getFullImagePath(path: string){
+        const base = "https://firebasestorage.googleapis.com/v0/b/recipe-book-85758.appspot.com/o/";
+        const key = "?alt=media&token=76e5d494-980e-45e2-b708-0a2118f78770"
+        return (base + path + key);
     }
 
     addIngredientsToList(ingredients: Ingredient[]) {
@@ -43,10 +48,12 @@ export class RecipeService {
 
     addRecipe(recipe: Recipe) {
         this.recipes.push(recipe);
+        recipe.fullImagePath = this.getFullImagePath(recipe.imagePath);
         this.recipesChanged.emit(this.recipes.slice());
     }
 
     updateRecipe(index: number, newRecipe: Recipe) {
+        newRecipe.fullImagePath = this.getFullImagePath(newRecipe.imagePath);
         this.recipes[index] = newRecipe;
         this.recipesChanged.emit(this.recipes.slice());
     }

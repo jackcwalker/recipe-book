@@ -11,12 +11,6 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="form-group">
-                        <label for="imagePath">Image URL</label>
-                        <input type="text" id="imagePath" formControlName="imagePath" class="form-control" #imagePath>
-                    </div>
-
-
                     <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
                     <div class="file-upload">
                         {{fileName || "No file uploaded yet."}}
@@ -30,9 +24,9 @@
 
                 </div>
             </div>
-            <div class="row">
+            <div *ngIf = "uploadFileName" class="row">
                 <div class="col-xs-12">
-                    <img [src]="imagePath.value" class="img-responsive">
+                    <img [src]="uploadFileName" class="img-responsive">
                 </div>
             </div>
             <div class="row">

@@ -97,7 +97,7 @@ export class RecipeEditComponent implements OnInit {
       this.fileName = file.name;
       const formData = new FormData();
       formData.append("image", file);
-      this.dataStorageService.uploadFile(formData)
+      this.dataStorageService.uploadFile(this.fileName,file)
     }
   }
 

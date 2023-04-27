@@ -1,3 +1,4 @@
+import { DataStorageService } from "../shared/data-storage.service";
 import { Ingredient } from "../shared/ingredient.model";
 import { recipeType } from '../shared/recipeType';
 
@@ -11,7 +12,7 @@ export class Recipe {
     public prepTime: number;
     public cookTime: number;
     public author: string;
-
+    public fullImagePath: string;
 
     constructor(
         name: string, 
@@ -23,18 +24,17 @@ export class Recipe {
         prepTime: number,
         cookTime: number,
         author: string,
+        private dataService: DataStorageService,
     ) {
-        const base = "https://firebasestorage.googleapis.com/v0/b/recipe-book-85758.appspot.com/o/";
-        const key = "?alt=media&token=76e5d494-980e-45e2-b708-0a2118f78770"
-
         this.name = name;
         this.description = desc;
-        this.imagePath = base + imagePath + key;
+        this.imagePath = imagePath;
         this.ingredients = ingredients;
         this.recipeType = recipeType;
         this.serves = serves;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.author = author;
+        this.fullImagePath = dataService.getFullImagePath(imagePath);
     }
 }

@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "./recipe.model";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
-import { recipeType } from '../shared/recipeType';
+import { DataStorageService } from "../shared/data-storage.service";
 
 @Injectable()
 export class RecipeService {
@@ -14,7 +14,7 @@ export class RecipeService {
     private  recipes: Recipe[] = [];
 
 
-    constructor (private slService: ShoppingListService) { }
+    constructor (private slService: ShoppingListService, private dataService: DataStorageService) { }
 
     getRecipes() {
         return this.recipes.slice();
@@ -22,6 +22,9 @@ export class RecipeService {
 
     setRecipes (recipes: Recipe[]) {
         this.recipes = recipes;
+        for (var recipe of recipes) {
+            recipe.fullImagePath = this.dataService.getFullImagePath(recipe.imagePath);
+        }
         this.recipesChanged.emit(this.recipes.slice());
     }
 

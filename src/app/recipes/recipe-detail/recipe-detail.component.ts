@@ -15,7 +15,7 @@ export class RecipeDetailComponent {
   image: string;
 
   constructor (private recipeService: RecipeService, 
-    private dataStorageService: DataStorageService,
+    public dataStorageService: DataStorageService,
     private route: ActivatedRoute,
     private router: Router) { }
 

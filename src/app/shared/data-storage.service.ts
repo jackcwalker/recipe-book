@@ -51,4 +51,10 @@ export class DataStorageService {
             console.log('Uploaded image!');
         });
       }
+
+      public getFullImagePath(imagePath: string): string{
+        const base = "https://firebasestorage.googleapis.com/v0/b/recipe-book-85758.appspot.com/o/";
+        const key = "?alt=media&token=76e5d494-980e-45e2-b708-0a2118f78770"
+        return (base + imagePath + key);
+    }
 }

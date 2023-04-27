@@ -11,50 +11,18 @@ export class RecipeService {
     fullScreenChanged = new EventEmitter<boolean> ();
     fullScreen: boolean = false;
     
-    private  recipes: Recipe[] = [
-        new Recipe('Chicken Biryani', 
-        'This is simply biryani', 
-        'https://geekrobocook.com/wp-content/uploads/2021/05/Muradabadi-chicken-biryani-1200x900.jpg', 
-        [
-            new Ingredient('Chicken',1),
-            new Ingredient('Rice',20)
-        ],
-        recipeType.main,
-        4,
-        15,
-        35,
-        'Jack'),
-        new Recipe('Pina Colada Smoothie', 
-        'The Best Smoothie', 
-        'https://geekrobocook.com/wp-content/uploads/2021/05/Muradabadi-chicken-biryani-1200x900.jpg', 
-        [
-            new Ingredient('Pinapple',1),
-            new Ingredient('Coconut',1),
-            new Ingredient('Protein Powder',1)
-        ],
-        recipeType.smoothie,
-        4,
-        15,
-        35,
-        'Jack'),
-        new Recipe('Chicken noodles', 
-        'This is simply noodles', 
-        'https://www.licious.in/blog/wp-content/uploads/2020/12/Sesame-Chicken-Noodles.jpg',
-        [
-            new Ingredient('Chicken',1),
-            new Ingredient('Noodle',18)
-        ],
-        recipeType.main,
-        4,
-        15,
-        35,
-        'Jack'),
-    ];
+    private  recipes: Recipe[] = [];
+
 
     constructor (private slService: ShoppingListService) { }
 
     getRecipes() {
         return this.recipes.slice();
+    }
+
+    setRecipes (recipes: Recipe[]) {
+        this.recipes = recipes;
+        this.recipesChanged.emit(this.recipes.slice());
     }
 
     addIngredientsToList(ingredients: Ingredient[]) {

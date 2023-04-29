@@ -37,7 +37,7 @@
         <h1>Ingredients <button (click)="onAddToShoppingList()" class="btn btn-success" style="cursor: pointer;"><mat-icon>add_shopping_cart</mat-icon></button></h1>
         <ul class="list">
             <li *ngFor="let ingredient of recipe.ingredients">
-                {{ ingredient. amount }} {{ ingredient. name }}
+                {{ ingredient. name }}
             </li>
         </ul>
     </div>

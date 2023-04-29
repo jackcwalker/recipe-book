@@ -6,8 +6,8 @@ export class ShoppingListService{
     startedEditing = new EventEmitter<number>() ;
 
     ingredients: Ingredient[] = [
-        new Ingredient('Eggs', 5),
-        new Ingredient('Tomatoes', 10),
+        new Ingredient('Eggs'),
+        new Ingredient('Tomatoes'),
     ];
 
     getIngredient(index: number){
@@ -31,7 +31,7 @@ export class ShoppingListService{
     deleteIngredient(index:  number) {
         this.ingredients.splice(index,1);
         this.ingredientsChanged.emit(this.ingredients.slice());
-    }
+    }  
 
     addIngredients (ingredients: Ingredient [] ) {
         for (let ingredient of ingredients) {

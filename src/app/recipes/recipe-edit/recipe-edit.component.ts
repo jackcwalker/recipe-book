@@ -38,6 +38,11 @@ export class RecipeEditComponent implements OnInit {
 
   private initForm() {
     let recipeName = '';
+    let author = '';
+    let serves = '';
+    let cook = '';
+    let prep = '';
+    let catagory = '';
     let recipeImagePath = '';
     let recipeDescription = '';
     let recipeIngredients = new FormArray([]);
@@ -64,6 +69,11 @@ export class RecipeEditComponent implements OnInit {
 
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName , Validators.required),
+      'author': new FormControl(author , Validators.required),
+      'serves': new FormControl(serves , Validators.required),
+      'cook': new FormControl(cook , Validators.required),
+      'prep': new FormControl(prep , Validators.required),
+      'catagory': new FormControl(catagory , Validators.required),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
       'ingredients': recipeIngredients

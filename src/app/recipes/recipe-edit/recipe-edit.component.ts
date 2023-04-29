@@ -41,9 +41,9 @@ export class RecipeEditComponent implements OnInit {
   private initForm() {
     let recipeName = '';
     let author = '';
-    let serves = '';
-    let cook = '';
-    let prep = '';
+    let serves: number;
+    let cook: number;
+    let prep: number;
     let catagory = '';
     let recipeImagePath = '';
     let recipeDescription = '';
@@ -75,7 +75,7 @@ export class RecipeEditComponent implements OnInit {
       'serves': new FormControl(serves, Validators.required),
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),
-      'catagory': new FormControl(catagory, Validators.required),
+      'catagory': new FormControl(catagory),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
       'ingredients': recipeIngredients

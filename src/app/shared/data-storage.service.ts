@@ -26,6 +26,7 @@ export class DataStorageService {
     }
 
     storeRecipes(recipes: Recipe[]) {
+        console.log('Logger: Uploading Recipes');
         this.http.put(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
             recipes
@@ -35,7 +36,7 @@ export class DataStorageService {
         });
     }
     fetchRecipes() {
-        console.log("recipes fetching");
+        console.log('Logger: Fetching Recipes');
         this.http.get<Recipe[]>(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
         ).subscribe(recipes => {
@@ -50,6 +51,7 @@ export class DataStorageService {
     }
 
     uploadFile(fileName: string, file: File) {
+        console.log('Logger: Uploading '+fileName)
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
         uploadBytes(storageRef, file).then((snapshot) => {
@@ -60,6 +62,7 @@ export class DataStorageService {
     deleteFile(fileName: string) {
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
+        console.log('Logger: Deleting '+fileName)
         // Delete the file
         deleteObject(storageRef).then(() => {
             // File deleted successfully

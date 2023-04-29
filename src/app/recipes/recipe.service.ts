@@ -22,6 +22,7 @@ export class RecipeService {
             this.setRecipes(recipes);
           }
         )
+        this.fetchRecipes();
     }
 
     getRecipes() {
@@ -29,11 +30,13 @@ export class RecipeService {
     }
 
     setRecipes (recipes: Recipe[]) {
-        this.recipes = recipes;
-        for (var recipe of recipes) {
-            recipe.fullImagePath = this.getFullImagePath(recipe.imagePath);
+        if (recipes) {
+            this.recipes = recipes;
+            for (var recipe of recipes) {
+                recipe.fullImagePath = this.getFullImagePath(recipe.imagePath);
+            }
+            this.recipesChanged.emit(this.recipes.slice());
         }
-        this.recipesChanged.emit(this.recipes.slice());
     }
 
     getFullImagePath(path: string){
@@ -57,17 +60,20 @@ export class RecipeService {
         this.recipes.push(recipe);
         recipe.fullImagePath = this.getFullImagePath(recipe.imagePath);
         this.recipesChanged.emit(this.recipes.slice());
+        this.storeRecipes()
     }
 
     updateRecipe(index: number, newRecipe: Recipe) {
         newRecipe.fullImagePath = this.getFullImagePath(newRecipe.imagePath);
         this.recipes[index] = newRecipe;
         this.recipesChanged.emit(this.recipes.slice());
+        this.storeRecipes()
     }
 
     deleteRecipe(index: number) {
         this.recipes.splice(index,1);
         this.recipesChanged.emit(this.recipes.slice());
+        this.storeRecipes()
     }
 
     storeRecipes() {

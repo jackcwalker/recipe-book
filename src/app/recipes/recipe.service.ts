@@ -10,7 +10,7 @@ export class RecipeService {
     fullScreenChanged = new EventEmitter<boolean> ();
     fullScreen: boolean = false;
     
-    private  recipes: Recipe[] = [];
+    private recipes: Recipe[] = [];
 
 
     constructor (private slService: ShoppingListService) { }

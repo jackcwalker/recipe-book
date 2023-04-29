@@ -3,7 +3,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { RecipeService } from "../recipes/recipe.service";
 import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
-import { StorageReference, getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 
 @Injectable ({ providedIn: 'root' })
 export class DataStorageService {

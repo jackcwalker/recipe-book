@@ -1,7 +1,6 @@
 import { Component} from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
 import { recipeType } from '../shared/recipeType';
-import { DataStorageService } from '../shared/data-storage.service';
+import { RecipeService } from '../recipes/recipe.service';
 
 @Component({
   selector: 'app-header',
@@ -11,15 +10,15 @@ import { DataStorageService } from '../shared/data-storage.service';
 
 export class HeaderComponent {
   recipeTypes: string[];
-  constructor(private dataStorageService: DataStorageService) {
+  constructor(private recipeService: RecipeService) {
     this.recipeTypes = Object.values(recipeType);
    }
   ngOnInit(): void {}
   onSaveData() {
-    this.dataStorageService.storeRecipes();
+    this.recipeService.storeRecipes();
   }
   onFetchData() {
-    this.dataStorageService.fetchRecipes();
+    this.recipeService.fetchRecipes();
   }
 
 }

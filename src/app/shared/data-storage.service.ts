@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { EventEmitter, Injectable } from "@angular/core";
-import { RecipeService } from "../recipes/recipe.service";
 import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
@@ -9,8 +8,9 @@ import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 export class DataStorageService {
     private app: FirebaseApp;
     fileUploaded = new EventEmitter<string> ();
+    recipesDownloaded = new EventEmitter<Recipe[]> ();
 
-    constructor (private http: HttpClient, private recipeService: RecipeService) {
+    constructor (private http: HttpClient) {
         const firebaseConfig = {
             apiKey: "AIzaSyBjxygOGDjR1RGb6fNReHhJG_xRY7LLuHM",
             authDomain: "recipe-book-85758.firebaseapp.com",
@@ -25,8 +25,7 @@ export class DataStorageService {
         this.app = initializeApp(firebaseConfig);
     }
 
-    storeRecipes() {
-        const recipes = this.recipeService.getRecipes();
+    storeRecipes(recipes: Recipe[]) {
         this.http.put(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
             recipes
@@ -36,12 +35,18 @@ export class DataStorageService {
         });
     }
     fetchRecipes() {
+        console.log("recipes fetching");
         this.http.get<Recipe[]>(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
-        )
-        .subscribe(recipes => {
-            this.recipeService.setRecipes(recipes);
+        ).subscribe(recipes => {
+            this.recipesDownloaded.emit(recipes);
         });
+    }
+
+    getFullImagePath(path: string){
+        const base = "https://firebasestorage.googleapis.com/v0/b/recipe-book-85758.appspot.com/o/";
+        const key = "?alt=media&token=76e5d494-980e-45e2-b708-0a2118f78770"
+        return (base + path + key);
     }
 
     uploadFile(fileName: string, file: File) {
@@ -52,7 +57,7 @@ export class DataStorageService {
         });
       }
 
-      deleteFile(fileName: string) {
+    deleteFile(fileName: string) {
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
         // Delete the file

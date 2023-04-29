@@ -66,7 +66,7 @@
             type="button"
             class="btn btn-success"
             (click)="onAddIngredient()"><mat-icon>playlist_add</mat-icon></button></h1> 
-        <div class="row" *ngFor="let ingredientCtrl of controls; let i = index"
+        <div class="row" *ngFor="let ingredientCtrl of controlsIngredient; let i = index"
             [formGroupName]="i" style="margin-top: 10px;">
             <div class="col-xs-8">
                 <input type="text" class="form-control" formControlName="name">
@@ -76,11 +76,19 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-6">
-        <div class="form-group">
-            <label for="description"><h1>Description</h1></label>
-            <textarea type="text" id="description" class="form-control" formControlName="description"
-                rows="20"></textarea>
+    <div class="col-xs-6" formArrayName="method">
+        <h1>Method<button
+            type="button"
+            class="btn btn-success"
+            (click)="onAddMethod()"><mat-icon>playlist_add</mat-icon></button></h1> 
+        <div class="row" *ngFor="let ingredientCtrl of controlsMethod; let i = index"
+            [formGroupName]="i" style="margin-top: 10px;">
+            <div class="col-xs-8">
+                <input type="text" class="form-control" formControlName="description">
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-danger" (click)="onDeleteMethod(i)">X</button>
+            </div>
         </div>
     </div>
 </div>

@@ -46,14 +46,22 @@ export class RecipeEditComponent implements OnInit {
     let prep: number;
     let catagory = '';
     let recipeImagePath = '';
-    let recipeDescription = '';
+    let recipeMethod = new FormArray([]);
     let recipeIngredients = new FormArray([]);
     
     if (this.editMode) {
       const recipe = this.recipeService.getRecipe(this.id);
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
-      recipeDescription = recipe.description;
+      if (recipe['method']) {
+        for (let step of recipe.method) {
+          recipeIngredients.push(
+            new FormGroup({
+              'description': new FormControl(step.description, Validators.required)
+            })
+          );
+        }
+      }
       if (recipe['ingredients']) {
         for (let ingredient of recipe.ingredients) {
           recipeIngredients.push(
@@ -71,9 +79,9 @@ export class RecipeEditComponent implements OnInit {
       'serves': new FormControl(serves, Validators.required),
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),
-      'catagory': new FormControl(catagory),
+      'catagory': new FormControl(catagory, Validators.required),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
-      'description': new FormControl(recipeDescription, Validators.required),
+      'method': recipeMethod,
       'ingredients': recipeIngredients
     });
   }
@@ -84,6 +92,22 @@ export class RecipeEditComponent implements OnInit {
         'name': new FormControl(null, Validators.required)
       })
     );
+  }
+
+  onDeleteIngredient(index: number) {
+    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+  }
+
+  onAddMethod() {
+    (<FormArray>this.recipeForm.get('method')).push(
+      new FormGroup({
+        'description': new FormControl(null, Validators.required)
+      })
+    );
+  }
+
+  onDeleteMethod(index: number) {
+    (<FormArray>this.recipeForm.get('method')).removeAt(index);
   }
 
   onSubmit(){
@@ -102,10 +126,6 @@ export class RecipeEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
-  onDeleteIngredient(index: number) {
-    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
-  }
-
   onFileSelected(event) {
     const file:File = event.target.files[0];
     if (file) {
@@ -116,7 +136,11 @@ export class RecipeEditComponent implements OnInit {
     }
   }
 
-  get controls() {
+  get controlsMethod() {
+    return (<FormArray>this.recipeForm.get('method')).controls;
+  }
+
+  get controlsIngredient() {
     return (<FormArray>this.recipeForm.get('ingredients')).controls;
   }
 

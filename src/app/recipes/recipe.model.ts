@@ -1,9 +1,10 @@
 import { Ingredient } from "../shared/ingredient.model";
+import { MethodStep } from "../shared/methodStep.model";
 import { recipeType } from '../shared/recipeType';
 
 export class Recipe {
     public name: string;
-    public description: string;
+    public method: MethodStep[];
     public imagePath: string;
     public ingredients: Ingredient[];
     public recipeType: recipeType;
@@ -15,7 +16,7 @@ export class Recipe {
 
     constructor(
         name: string, 
-        desc: string, 
+        method: MethodStep[], 
         imagePath: string, 
         ingredients: Ingredient[],
         recipeType: recipeType,
@@ -25,7 +26,7 @@ export class Recipe {
         author: string,
     ) {
         this.name = name;
-        this.description = desc;
+        this.method = method;
         this.imagePath = imagePath;
         this.ingredients = ingredients;
         this.recipeType = recipeType;

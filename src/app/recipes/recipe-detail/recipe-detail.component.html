@@ -42,8 +42,12 @@
         </ul>
     </div>
     <div class="col-xs-8">
-        <h1>Method</h1>
-        {{ recipe.description }}
+        <h1>Method </h1>
+        <ul class="list">
+            <li *ngFor="let step of recipe.method">
+                {{ step.description }} <input type="checkbox" checked="checked" />
+            </li>
+        </ul>
     </div>
 </div>
 <hr>

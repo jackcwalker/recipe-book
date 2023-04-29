@@ -3,7 +3,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { RecipeService } from "../recipes/recipe.service";
 import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { StorageReference, getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 
 @Injectable ({ providedIn: 'root' })
 export class DataStorageService {
@@ -51,4 +51,16 @@ export class DataStorageService {
             this.fileUploaded.emit(fileName);
         });
       }
+
+      deleteFile(fileName: string) {
+        const storage = getStorage();
+        const storageRef = ref(storage, fileName);
+        // Delete the file
+        deleteObject(storageRef).then(() => {
+            // File deleted successfully
+        }).catch((error) => {
+            // Uh-oh, an error occurred!
+        });
+      }
 }
+

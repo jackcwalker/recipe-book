@@ -92,6 +92,9 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onCancel() {
+    if (this.fileName) {
+      this.dataStorageService.deleteFile(this.fileName);
+    }
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 

@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { recipeType } from 'src/app/shared/recipeType';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -15,6 +16,7 @@ export class RecipeEditComponent implements OnInit {
   recipeForm: FormGroup;
   fileName: string;
   uploadFileName: string;
+  recipeTypes: string[] = Object.values(recipeType);
 
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router, private dataStorageService: DataStorageService) { }
 
@@ -68,12 +70,12 @@ export class RecipeEditComponent implements OnInit {
     }
 
     this.recipeForm = new FormGroup({
-      'name': new FormControl(recipeName , Validators.required),
-      'author': new FormControl(author , Validators.required),
-      'serves': new FormControl(serves , Validators.required),
-      'cook': new FormControl(cook , Validators.required),
-      'prep': new FormControl(prep , Validators.required),
-      'catagory': new FormControl(catagory , Validators.required),
+      'name': new FormControl(recipeName, Validators.required),
+      'author': new FormControl(author, Validators.required),
+      'serves': new FormControl(serves, Validators.required),
+      'cook': new FormControl(cook, Validators.required),
+      'prep': new FormControl(prep, Validators.required),
+      'catagory': new FormControl(catagory, Validators.required),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
       'ingredients': recipeIngredients

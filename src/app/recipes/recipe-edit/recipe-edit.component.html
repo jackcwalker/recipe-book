@@ -2,24 +2,38 @@
     <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-xs-6">
-                <div class="row">
-                    <h1>Details</h1>
-                    <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
-                    <div class="file-upload">
-                        {{fileName || "No file uploaded yet."}}
-                        <button
-                            type="button"
-                            class="btn btn-success"
-                            (click)="fileUpload.click()">
-                            <mat-icon>attach_file</mat-icon>
-                        </button>
+                <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+                <mat-card class="example-card">
+                    <div *ngIf = "uploadFileName" class="row">
+                        <img [src]="uploadFileName" class="img-responsive">
                     </div>
-                </div>
-                <div *ngIf = "uploadFileName" class="row">
-                    <img [src]="uploadFileName" class="img-responsive">
-                </div>
+                    <div *ngIf = "!uploadFileName" class="row">
+                        Upload Image
+                    </div>
+                    <mat-card-actions>
+                        <button mat-icon-button aria-label="Previous">
+                            <mat-icon>navigate_before</mat-icon>
+                        </button>
+                        <div class="file-upload">
+                            {{fileName || "No file uploaded yet."}}
+                            <button
+                                type="button"
+                                class="btn btn-success"
+                                (click)="fileUpload.click()">
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                        </div>
+                        <button mat-icon-button aria-label="Clear" (click)="onDeleteImage(i)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <button mat-icon-button aria-label="Next">
+                            <mat-icon>navigate_next</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
             </div>
             <div class="col-xs-6">
+                <h1>Details (editing)</h1>
                 <div class="form-group">
                     <mat-form-field class="width100">
                         <mat-label>Name</mat-label>
@@ -78,7 +92,7 @@
                         <input matInput rows="4" formControlName="name">
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="onDeleteIngredient(i)">
                             <mat-icon>close</mat-icon>
-                            </button>
+                        </button>
                     </mat-form-field>
                 </div>
             </div>

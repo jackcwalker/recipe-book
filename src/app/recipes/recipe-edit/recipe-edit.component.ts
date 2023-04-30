@@ -148,6 +148,10 @@ export class RecipeEditComponent implements OnInit {
     }
   }
 
+  onDeleteImage(fileName: string) {
+    console.log('delete' + fileName)
+  }
+
   get controlsMethod() {
     return (<FormArray>this.recipeForm.get('method')).controls;
   }

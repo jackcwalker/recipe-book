@@ -58,6 +58,8 @@ export class RecipeEditComponent implements OnInit {
       const recipe = this.recipeService.getRecipe(this.id);
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
+      this.fileName = recipe.imagePath;
+      this.uploadFileName = this.recipeService.getFullImagePath(recipe.imagePath);
       author = recipe.author;
       serves = recipe.serves;
       cook = recipe.cook;

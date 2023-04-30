@@ -1,8 +1,24 @@
-input.ng-invalid.ng-touched,
-textarea.ng-invalid.ng-touched {
-    border: 1px solid red;
-}
-
 .file-input {
     display: none;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 100%;
+    width: 100%;
+}
+
+.width100 {
+    width: 100%;
+    margin-bottom: -0.9em
+}
+
+.width90 {
+    width: 90%;
+    margin-bottom: -0.9em
+}
+
+.width80 {
+    width: 80%;
+    margin-bottom: -0.9em
 }

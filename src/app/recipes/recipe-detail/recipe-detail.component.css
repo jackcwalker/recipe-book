@@ -2,3 +2,9 @@
     opacity: 0.6; /* Real browsers */
     filter: alpha(opacity = 60); /* MSIE */
 }
+
+.example-card {
+    max-width: 300px;
+    max-width: 300px;
+  }
+  

@@ -1,16 +1,23 @@
 <div *ngIf = "recipe" >
     <div class="row">
         <div class="col-xs-6">
-            <img 
-                [src]="recipe.fullImagePath" 
-                alt="{{ recipe.name }}" 
-                class="img-responsive"
-                style="max-height: 300px"
-                >
+            <mat-card class="example-card">
+                <img mat-card-image [src]="recipe.fullImagePath" 
+                    alt="{{ recipe.name }}" 
+                    class="img-responsive">
+                <mat-card-actions>
+                    <button mat-icon-button aria-label="Previous">
+                        <mat-icon>navigate_before</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="Next">
+                        <mat-icon>navigate_next</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
         </div>
         <div class="col-xs-6">
             <div class="row"><h1>{{ recipe.name }}</h1></div>
-            <div class="row">By Jack</div>
+            <div class="row">By {{ recipe.author }}</div>
             <br>
             <div class="col-xs-6">
                 <div class="row"><mat-icon>access_time</mat-icon>Prep: {{ recipe.prep }} mins</div>

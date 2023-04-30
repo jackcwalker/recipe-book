@@ -13,12 +13,12 @@
             <div class="row">By Jack</div>
             <br>
             <div class="col-xs-6">
-                <div class="row"><mat-icon>access_time</mat-icon>Prep:5 mins</div>
-                <div class="row"><mat-icon>timer</mat-icon>Cook:35 mins</div>
+                <div class="row"><mat-icon>access_time</mat-icon>Prep: {{ recipe.prep }} mins</div>
+                <div class="row"><mat-icon>timer</mat-icon>Cook: {{ recipe.cook }} mins</div>
             </div>
             <div class="col-xs-6">
-                <div class="row"><mat-icon>room_service</mat-icon>Serves:4</div>
-                <div class="row"><mat-icon>folder</mat-icon>Category:Breakfast</div>
+                <div class="row"><mat-icon>room_service</mat-icon>Serves: {{ recipe.serves }}</div>
+                <div class="row"><mat-icon>folder</mat-icon>Category: {{ recipe.catagory }}</div>
             </div>
             <br>
             <div class="row">

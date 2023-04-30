@@ -1,57 +1,62 @@
-<div class="row">
-    <div class="col-xs-6">
-        <img 
-            [src]="recipe.fullImagePath" 
-            alt="{{ recipe.name }}" 
-            class="img-responsive"
-            style="max-height: 300px"
-            >
-    </div>
-    <div class="col-xs-6">
-        <div class="row"><h1>{{ recipe.name }}</h1></div>
-        <div class="row">By Jack</div>
-        <br>
+<div *ngIf = "recipe" >
+    <div class="row">
         <div class="col-xs-6">
-            <div class="row"><mat-icon>access_time</mat-icon>Prep:5 mins</div>
-            <div class="row"><mat-icon>timer</mat-icon>Cook:35 mins</div>
+            <img 
+                [src]="recipe.fullImagePath" 
+                alt="{{ recipe.name }}" 
+                class="img-responsive"
+                style="max-height: 300px"
+                >
         </div>
         <div class="col-xs-6">
-            <div class="row"><mat-icon>room_service</mat-icon>Serves:4</div>
-            <div class="row"><mat-icon>folder</mat-icon>Category:Breakfast</div>
+            <div class="row"><h1>{{ recipe.name }}</h1></div>
+            <div class="row">By Jack</div>
+            <br>
+            <div class="col-xs-6">
+                <div class="row"><mat-icon>access_time</mat-icon>Prep:5 mins</div>
+                <div class="row"><mat-icon>timer</mat-icon>Cook:35 mins</div>
+            </div>
+            <div class="col-xs-6">
+                <div class="row"><mat-icon>room_service</mat-icon>Serves:4</div>
+                <div class="row"><mat-icon>folder</mat-icon>Category:Breakfast</div>
+            </div>
+            <br>
+            <div class="row">
+                <button style="cursor: pointer;" class="btn btn-primary" (click)="onEditRecipe()"><mat-icon>edit</mat-icon> Edit</button>
+            </div>
+            <div class="row">
+                <button style="cursor: pointer;" class="btn btn-primary" (click)="onFullScreen()"><mat-icon>fullscreen</mat-icon> Full Screen</button>
+            </div>
+            <div class="row">
+                <button style="cursor: pointer;" class="btn btn-danger" (click)="onDeleteRecipe()"><mat-icon>delete_forever</mat-icon> Delete</button>
+            </div>
         </div>
-        <br>
-        <div class="row">
-            <button style="cursor: pointer;" class="btn btn-primary" (click)="onEditRecipe()"><mat-icon>edit</mat-icon> Edit</button>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-4">
+            <h1>Ingredients <button (click)="onAddToShoppingList()" class="btn btn-success" style="cursor: pointer;"><mat-icon>add_shopping_cart</mat-icon></button></h1>
+            <ul class="list">
+                <li *ngFor="let ingredient of recipe.ingredients">
+                    {{ ingredient. name }}
+                </li>
+            </ul>
         </div>
-        <div class="row">
-            <button style="cursor: pointer;" class="btn btn-primary" (click)="onFullScreen()"><mat-icon>fullscreen</mat-icon> Full Screen</button>
+        <div class="col-xs-8">
+            <h1>Method </h1>
+            <mat-list class="list">
+                <mat-list-item *ngFor="let step of recipe.method; let i = index">
+                    <mat-checkbox (click)="togChecked(i)" [ngClass]="getCheckedClass(i)">{{ step.description }}</mat-checkbox>
+                </mat-list-item>
+            </mat-list>
         </div>
-        <div class="row">
-            <button style="cursor: pointer;" class="btn btn-danger" (click)="onDeleteRecipe()"><mat-icon>delete_forever</mat-icon> Delete</button>
-        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h1>Notes</h1>
+            Needs more eggs
     </div>
 </div>
-<hr>
-<div class="row">
-    <div class="col-xs-4">
-        <h1>Ingredients <button (click)="onAddToShoppingList()" class="btn btn-success" style="cursor: pointer;"><mat-icon>add_shopping_cart</mat-icon></button></h1>
-        <ul class="list">
-            <li *ngFor="let ingredient of recipe.ingredients">
-                {{ ingredient. name }}
-            </li>
-        </ul>
-    </div>
-    <div class="col-xs-8">
-        <h1>Method </h1>
-        <mat-list class="list">
-            <mat-list-item *ngFor="let step of recipe.method; let i = index">
-                <mat-checkbox (click)="togChecked(i)" [ngClass]="getCheckedClass(i)">{{ step.description }}</mat-checkbox>
-            </mat-list-item>
-        </mat-list>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <h1>Notes</h1>
-        Needs more eggs
+<div *ngIf = "!recipe" >
+    Recipe Loading!
 </div>

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -16,7 +15,6 @@ export class RecipeDetailComponent {
   methodChecked = new Map();
 
   constructor (private recipeService: RecipeService, 
-    public dataStorageService: DataStorageService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -32,6 +30,11 @@ export class RecipeDetailComponent {
     this.route.params.subscribe(
       (params: Params) => {
         this.id = +params['id'];
+        this.recipe = this.recipeService.getRecipe(this.id);
+      }
+    )
+    this.recipeService.recipesChanged.subscribe(
+      () => {
         this.recipe = this.recipeService.getRecipe(this.id);
       }
     )

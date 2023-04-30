@@ -6,13 +6,3 @@ textarea.ng-invalid.ng-touched {
 .file-input {
     display: none;
 }
-
-.example-form {
-    min-width: 150px;
-    max-width: 100%;
-    width: 100%;
-}
-
-.example-full-width {
-    width: 100%;
-}

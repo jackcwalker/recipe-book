@@ -9,8 +9,8 @@ export class Recipe {
     public ingredients: Ingredient[];
     public recipeType: recipeType;
     public serves: number;
-    public prepTime: number;
-    public cookTime: number;
+    public prep: number;
+    public cook: number;
     public author: string;
     public fullImagePath: string;
 
@@ -31,8 +31,8 @@ export class Recipe {
         this.ingredients = ingredients;
         this.recipeType = recipeType;
         this.serves = serves;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
+        this.prep = prepTime;
+        this.cook = cookTime;
         this.author = author;
     }
 }

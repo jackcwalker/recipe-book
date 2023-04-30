@@ -81,7 +81,7 @@
             type="button"
             class="btn btn-success"
             (click)="onAddMethod()"><mat-icon>playlist_add</mat-icon></button></h1> 
-        <div class="row" *ngFor="let ingredientCtrl of controlsMethod; let i = index"
+        <div class="row" *ngFor="let methodCtrl of controlsMethod; let i = index"
             [formGroupName]="i" style="margin-top: 10px;">
             <div class="col-xs-8">
                 <input type="text" class="form-control" formControlName="description">

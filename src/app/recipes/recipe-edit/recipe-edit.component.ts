@@ -53,9 +53,14 @@ export class RecipeEditComponent implements OnInit {
       const recipe = this.recipeService.getRecipe(this.id);
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
+      author = recipe.author;
+      serves = recipe.serves;
+      cook = recipe.cook;
+      prep = recipe.prep;
+      catagory = recipe.recipeType;
       if (recipe['method']) {
         for (let step of recipe.method) {
-          recipeIngredients.push(
+          recipeMethod.push(
             new FormGroup({
               'description': new FormControl(step.description, Validators.required)
             })

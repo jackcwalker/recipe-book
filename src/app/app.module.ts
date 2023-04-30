@@ -16,9 +16,10 @@ import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.compon
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipeService } from './recipes/recipe.service';
-import {MatIconModule} from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatIconModule} from '@angular/material/icon';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatIconModule,
     HttpClientModule,
     MatCheckboxModule,
+    MatListModule
   ],
   exports: [
     MatIconModule

@@ -43,11 +43,11 @@
     </div>
     <div class="col-xs-8">
         <h1>Method </h1>
-        <ul class="list">
-            <li *ngFor="let step of recipe.method">
-                {{ step.description }} checkbox: <mat-checkbox></mat-checkbox>
-            </li>
-        </ul>
+        <mat-list class="list">
+            <mat-list-item *ngFor="let step of recipe.method; let i = index">
+                <mat-checkbox (click)="togChecked(i)" [ngClass]="getCheckedClass(i)">{{ step.description }}</mat-checkbox>
+            </mat-list-item>
+        </mat-list>
     </div>
 </div>
 <hr>

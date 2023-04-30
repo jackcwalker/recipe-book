@@ -13,6 +13,7 @@ export class RecipeDetailComponent {
   recipe: Recipe;
   id: number;
   image: string;
+  methodChecked = new Map();
 
   constructor (private recipeService: RecipeService, 
     public dataStorageService: DataStorageService,
@@ -43,5 +44,20 @@ export class RecipeDetailComponent {
   onDeleteRecipe() {
     this.recipeService.deleteRecipe(this.id);
     this.router.navigate(['/recipes']);
+  }
+
+  togChecked(index: number) {
+    if (this.methodChecked.has(index)){
+      this.methodChecked.set(index,!this.methodChecked.get(index));
+    } else{
+      this.methodChecked.set(index,true)
+    }
+    
+  }
+
+  getCheckedClass(index: number){
+    if (this.methodChecked.get(index)) {
+      return 'grayout';
+    }
   }
 }

@@ -29,6 +29,11 @@ export class RecipeEditComponent implements OnInit {
           this.initForm();
         }
       );
+    this.recipeService.recipesChanged.subscribe(
+        () => {
+          this.initForm();
+        }
+      )
     this.dataStorageService.fileUploaded
       .subscribe(
         (fileName: string) => {
@@ -57,7 +62,7 @@ export class RecipeEditComponent implements OnInit {
       serves = recipe.serves;
       cook = recipe.cook;
       prep = recipe.prep;
-      catagory = recipe.recipeType;
+      catagory = recipe.catagory;
       if (recipe['method']) {
         for (let step of recipe.method) {
           recipeMethod.push(

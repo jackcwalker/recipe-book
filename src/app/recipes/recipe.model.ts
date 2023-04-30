@@ -7,7 +7,7 @@ export class Recipe {
     public method: MethodStep[];
     public imagePath: string;
     public ingredients: Ingredient[];
-    public recipeType: recipeType;
+    public catagory: recipeType;
     public serves: number;
     public prep: number;
     public cook: number;
@@ -19,7 +19,7 @@ export class Recipe {
         method: MethodStep[], 
         imagePath: string, 
         ingredients: Ingredient[],
-        recipeType: recipeType,
+        catagory: recipeType,
         serves: number,
         prepTime: number,
         cookTime: number,
@@ -29,7 +29,7 @@ export class Recipe {
         this.method = method;
         this.imagePath = imagePath;
         this.ingredients = ingredients;
-        this.recipeType = recipeType;
+        this.catagory = catagory;
         this.serves = serves;
         this.prep = prepTime;
         this.cook = cookTime;

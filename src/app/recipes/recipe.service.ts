@@ -18,7 +18,7 @@ export class RecipeService {
         this.dataService.recipesDownloaded
         .subscribe(
           (recipes: Recipe[]) => {
-            console.log("recipes downloaded");
+            console.log("Logger: Recipe Downloaded");
             this.setRecipes(recipes);
           }
         )

@@ -130,6 +130,7 @@ export class RecipeEditComponent implements OnInit {
     } else {
       this.recipeService.addRecipe(this.recipeForm.value);
     }
+    this.updateImages();
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
@@ -137,23 +138,42 @@ export class RecipeEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
+  updateImages(){
+    console.log('Logger: Updating Images');
+    for (let image of this.images) {
+      if (image.toBeCreated) {
+        console.log('Logger: Uploading'+image.name);
+        this.dataStorageService.uploadFile(image.name,image.file);
+      }
+    }
+    for (let image of this.deletedImages) {
+      if (!image.toBeCreated) {
+        console.log('Logger: Deleting'+image.name);
+        this.dataStorageService.deleteFile(image.name);
+      }
+    }
+  }
+
   onFileSelected(event) {
     const file = event.target.files[0];
     if (file) {
-      console.log('file imported');
+      console.log('Logger: File Uploaded');
       const newImage = new RecipeImage(URL.createObjectURL(file));
       newImage.file = file;
+      newImage.name = file.name;
+      newImage.toBeCreated = true;
       this.images.push(newImage);
-      console.log('file added to list');
+
+      (<FormArray>this.recipeForm.get('images')).push(
+        new FormGroup({
+          'path': new FormControl(file.name, Validators.required)
+        })
+      );
       this.onNextImage()
-      //this.getImage(this.imageIndex).name = file.name;
-      //this.getImage(this.imageIndex).file = file;
-      //this.dataStorageService.uploadFile(this.fileName,file)
     }
   }
 
   getCurrentImage() {
-    console.log('getting current image')
     return this.images[this.imageIndex];
   }
 
@@ -163,7 +183,6 @@ export class RecipeEditComponent implements OnInit {
     } else {
       this.imageIndex = 0;
     }
-    console.log('previous image... index: '+this.imageIndex);
   }
 
   onNextImage() {
@@ -172,13 +191,13 @@ export class RecipeEditComponent implements OnInit {
     } else {
       this.imageIndex = 0;
     }
-    console.log('next image... index: '+this.imageIndex);
   }
 
   onDeleteImage() {
-    console.log('delete image')
     this.deletedImages.push(this.images[this.imageIndex])
     this.images.splice(this.imageIndex,1);
+    (<FormArray>this.recipeForm.get('images')).removeAt(this.imageIndex);
+    this.onPreviousImage()
   }
 
   get controlsMethod() {

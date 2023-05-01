@@ -27,7 +27,7 @@ export class RecipeEditComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagCtrl = new FormControl('');
   filteredTags: Observable<string[]>;
-  tags: string[] = [];
+  //tags: string[] = [];
   allTags: string[] = tags;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
@@ -63,6 +63,7 @@ export class RecipeEditComponent implements OnInit {
     let prep: number;
     let catagory = '';
     let notes = '';
+    let tags: string[] = [];
     let recipeImages = new FormArray([]);
     let recipeMethod = new FormArray([]);
     let recipeIngredients = new FormArray([]);
@@ -77,6 +78,7 @@ export class RecipeEditComponent implements OnInit {
       prep = recipe.prep;
       catagory = recipe.catagory;
       notes = recipe.notes;
+      tags = recipe.tags;
       if (recipe['images']) {
         for (let image of recipe.images) {
           recipeImages.push(
@@ -113,7 +115,8 @@ export class RecipeEditComponent implements OnInit {
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),
       'catagory': new FormControl(catagory, Validators.required),
-      'notes': new FormControl(notes, Validators.required),
+      'notes': new FormControl(notes),
+      'tags': new FormControl(tags),
       'images': recipeImages,
       'method': recipeMethod,
       'ingredients': recipeIngredients
@@ -237,12 +240,16 @@ export class RecipeEditComponent implements OnInit {
     return (<FormArray>this.recipeForm.get('ingredients')).controls;
   }
 
+  getTags() {
+    return (<FormControl> this.recipeForm.get('tags')).value;
+  }
+
   addTag(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
     // Add our tag
     if (value) {
-      this.tags.push(value);
+      this.getTags().push(value);
     }
 
     // Clear the input value
@@ -252,15 +259,15 @@ export class RecipeEditComponent implements OnInit {
   }
 
   removeTag(tag: string): void {
-    const index = this.tags.indexOf(tag);
+    const index = this.getTags().indexOf(tag);
 
     if (index >= 0) {
-      this.tags.splice(index, 1);
+      this.getTags().splice(index, 1);
     }
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
-    this.tags.push(event.option.viewValue);
+    this.getTags().push(event.option.viewValue);
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);
   }

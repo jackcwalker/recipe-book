@@ -29,12 +29,16 @@
             </div>
             <br>
             <div class="row">
+                <mat-chip-listbox aria-label="Tags">
+                    <mat-chip *ngFor="let tag of recipe.tags">
+                        {{ tag }}
+                    </mat-chip>
+                </mat-chip-listbox>
+            </div>
+            <br>
+            <div class="row">
                 <button style="cursor: pointer;" class="btn btn-primary" (click)="onEditRecipe()"><mat-icon>edit</mat-icon> Edit</button>
-            </div>
-            <div class="row">
                 <button style="cursor: pointer;" class="btn btn-primary" (click)="onFullScreen()"><mat-icon>fullscreen</mat-icon> Full Screen</button>
-            </div>
-            <div class="row">
                 <button style="cursor: pointer;" class="btn btn-danger" (click)="onDeleteRecipe()"><mat-icon>delete_forever</mat-icon> Delete</button>
             </div>
         </div>

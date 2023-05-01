@@ -177,6 +177,15 @@ export class RecipeEditComponent implements OnInit {
     return this.images[this.imageIndex];
   }
 
+  getCurrentImagePath() {
+    if (this.getCurrentImage().toBeCreated) {
+      return this.getCurrentImage().path;
+    }
+    else {
+      return this.recipeService.getFullImagePath(this.getCurrentImage().path);
+    }
+  }
+
   onPreviousImage() {
     if (this.imageIndex-1 >= 0){
       this.imageIndex = this.imageIndex-1;

@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-xs-6">
             <mat-card class="example-card">
-                <img mat-card-image [src]="recipe.fullImagePath" 
-                    alt="{{ recipe.name }}" 
-                    class="img-responsive">
+                <div class="row">
+                    <img [src]=getCurrentImagePath() class="img-responsive">
+                </div>
                 <mat-card-actions>
-                    <button mat-icon-button aria-label="Previous">
+                    <button type="button" mat-icon-button aria-label="Previous" (click)="onPreviousImage()">
                         <mat-icon>navigate_before</mat-icon>
                     </button>
-                    <button mat-icon-button aria-label="Next">
+                    <button type="button" mat-icon-button aria-label="Next" (click)="onNextImage()">
                         <mat-icon>navigate_next</mat-icon>
                     </button>
                 </mat-card-actions>

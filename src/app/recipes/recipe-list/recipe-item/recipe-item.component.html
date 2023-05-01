@@ -3,6 +3,6 @@
         <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
     </div>
     <span class="pull-right">
-        <img [src]="recipe.images[0].path" alt="{{ recipe.name }}" class="img-responsive" style="max-height: 50px;">
+        <img [src]="recipeService.getFullImagePath(recipe.images[0].path)" alt="{{ recipe.name }}" class="img-responsive" style="max-height: 50px;">
     </span>
 </a>

@@ -5,7 +5,7 @@
                 <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
                 <mat-card class="example-card">
                     <div *ngIf = "images.length > 0" class="row">
-                        <img [src]=getCurrentImage().path class="img-responsive">
+                        <img [src]=getCurrentImagePath() class="img-responsive">
                     </div>
                     <div *ngIf = "images.length == 0" class="row">
                         Upload Image

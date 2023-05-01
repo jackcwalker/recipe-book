@@ -11,8 +11,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 export class RecipeDetailComponent {
   recipe: Recipe;
   id: number;
-  image: string;
   methodChecked = new Map();
+  imageIndex = 0;
 
   constructor (private recipeService: RecipeService, 
     private route: ActivatedRoute,
@@ -63,4 +63,29 @@ export class RecipeDetailComponent {
       return 'grayout';
     }
   }
+
+  getCurrentImage() {
+    return this.recipe.images[this.imageIndex];
+  }
+
+  getCurrentImagePath() {
+    return this.recipeService.getFullImagePath(this.getCurrentImage().path);
+  }
+
+  onPreviousImage() {
+    if (this.imageIndex-1 >= 0){
+      this.imageIndex = this.imageIndex-1;
+    } else {
+      this.imageIndex = 0;
+    }
+  }
+
+  onNextImage() {
+    if (this.imageIndex+1 <= this.recipe.images.length-1){
+      this.imageIndex = this.imageIndex+1;
+    } else {
+      this.imageIndex = 0;
+    }
+  }
+
 }

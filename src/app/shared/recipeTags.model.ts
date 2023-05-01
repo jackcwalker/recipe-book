@@ -1,0 +1,1 @@
+export var tags : string[] = ['Healthy', 'High Protein', 'Vegan', 'Quick', 'Gluten-Free'].sort()

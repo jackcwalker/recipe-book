@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { recipeType } from 'src/app/shared/recipeType';
+import { tags } from 'src/app/shared/recipeTags.model';
 import { RecipeImage } from '../recipeImage.model';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Observable, map, startWith} from 'rxjs';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -19,8 +24,20 @@ export class RecipeEditComponent implements OnInit {
   deletedImages: RecipeImage[] = [];
   imageIndex = 0;
   recipeTypes: string[] = Object.values(recipeType);
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  tagCtrl = new FormControl('');
+  filteredTags: Observable<string[]>;
+  tags: string[] = [];
+  allTags: string[] = tags;
 
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router, private dataStorageService: DataStorageService) { }
+  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+
+  constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router, private dataStorageService: DataStorageService) {
+    this.filteredTags = this.tagCtrl.valueChanges.pipe(
+      startWith(null),
+      map((tag: string | null) => (tag ? this._filterTags(tag) : this.allTags.slice())),
+    );
+   }
 
   ngOnInit() {
     this.route.params
@@ -45,7 +62,7 @@ export class RecipeEditComponent implements OnInit {
     let cook: number;
     let prep: number;
     let catagory = '';
-    let recipeImage = new FormArray([]);
+    let recipeImages = new FormArray([]);
     let recipeMethod = new FormArray([]);
     let recipeIngredients = new FormArray([]);
     
@@ -60,7 +77,7 @@ export class RecipeEditComponent implements OnInit {
       catagory = recipe.catagory;
       if (recipe['images']) {
         for (let image of recipe.images) {
-          recipeMethod.push(
+          recipeImages.push(
             new FormGroup({
               'path': new FormControl(image.path, Validators.required)
             })
@@ -94,7 +111,7 @@ export class RecipeEditComponent implements OnInit {
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),
       'catagory': new FormControl(catagory, Validators.required),
-      'images': recipeImage,
+      'images': recipeImages,
       'method': recipeMethod,
       'ingredients': recipeIngredients
     });
@@ -217,4 +234,37 @@ export class RecipeEditComponent implements OnInit {
     return (<FormArray>this.recipeForm.get('ingredients')).controls;
   }
 
+  addTag(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our tag
+    if (value) {
+      this.tags.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.tagCtrl.setValue(null);
+  }
+
+  removeTag(tag: string): void {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+  }
+
+  selectedTag(event: MatAutocompleteSelectedEvent): void {
+    this.tags.push(event.option.viewValue);
+    this.tagInput.nativeElement.value = '';
+    this.tagCtrl.setValue(null);
+  }
+
+  private _filterTags(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allTags.filter(tag => tag.toLowerCase().includes(filterValue));
+  }
 }

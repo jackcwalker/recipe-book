@@ -77,6 +77,26 @@
                         </mat-form-field>
                     </div>
                 </div>
+                <mat-form-field class="width100" appearance="fill">
+                    <mat-label>Recipe Tags</mat-label>
+                    <mat-chip-grid #chipGrid aria-label="Tag selection">
+                    <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)">
+                        {{tag}}
+                        <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                        <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                    </mat-chip-grid>
+                    <input placeholder="New tag..." #tagInput [formControl]="tagCtrl"
+                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="addTag($event)"/>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+                    <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                        {{tag}}
+                    </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
             </div>
         </div>
         <hr>

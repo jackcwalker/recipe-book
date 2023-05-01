@@ -62,6 +62,7 @@ export class RecipeEditComponent implements OnInit {
     let cook: number;
     let prep: number;
     let catagory = '';
+    let notes = '';
     let recipeImages = new FormArray([]);
     let recipeMethod = new FormArray([]);
     let recipeIngredients = new FormArray([]);
@@ -75,6 +76,7 @@ export class RecipeEditComponent implements OnInit {
       cook = recipe.cook;
       prep = recipe.prep;
       catagory = recipe.catagory;
+      notes = recipe.notes;
       if (recipe['images']) {
         for (let image of recipe.images) {
           recipeImages.push(
@@ -111,6 +113,7 @@ export class RecipeEditComponent implements OnInit {
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),
       'catagory': new FormControl(catagory, Validators.required),
+      'notes': new FormControl(notes, Validators.required),
       'images': recipeImages,
       'method': recipeMethod,
       'ingredients': recipeIngredients

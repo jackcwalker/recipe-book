@@ -13,6 +13,7 @@ export class Recipe {
     public prep: number;
     public cook: number;
     public author: string;
+    public notes: string;
 
     constructor(
         name: string, 
@@ -24,6 +25,7 @@ export class Recipe {
         prepTime: number,
         cookTime: number,
         author: string,
+        notes: string
     ) {
         this.name = name;
         this.method = method;
@@ -34,5 +36,6 @@ export class Recipe {
         this.prep = prepTime;
         this.cook = cookTime;
         this.author = author;
+        this.notes = notes;
     }
 }

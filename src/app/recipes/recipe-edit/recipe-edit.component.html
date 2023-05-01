@@ -4,18 +4,18 @@
             <div class="col-xs-6">
                 <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
                 <mat-card class="example-card">
-                    <div *ngIf = "uploadFileName" class="row">
-                        <img [src]="uploadFileName" class="img-responsive">
+                    <div *ngIf = "images.length > 0" class="row">
+                        <img [src]=getCurrentImage().path class="img-responsive">
                     </div>
-                    <div *ngIf = "!uploadFileName" class="row">
+                    <div *ngIf = "images.length == 0" class="row">
                         Upload Image
                     </div>
                     <mat-card-actions>
-                        <button mat-icon-button aria-label="Previous">
+                        <button type="button" mat-icon-button aria-label="Previous" (click)="onPreviousImage()">
                             <mat-icon>navigate_before</mat-icon>
                         </button>
                         <div class="file-upload">
-                            {{fileName || "No file uploaded yet."}}
+                            {{"Current Image" || "No file uploaded yet."}}
                             <button
                                 type="button"
                                 class="btn btn-success"
@@ -23,10 +23,10 @@
                                 <mat-icon>attach_file</mat-icon>
                             </button>
                         </div>
-                        <button mat-icon-button aria-label="Clear" (click)="onDeleteImage(i)">
+                        <button type="button" mat-icon-button aria-label="Clear" (click)="onDeleteImage()">
                             <mat-icon>close</mat-icon>
                         </button>
-                        <button mat-icon-button aria-label="Next">
+                        <button type="button" mat-icon-button aria-label="Next" (click)="onNextImage()">
                             <mat-icon>navigate_next</mat-icon>
                         </button>
                     </mat-card-actions>

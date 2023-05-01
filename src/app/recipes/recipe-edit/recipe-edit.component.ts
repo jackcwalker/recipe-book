@@ -4,6 +4,7 @@ import { RecipeService } from '../recipe.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { recipeType } from 'src/app/shared/recipeType';
+import { RecipeImage } from '../recipeImage.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -14,8 +15,9 @@ export class RecipeEditComponent implements OnInit {
   id: number;
   editMode = false;
   recipeForm: FormGroup;
-  fileName: string;
-  uploadFileName: string;
+  images: RecipeImage[] = [];
+  deletedImages: RecipeImage[] = [];
+  imageIndex = 0;
   recipeTypes: string[] = Object.values(recipeType);
 
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router, private dataStorageService: DataStorageService) { }
@@ -34,13 +36,6 @@ export class RecipeEditComponent implements OnInit {
           this.initForm();
         }
       )
-    this.dataStorageService.fileUploaded
-      .subscribe(
-        (fileName: string) => {
-          this.recipeForm.get('imagePath').setValue(fileName);
-          this.uploadFileName = this.recipeService.getFullImagePath(fileName);
-        }
-      )
   }
 
   private initForm() {
@@ -50,21 +45,28 @@ export class RecipeEditComponent implements OnInit {
     let cook: number;
     let prep: number;
     let catagory = '';
-    let recipeImagePath = '';
+    let recipeImage = new FormArray([]);
     let recipeMethod = new FormArray([]);
     let recipeIngredients = new FormArray([]);
     
     if (this.editMode) {
       const recipe = this.recipeService.getRecipe(this.id);
       recipeName = recipe.name;
-      recipeImagePath = recipe.imagePath;
-      this.fileName = recipe.imagePath;
-      this.uploadFileName = this.recipeService.getFullImagePath(recipe.imagePath);
+      this.images = recipe.images;
       author = recipe.author;
       serves = recipe.serves;
       cook = recipe.cook;
       prep = recipe.prep;
       catagory = recipe.catagory;
+      if (recipe['images']) {
+        for (let image of recipe.images) {
+          recipeMethod.push(
+            new FormGroup({
+              'path': new FormControl(image.path, Validators.required)
+            })
+          );
+        }
+      }
       if (recipe['method']) {
         for (let step of recipe.method) {
           recipeMethod.push(
@@ -92,7 +94,7 @@ export class RecipeEditComponent implements OnInit {
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),
       'catagory': new FormControl(catagory, Validators.required),
-      'imagePath': new FormControl(recipeImagePath, Validators.required),
+      'images': recipeImage,
       'method': recipeMethod,
       'ingredients': recipeIngredients
     });
@@ -132,24 +134,51 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onCancel() {
-    if (this.fileName) {
-      this.dataStorageService.deleteFile(this.fileName);
-    }
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
   onFileSelected(event) {
-    const file:File = event.target.files[0];
+    const file = event.target.files[0];
     if (file) {
-      this.fileName = file.name;
-      const formData = new FormData();
-      formData.append("image", file);
-      this.dataStorageService.uploadFile(this.fileName,file)
+      console.log('file imported');
+      const newImage = new RecipeImage(URL.createObjectURL(file));
+      newImage.file = file;
+      this.images.push(newImage);
+      console.log('file added to list');
+      this.onNextImage()
+      //this.getImage(this.imageIndex).name = file.name;
+      //this.getImage(this.imageIndex).file = file;
+      //this.dataStorageService.uploadFile(this.fileName,file)
     }
   }
 
-  onDeleteImage(fileName: string) {
-    console.log('delete' + fileName)
+  getCurrentImage() {
+    console.log('getting current image')
+    return this.images[this.imageIndex];
+  }
+
+  onPreviousImage() {
+    if (this.imageIndex-1 >= 0){
+      this.imageIndex = this.imageIndex-1;
+    } else {
+      this.imageIndex = 0;
+    }
+    console.log('previous image... index: '+this.imageIndex);
+  }
+
+  onNextImage() {
+    if (this.imageIndex+1 <= this.images.length-1){
+      this.imageIndex = this.imageIndex+1;
+    } else {
+      this.imageIndex = 0;
+    }
+    console.log('next image... index: '+this.imageIndex);
+  }
+
+  onDeleteImage() {
+    console.log('delete image')
+    this.deletedImages.push(this.images[this.imageIndex])
+    this.images.splice(this.imageIndex,1);
   }
 
   get controlsMethod() {

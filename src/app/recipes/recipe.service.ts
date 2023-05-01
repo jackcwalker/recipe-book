@@ -32,9 +32,6 @@ export class RecipeService {
     setRecipes (recipes: Recipe[]) {
         if (recipes) {
             this.recipes = recipes;
-            for (var recipe of recipes) {
-                recipe.fullImagePath = this.getFullImagePath(recipe.imagePath);
-            }
             this.recipesChanged.emit(this.recipes.slice());
         }
     }
@@ -58,13 +55,11 @@ export class RecipeService {
 
     addRecipe(recipe: Recipe) {
         this.recipes.push(recipe);
-        recipe.fullImagePath = this.getFullImagePath(recipe.imagePath);
         this.recipesChanged.emit(this.recipes.slice());
         this.storeRecipes()
     }
 
     updateRecipe(index: number, newRecipe: Recipe) {
-        newRecipe.fullImagePath = this.getFullImagePath(newRecipe.imagePath);
         this.recipes[index] = newRecipe;
         this.recipesChanged.emit(this.recipes.slice());
         this.storeRecipes()

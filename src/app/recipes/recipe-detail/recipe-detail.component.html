@@ -16,7 +16,28 @@
             </mat-card>
         </div>
         <div class="col-xs-6">
-            <div class="row"><h1>{{ recipe.name }}</h1></div>
+            <div class="row">
+                <h1>
+                    {{ recipe.name }}
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Recipe Menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="onEditRecipe()">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                        </button>
+                        <button mat-menu-item (click)="onFullScreen()">
+                        <mat-icon>fullscreen</mat-icon>
+                        <span>Full Screen</span>
+                        </button>
+                        <button mat-menu-item (click)="onDeleteRecipe()">
+                        <mat-icon>delete_forever</mat-icon>
+                        <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </h1>
+            </div>
             <div class="row">By {{ recipe.author }}</div>
             <br>
             <div class="col-xs-6">
@@ -35,18 +56,12 @@
                     </mat-chip>
                 </mat-chip-listbox>
             </div>
-            <br>
-            <div class="row">
-                <button style="cursor: pointer;" class="btn btn-primary" (click)="onEditRecipe()"><mat-icon>edit</mat-icon> Edit</button>
-                <button style="cursor: pointer;" class="btn btn-primary" (click)="onFullScreen()"><mat-icon>fullscreen</mat-icon> Full Screen</button>
-                <button style="cursor: pointer;" class="btn btn-danger" (click)="onDeleteRecipe()"><mat-icon>delete_forever</mat-icon> Delete</button>
-            </div>
         </div>
     </div>
     <hr>
     <div class="row">
         <div class="col-xs-4">
-            <h1>Ingredients <button (click)="onAddToShoppingList()" class="btn btn-success" style="cursor: pointer;"><mat-icon>add_shopping_cart</mat-icon></button></h1>
+            <h1>Ingredients <button mat-icon-button (click)="onAddToShoppingList()"><mat-icon>add_shopping_cart</mat-icon></button></h1>
             <ul class="list">
                 <li *ngFor="let ingredient of recipe.ingredients">
                     {{ ingredient. name }}

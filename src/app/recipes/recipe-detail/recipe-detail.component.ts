@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -17,7 +18,7 @@ export class RecipeDetailComponent {
 
   constructor (private recipeService: RecipeService, 
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) { };
 
   onAddToShoppingList ( ) {
     this.recipeService.addIngredientsToList(this.recipe.ingredients);
@@ -28,20 +29,17 @@ export class RecipeDetailComponent {
   }
 
   ngOnInit(){
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.id = this.recipeService.getRecipeIndex(params['name']);
-        this.recipe = this.recipeService.getRecipe(this.id);
-        this.recipeService.setFullScreen(true);
-        this.getCurrentImagePath()
-      }
-    )
-    this.recipeService.recipesChanged.subscribe(
-      () => {
-        this.recipe = this.recipeService.getRecipe(this.id);
-        this.getCurrentImagePath()
-      }
-    )
+    combineLatest([
+      this.route.params,
+      this.recipeService.recipes$
+    ]).subscribe(([params, recipes]) => {
+      console.log('received:' + params);
+      console.log('received:' + recipes);
+      this.id = this.recipeService.getRecipeIndex(params['name']);
+      this.recipe = this.recipeService.getRecipe(this.id);
+      this.recipeService.setFullScreen(true);
+      this.getCurrentImagePath()
+    })
   }
 
   onEditRecipe() {
@@ -73,8 +71,10 @@ export class RecipeDetailComponent {
   }
 
   getCurrentImagePath() {
-    return this.recipeService.getFullImagePath(this.recipe.name,this.getCurrentImage())
-    .then((value) => {this.currentImagePath = value ? value : null});
+    if (this.recipe) {
+      return this.recipeService.getFullImagePath(this.recipe.name,this.getCurrentImage())
+      .then((value) => {this.currentImagePath = value ? value : null});
+    }
   }
 
   onPreviousImage() {

@@ -14,8 +14,9 @@ export class RecipeItemComponent implements OnInit {
   constructor (public recipeService: RecipeService) { }
 
   ngOnInit(): void {
-    this.recipeService.getFullImagePath(this.recipe.name,this.recipe.images[0])
-    .then((value) => {this.firstImagePath = value ? value : null});
+    if (this.recipe) {
+      this.recipeService.getFullImagePath(this.recipe.name,this.recipe.images[0])
+      .then((value) => {this.firstImagePath = value ? value : null});
+    }
   }
-
 }

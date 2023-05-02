@@ -4,6 +4,7 @@ import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { DataStorageService } from "../shared/data-storage.service";
 import { RecipeImage } from "./recipeImage.model";
+import { Subject } from "rxjs/internal/Subject";
 
 @Injectable()
 export class RecipeService {
@@ -12,6 +13,8 @@ export class RecipeService {
     fullScreenChanged = new EventEmitter<boolean> ();
     gotImageDownloadUrl = new EventEmitter<string> ();
     fullScreen: boolean = false;
+    
+    recipes$ = new Subject();
     
     private recipes: Recipe[] = [];
 
@@ -35,6 +38,7 @@ export class RecipeService {
         if (recipes) {
             this.recipes = recipes;
             this.recipesChanged.emit(this.recipes.slice());
+            this.recipes$.next(this.recipes.slice());
         }
     }
 

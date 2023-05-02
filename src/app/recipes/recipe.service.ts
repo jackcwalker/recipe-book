@@ -31,8 +31,10 @@ export class RecipeService {
     setRecipes (recipes: Recipe[]) {
         if (recipes) {
             this.recipes = recipes;
-            this.recipes$.next(this.recipes.slice());
+        } else {
+            this.recipes = []
         }
+        this.recipes$.next(this.recipes.slice());
     }
 
     pushRecipes() {

@@ -62,7 +62,7 @@
     <div class="row">
         <div class="col-xs-4">
             <h1>Ingredients <button mat-icon-button (click)="onAddToShoppingList()"><mat-icon>add_shopping_cart</mat-icon></button></h1>
-            <mat-card>
+            <mat-card *ngIf="recipe.ingredients">
                 <mat-card-content>
                     <div *ngFor="let ingredient of recipe.ingredients">
                         {{ ingredient.name }} 
@@ -89,7 +89,11 @@
     <hr>
     <div class="row">
         <h1>Notes</h1>
-        {{ recipe.notes }}
+        <mat-card style="min-height: 200px;">
+            <mat-card-content>
+                {{ recipe.notes }}
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>
 <div *ngIf = "!recipe" >

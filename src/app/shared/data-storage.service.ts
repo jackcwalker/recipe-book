@@ -67,12 +67,12 @@ export class DataStorageService {
     deleteFile(fileName: string) {
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
-        console.log('Logger: Deleting '+fileName)
+        console.log('Logger: Deleting file: '+fileName)
         // Delete the file
         deleteObject(storageRef).then(() => {
-            // File deleted successfully
+            console.log('Logger: Successfully Deleted: '+fileName);
         }).catch((error) => {
-            // Uh-oh, an error occurred!
+            console.log('Logger: Failed Delete due to: '+error);
         });
       }
 }

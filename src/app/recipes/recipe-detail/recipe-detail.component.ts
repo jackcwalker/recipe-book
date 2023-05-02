@@ -77,8 +77,8 @@ export class RecipeDetailComponent {
   }
 
   onPreviousImage() {
-    if (this.imageIndex-1 >= 0){
-      this.imageIndex = this.imageIndex-1;
+    if (this.imageIndex-1 < 0){
+      this.imageIndex = this.recipe.images.length-1;
     } else {
       this.imageIndex = 0;
     }

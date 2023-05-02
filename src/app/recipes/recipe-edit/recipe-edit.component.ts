@@ -45,10 +45,8 @@ export class RecipeEditComponent implements OnInit {
       this.route.params,
       this.recipeService.recipes$
     ]).subscribe(([params, recipes]) => {
-      console.log('received params and recipes');
       this.id = this.recipeService.getRecipeIndex(params['name']);
       this.editMode = params['name'] != null;
-      console.log('edit mode:'+this.editMode);
       this.initForm();
       this.getCurrentImagePath()
     })
@@ -148,10 +146,13 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit(){
+    console.log('Edit Logger: Form Submitted');
+    console.log(this.recipeForm.value);
     this.updateImages();
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, this.recipeForm.value);
     } else {
+      console.log('Edit Logger: Adding Recipe: '+this.getCurrentRecipeName())
       this.recipeService.addRecipe(this.recipeForm.value);
     }
     this.router.navigate(['../'], {relativeTo: this.route});
@@ -162,18 +163,17 @@ export class RecipeEditComponent implements OnInit {
   }
 
   updateImages(){
-    console.log('Logger: Updating Images');
+    console.log('Edit Logger: Updating Images');
     for (let image of this.images) {
-      console.log(image);
       if (image.toBeCreated) {
         const newImagePath = this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.name);
-        console.log('Logger: Uploading new image to '+newImagePath);
+        console.log('Edit Logger: Uploading new image to '+newImagePath);
         this.dataStorageService.uploadFile(newImagePath,image.file);
       }
     }
     for (let image of this.deletedImages) {
       if (!image.toBeCreated) {
-        console.log('Logger: Deleting image: '+this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
+        console.log('Edit Logger: Deleting image: '+this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
         this.dataStorageService.deleteFile(this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
       }
     }
@@ -186,7 +186,7 @@ export class RecipeEditComponent implements OnInit {
   onFileSelected(event) {
     const file = event.target.files[0];
     if (file) {
-      console.log('Logger: File Uploaded');
+      console.log('Edit Logger: Image Uploaded');
       const newImage = new RecipeImage(URL.createObjectURL(file));
       newImage.file = file;
       newImage.name = uuidv4() +'.' + file.name.split('.').pop();

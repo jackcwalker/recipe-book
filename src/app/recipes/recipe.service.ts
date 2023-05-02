@@ -21,7 +21,8 @@ export class RecipeService {
         this.dataService.recipesDownloaded
         .subscribe(
           (recipes: Recipe[]) => {
-            console.log("Logger: Recipe Downloaded");
+            console.log("Recipe Service Logger: Recipes Downloaded");
+            console.log(this.recipes);
             this.setRecipes(recipes);
           }
         )
@@ -38,7 +39,6 @@ export class RecipeService {
     }
 
     pushRecipes() {
-        console.log('pushing next observable');
         this.recipes$.next(this.recipes.slice());
     }
     saveAndPushRecipes() {
@@ -66,7 +66,7 @@ export class RecipeService {
 
     getRecipeIndex(name:string) {
         for (let i = 0; i < this.recipes.length; i++) {
-            if (this.recipes[i].name = name) {
+            if (this.recipes[i].name == name) {
                 return i;
             }
         }
@@ -77,6 +77,7 @@ export class RecipeService {
     }
 
     addRecipe(recipe: Recipe) {
+        console.log('Recipe Service Logger:  Adding Recipe: '+recipe.name)
         this.recipes.push(recipe);
         this.saveAndPushRecipes();
     }
@@ -87,7 +88,7 @@ export class RecipeService {
     }
 
     deleteRecipe(index: number) {
-        console.log("Logger: Deleting Recipe" + this.recipes[index].name);
+        console.log("Recipe Service Logger: Service Deleting Recipe: " + this.recipes[index].name);
         for (let image of this.recipes[index].images){
             this.dataService.deleteFile(this.getRecipeRoute(this.recipes[index].name) + '/' + image.path);
         }

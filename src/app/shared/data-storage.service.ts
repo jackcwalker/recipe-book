@@ -26,17 +26,18 @@ export class DataStorageService {
     }
 
     storeRecipes(recipes: Recipe[]) {
-        console.log('Logger: Uploading Recipes');
+        console.log('Data Service Logger: Storing Recipes');
         this.http.put(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
             recipes
         )
         .subscribe(response => {
-        console.log(response);
+            console.log('Data Service Logger: Storing Request Response:');
+            console.log(response);
         });
     }
     fetchRecipes() {
-        console.log('Logger: Fetching Recipes');
+        console.log('Data Service Logger: Fetching Recipes');
         this.http.get<Recipe[]>(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
         ).subscribe(recipes => {
@@ -56,7 +57,7 @@ export class DataStorageService {
     }
 
     uploadFile(fileName: string, file: File) {
-        console.log('Logger: Uploading '+fileName)
+        console.log('Data Service Logger: Uploading '+fileName)
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
         uploadBytes(storageRef, file).then((snapshot) => {
@@ -67,12 +68,12 @@ export class DataStorageService {
     deleteFile(fileName: string) {
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
-        console.log('Logger: Deleting file: '+fileName)
+        console.log('Data Service Logger: Deleting file: '+fileName)
         // Delete the file
         deleteObject(storageRef).then(() => {
-            console.log('Logger: Successfully Deleted: '+fileName);
+            console.log('Data Service Logger: Successfully Deleted: '+fileName);
         }).catch((error) => {
-            console.log('Logger: Failed Delete due to: '+error);
+            console.log('Data Service Logger: Failed Delete due to: '+error);
         });
       }
 }

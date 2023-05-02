@@ -56,6 +56,14 @@ export class RecipeService {
         this.fullScreenChanged.emit(this.fullScreen);
     }
 
+    getRecipeIndex(name:string) {
+        for (let i = 0; i < this.recipes.length; i++) {
+            if (this.recipes[i].name = name) {
+                return i;
+            }
+        }
+    }
+
     getRecipe (index: number) {
         return this.recipes[index];
     }

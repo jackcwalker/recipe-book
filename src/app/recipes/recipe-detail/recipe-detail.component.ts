@@ -30,7 +30,7 @@ export class RecipeDetailComponent {
   ngOnInit(){
     this.route.params.subscribe(
       (params: Params) => {
-        this.id = +params['id'];
+        this.id = this.recipeService.getRecipeIndex(params['name']);
         this.recipe = this.recipeService.getRecipe(this.id);
         this.recipeService.setFullScreen(true);
         this.getCurrentImagePath()

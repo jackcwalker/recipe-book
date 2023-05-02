@@ -45,7 +45,7 @@ export class RecipeEditComponent implements OnInit {
     this.route.params
       .subscribe(
         (params: Params) => {
-          this.id = +params['id'];
+          this.id = this.recipeService.getRecipeIndex(params['name']);
           this.editMode = params['id'] != null;
           this.initForm();
           this.getCurrentImagePath()

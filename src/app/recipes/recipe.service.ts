@@ -4,17 +4,15 @@ import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { DataStorageService } from "../shared/data-storage.service";
 import { RecipeImage } from "./recipeImage.model";
-import { Subject } from "rxjs/internal/Subject";
+import { ReplaySubject } from "rxjs";
 
 @Injectable()
 export class RecipeService {
-    recipeSelected = new EventEmitter<Recipe> ();
-    recipesChanged = new EventEmitter<Recipe[]>();
     fullScreenChanged = new EventEmitter<boolean> ();
     gotImageDownloadUrl = new EventEmitter<string> ();
     fullScreen: boolean = false;
     
-    recipes$ = new Subject();
+    recipes$ = new ReplaySubject();
     
     private recipes: Recipe[] = [];
 
@@ -30,16 +28,20 @@ export class RecipeService {
         this.fetchRecipes();
     }
 
-    getRecipes() {
-        return this.recipes.slice();
-    }
-
     setRecipes (recipes: Recipe[]) {
         if (recipes) {
             this.recipes = recipes;
-            this.recipesChanged.emit(this.recipes.slice());
             this.recipes$.next(this.recipes.slice());
         }
+    }
+
+    pushRecipes() {
+        console.log('pushing next observable');
+        this.recipes$.next(this.recipes.slice());
+    }
+    saveAndPushRecipes() {
+        this.pushRecipes()
+        this.dataService.storeRecipes(this.recipes);
     }
 
     getFullImagePath(recipeName: string, image: RecipeImage){
@@ -74,14 +76,12 @@ export class RecipeService {
 
     addRecipe(recipe: Recipe) {
         this.recipes.push(recipe);
-        this.recipesChanged.emit(this.recipes.slice());
-        this.storeRecipes()
+        this.saveAndPushRecipes();
     }
 
     updateRecipe(index: number, newRecipe: Recipe) {
         this.recipes[index] = newRecipe;
-        this.recipesChanged.emit(this.recipes.slice());
-        this.storeRecipes()
+        this.saveAndPushRecipes();
     }
 
     deleteRecipe(index: number) {
@@ -90,8 +90,7 @@ export class RecipeService {
             this.dataService.deleteFile(this.getRecipeRoute(this.recipes[index].name) + '/' + image.path);
         }
         this.recipes.splice(index,1);
-        this.recipesChanged.emit(this.recipes.slice());
-        this.storeRecipes()
+        this.saveAndPushRecipes();
     }
 
     storeRecipes() {

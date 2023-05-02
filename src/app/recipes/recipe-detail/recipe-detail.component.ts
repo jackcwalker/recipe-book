@@ -18,7 +18,20 @@ export class RecipeDetailComponent {
 
   constructor (private recipeService: RecipeService, 
     private route: ActivatedRoute,
-    private router: Router) { };
+    private router: Router) {
+  };
+
+  ngOnInit(){
+    combineLatest([
+      this.route.params,
+      this.recipeService.recipes$
+    ]).subscribe(([params, recipes]) => {
+      this.id = this.recipeService.getRecipeIndex(params['name']);
+      this.recipe = this.recipeService.getRecipe(this.id);
+      this.recipeService.setFullScreen(true);
+      this.getCurrentImagePath()
+    });
+  }
 
   onAddToShoppingList ( ) {
     this.recipeService.addIngredientsToList(this.recipe.ingredients);
@@ -26,20 +39,6 @@ export class RecipeDetailComponent {
 
   onFullScreen () {
     this.recipeService.setFullScreen(!this.recipeService.fullScreen);
-  }
-
-  ngOnInit(){
-    combineLatest([
-      this.route.params,
-      this.recipeService.recipes$
-    ]).subscribe(([params, recipes]) => {
-      console.log('received:' + params);
-      console.log('received:' + recipes);
-      this.id = this.recipeService.getRecipeIndex(params['name']);
-      this.recipe = this.recipeService.getRecipe(this.id);
-      this.recipeService.setFullScreen(true);
-      this.getCurrentImagePath()
-    })
   }
 
   onEditRecipe() {

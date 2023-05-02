@@ -7,7 +7,7 @@ import { recipeType } from 'src/app/shared/recipeType';
 import { tags } from 'src/app/shared/recipeTags.model';
 import { RecipeImage } from '../recipeImage.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Observable, map, startWith} from 'rxjs';
+import {Observable, combineLatest, map, startWith} from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { v4 as uuidv4 } from 'uuid';
@@ -28,7 +28,6 @@ export class RecipeEditComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagCtrl = new FormControl('');
   filteredTags: Observable<string[]>;
-  //tags: string[] = [];
   allTags: string[] = tags;
   currentImagePath: string;
 
@@ -42,21 +41,17 @@ export class RecipeEditComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.route.params
-      .subscribe(
-        (params: Params) => {
-          this.id = this.recipeService.getRecipeIndex(params['name']);
-          this.editMode = params['id'] != null;
-          this.initForm();
-          this.getCurrentImagePath()
-        }
-      );
-    this.recipeService.recipesChanged.subscribe(
-        () => {
-          this.initForm();
-          this.getCurrentImagePath()
-        }
-      )
+    combineLatest([
+      this.route.params,
+      this.recipeService.recipes$
+    ]).subscribe(([params, recipes]) => {
+      console.log('received params and recipes');
+      this.id = this.recipeService.getRecipeIndex(params['name']);
+      this.editMode = params['name'] != null;
+      console.log('edit mode:'+this.editMode);
+      this.initForm();
+      this.getCurrentImagePath()
+    })
   }
 
   private initForm() {

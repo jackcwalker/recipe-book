@@ -13,6 +13,7 @@ export class RecipeDetailComponent {
   id: number;
   methodChecked = new Map();
   imageIndex = 0;
+  currentImagePath: string;
 
   constructor (private recipeService: RecipeService, 
     private route: ActivatedRoute,
@@ -31,11 +32,13 @@ export class RecipeDetailComponent {
       (params: Params) => {
         this.id = +params['id'];
         this.recipe = this.recipeService.getRecipe(this.id);
+        this.getCurrentImagePath()
       }
     )
     this.recipeService.recipesChanged.subscribe(
       () => {
         this.recipe = this.recipeService.getRecipe(this.id);
+        this.getCurrentImagePath()
       }
     )
   }
@@ -69,7 +72,8 @@ export class RecipeDetailComponent {
   }
 
   getCurrentImagePath() {
-    return this.recipeService.getFullImagePath(this.getCurrentImage().path);
+    return this.recipeService.getFullImagePath(this.recipe.name,this.getCurrentImage())
+    .then((value) => {this.currentImagePath = value ? value : null});
   }
 
   onPreviousImage() {
@@ -78,6 +82,7 @@ export class RecipeDetailComponent {
     } else {
       this.imageIndex = 0;
     }
+    this.getCurrentImagePath();
   }
 
   onNextImage() {
@@ -86,6 +91,7 @@ export class RecipeDetailComponent {
     } else {
       this.imageIndex = 0;
     }
+    this.getCurrentImagePath();
   }
 
 }

@@ -3,12 +3,14 @@ import { Recipe } from "./recipe.model";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { DataStorageService } from "../shared/data-storage.service";
+import { RecipeImage } from "./recipeImage.model";
 
 @Injectable()
 export class RecipeService {
     recipeSelected = new EventEmitter<Recipe> ();
     recipesChanged = new EventEmitter<Recipe[]>();
     fullScreenChanged = new EventEmitter<boolean> ();
+    gotImageDownloadUrl = new EventEmitter<string> ();
     fullScreen: boolean = false;
     
     private recipes: Recipe[] = [];
@@ -36,8 +38,13 @@ export class RecipeService {
         }
     }
 
-    getFullImagePath(path: string){
-        return this.dataService.getFullImagePath(path);
+    getFullImagePath(recipeName: string, image: RecipeImage){
+        return this.dataService.getFullImagePath(this.getRecipeRoute(recipeName),image.path)
+        .then((value) => {return value});
+    }
+
+    getRecipeRoute(recipeName: string){
+        return recipeName.replace(/\s/g, '-');
     }
 
     addIngredientsToList(ingredients: Ingredient[]) {

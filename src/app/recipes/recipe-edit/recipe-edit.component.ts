@@ -10,6 +10,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable, map, startWith} from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -29,6 +30,7 @@ export class RecipeEditComponent implements OnInit {
   filteredTags: Observable<string[]>;
   //tags: string[] = [];
   allTags: string[] = tags;
+  currentImagePath: string;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
@@ -46,11 +48,13 @@ export class RecipeEditComponent implements OnInit {
           this.id = +params['id'];
           this.editMode = params['id'] != null;
           this.initForm();
+          this.getCurrentImagePath()
         }
       );
     this.recipeService.recipesChanged.subscribe(
         () => {
           this.initForm();
+          this.getCurrentImagePath()
         }
       )
   }
@@ -81,6 +85,7 @@ export class RecipeEditComponent implements OnInit {
       tags = recipe.tags;
       if (recipe['images']) {
         for (let image of recipe.images) {
+          image.toBeCreated = false;
           recipeImages.push(
             new FormGroup({
               'path': new FormControl(image.path, Validators.required)
@@ -148,12 +153,12 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit(){
+    this.updateImages();
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, this.recipeForm.value);
     } else {
       this.recipeService.addRecipe(this.recipeForm.value);
     }
-    this.updateImages();
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
@@ -164,17 +169,23 @@ export class RecipeEditComponent implements OnInit {
   updateImages(){
     console.log('Logger: Updating Images');
     for (let image of this.images) {
+      console.log(image);
       if (image.toBeCreated) {
-        console.log('Logger: Uploading'+image.name);
-        this.dataStorageService.uploadFile(image.name,image.file);
+        const newImagePath = this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.name);
+        console.log('Logger: Uploading new image to '+newImagePath);
+        this.dataStorageService.uploadFile(newImagePath,image.file);
       }
     }
     for (let image of this.deletedImages) {
       if (!image.toBeCreated) {
-        console.log('Logger: Deleting'+image.name);
-        this.dataStorageService.deleteFile(image.name);
+        console.log('Logger: Deleting'+this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
+        this.dataStorageService.deleteFile(this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
       }
     }
+  }
+
+  getCurrentRecipeName(){
+    return (<FormControl> this.recipeForm.get('name')).value;
   }
 
   onFileSelected(event) {
@@ -183,13 +194,13 @@ export class RecipeEditComponent implements OnInit {
       console.log('Logger: File Uploaded');
       const newImage = new RecipeImage(URL.createObjectURL(file));
       newImage.file = file;
-      newImage.name = file.name;
+      newImage.name = uuidv4() +'.' + file.name.split('.').pop();
       newImage.toBeCreated = true;
       this.images.push(newImage);
 
       (<FormArray>this.recipeForm.get('images')).push(
         new FormGroup({
-          'path': new FormControl(file.name, Validators.required)
+          'path': new FormControl(newImage.name, Validators.required)
         })
       );
       this.onNextImage()
@@ -202,10 +213,11 @@ export class RecipeEditComponent implements OnInit {
 
   getCurrentImagePath() {
     if (this.getCurrentImage().toBeCreated) {
-      return this.getCurrentImage().path;
+      this.currentImagePath = this.getCurrentImage().path;
     }
     else {
-      return this.recipeService.getFullImagePath(this.getCurrentImage().path);
+      return this.recipeService.getFullImagePath(this.getCurrentRecipeName(),this.getCurrentImage())
+      .then((value) => {this.currentImagePath = value ? value : null});
     }
   }
 
@@ -215,6 +227,7 @@ export class RecipeEditComponent implements OnInit {
     } else {
       this.imageIndex = 0;
     }
+    this.getCurrentImagePath();
   }
 
   onNextImage() {
@@ -223,6 +236,7 @@ export class RecipeEditComponent implements OnInit {
     } else {
       this.imageIndex = 0;
     }
+    this.getCurrentImagePath();
   }
 
   onDeleteImage() {

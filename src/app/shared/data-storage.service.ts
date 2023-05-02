@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 
 @Injectable ({ providedIn: 'root' })
 export class DataStorageService {
@@ -44,10 +44,15 @@ export class DataStorageService {
         });
     }
 
-    getFullImagePath(path: string){
-        const base = "https://firebasestorage.googleapis.com/v0/b/recipe-book-85758.appspot.com/o/";
-        const key = "?alt=media&token=76e5d494-980e-45e2-b708-0a2118f78770"
-        return (base + path + key);
+    getFullImagePath(folder: string, filename: string){
+        const storage = getStorage();
+        const pathReference = ref(storage, folder+'/'+filename);
+        return getDownloadURL(pathReference).then((url) => {
+            return url;
+          })
+          .catch((error) => {
+            console.log(error)
+          });
     }
 
     uploadFile(fileName: string, file: File) {

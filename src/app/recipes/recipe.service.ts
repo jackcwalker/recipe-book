@@ -73,6 +73,10 @@ export class RecipeService {
     }
 
     deleteRecipe(index: number) {
+        console.log("Logger: Deleting Recipe" + this.recipes[index].name);
+        for (let image of this.recipes[index].images){
+            this.dataService.deleteFile(this.getRecipeRoute(this.recipes[index].name) + '/' + image.path);
+        }
         this.recipes.splice(index,1);
         this.recipesChanged.emit(this.recipes.slice());
         this.storeRecipes()

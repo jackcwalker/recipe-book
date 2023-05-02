@@ -23,8 +23,8 @@ export class RecipeDetailComponent {
     this.recipeService.addIngredientsToList(this.recipe.ingredients);
   }
 
-  onFullScreen ( ) {
-    this.recipeService.toggleFullScreen();
+  onFullScreen () {
+    this.recipeService.setFullScreen(!this.recipeService.fullScreen);
   }
 
   ngOnInit(){
@@ -32,6 +32,7 @@ export class RecipeDetailComponent {
       (params: Params) => {
         this.id = +params['id'];
         this.recipe = this.recipeService.getRecipe(this.id);
+        this.recipeService.setFullScreen(true);
         this.getCurrentImagePath()
       }
     )

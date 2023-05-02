@@ -51,8 +51,8 @@ export class RecipeService {
         this.slService.addIngredients(ingredients);
     }
 
-    toggleFullScreen() {
-        this.fullScreen = !this.fullScreen;
+    setFullScreen(value: boolean) {
+        this.fullScreen = value;
         this.fullScreenChanged.emit(this.fullScreen);
     }
 

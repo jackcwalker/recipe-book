@@ -178,7 +178,7 @@ export class RecipeEditComponent implements OnInit {
     }
     for (let image of this.deletedImages) {
       if (!image.toBeCreated) {
-        console.log('Logger: Deleting'+this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
+        console.log('Logger: Deleting image: '+this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
         this.dataStorageService.deleteFile(this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
       }
     }
@@ -212,12 +212,15 @@ export class RecipeEditComponent implements OnInit {
   }
 
   getCurrentImagePath() {
-    if (this.getCurrentImage().toBeCreated) {
-      this.currentImagePath = this.getCurrentImage().path;
-    }
-    else {
-      return this.recipeService.getFullImagePath(this.getCurrentRecipeName(),this.getCurrentImage())
-      .then((value) => {this.currentImagePath = value ? value : null});
+    const image = this.getCurrentImage();
+    if (image) {
+      if (image.toBeCreated) {
+        this.currentImagePath = image.path;
+      }
+      else {
+        return this.recipeService.getFullImagePath(this.getCurrentRecipeName(),image)
+        .then((value) => {this.currentImagePath = value ? value : null});
+      }
     }
   }
 

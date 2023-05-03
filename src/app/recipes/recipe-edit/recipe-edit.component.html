@@ -2,7 +2,7 @@
     <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-xs-6">
-                <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+                <input type="file" class="file-input" accept=".jpg,.jpeg,.png" (change)="onFileSelected($event)" #fileUpload>
                 <mat-card class="example-card">
                     <div *ngIf = "images.length > 0" class="row">
                         <img [src]=currentImagePath class="img-responsive">

@@ -15,6 +15,7 @@ export class Recipe {
     public author: string;
     public notes: string;
     public tags: string[];
+    public route: string;
 
     constructor(
         name: string, 
@@ -27,7 +28,8 @@ export class Recipe {
         cookTime: number,
         author: string,
         notes: string,
-        tags: string[]
+        tags: string[],
+        route: string
     ) {
         this.name = name;
         this.method = method;
@@ -40,5 +42,6 @@ export class Recipe {
         this.author = author;
         this.notes = notes;
         this.tags = tags;
+        this.route = route;
     }
 }

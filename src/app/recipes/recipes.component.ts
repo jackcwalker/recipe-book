@@ -26,7 +26,7 @@ export class RecipesComponent implements OnInit {
 
     this.route.params
     .subscribe((params) => {
-      if (params['name'] == null){
+      if (params['route'] == null){
         this.uiService.setFullScreen(false);
       }
   });

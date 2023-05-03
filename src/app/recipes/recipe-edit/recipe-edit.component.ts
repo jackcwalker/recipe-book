@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { recipeType } from 'src/app/shared/recipeType';
 import { tags } from 'src/app/shared/recipeTags.model';
 import { RecipeImage } from '../recipeImage.model';
@@ -49,8 +48,8 @@ export class RecipeEditComponent implements OnInit {
       this.route.params,
       this.recipeService.recipes$
     ]).subscribe(([params, recipes]) => {
-      this.id = this.recipeService.getRecipeIndex(params['name']);
-      this.editMode = params['name'] != null;
+      this.id = this.recipeService.getRecipeIndex(params['route']);
+      this.editMode = params['route'] != null;
       this.initForm();
       this.getCurrentImagePath()
     })
@@ -64,6 +63,7 @@ export class RecipeEditComponent implements OnInit {
     let prep: number;
     let catagory = '';
     let notes = '';
+    let route: string;
     let tags: string[] = [];
     let recipeImages = new FormArray([]);
     let recipeMethod = new FormArray([]);
@@ -80,6 +80,7 @@ export class RecipeEditComponent implements OnInit {
       catagory = recipe.catagory;
       notes = recipe.notes;
       tags = recipe.tags;
+      route = recipe.route;
       if (recipe['images']) {
         for (let image of recipe.images) {
           image.toBeCreated = false;
@@ -121,7 +122,8 @@ export class RecipeEditComponent implements OnInit {
       'tags': new FormControl(tags),
       'images': recipeImages,
       'method': recipeMethod,
-      'ingredients': recipeIngredients
+      'ingredients': recipeIngredients,
+      'route': new FormControl(route),
     });
   }
 
@@ -129,6 +131,7 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit(){
     console.log('Edit Logger: Form Submitted');
+    this.setRoute()
     console.log(this.recipeForm.value);
     this.uiService.createSnackBar('Submitting Recipe');
     if (this.editMode) {
@@ -181,7 +184,7 @@ export class RecipeEditComponent implements OnInit {
         this.currentImagePath = image.path;
       }
       else {
-        return this.recipeService.getFullImagePath((<FormControl> this.recipeForm.get('name')).value,image)
+        return this.recipeService.getFullImagePath(this.getRoute(),image)
         .then((value) => {this.currentImagePath = value ? value : null});
       }
     }
@@ -206,12 +209,25 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onDeleteImage() {
-    this.deletedImages.push(this.images[this.imageIndex])
+    const deletedImage = this.images[this.imageIndex];
+    deletedImage.toBeDeleted = true;
+    this.deletedImages.push(deletedImage)
     this.images.splice(this.imageIndex,1);
     (<FormArray>this.recipeForm.get('images')).removeAt(this.imageIndex);
     this.onPreviousImage()
   }
+  // ================= Route Method Related Methods =================
 
+  getRoute() {
+    return (<FormControl> this.recipeForm.get('route')).value;
+  }
+  setRoute() {
+    (<FormControl> this.recipeForm.get('route')).setValue(
+      (<FormControl> this.recipeForm.get('name')).value.replace(/\s/g, '-')
+    );
+    console.log('setting route as'+(<FormControl> this.recipeForm.get('name')).value.replace(/\s/g, '-'));
+    console.log('new route'+(<FormControl> this.recipeForm.get('route')).value);
+  }
   // ================= Ingredient Method Related Methods =================
 
   onAddIngredient() {
@@ -249,7 +265,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   // ================= Tag Related Methods =================
-  
+
   getTags() {
     return (<FormControl> this.recipeForm.get('tags')).value;
   }

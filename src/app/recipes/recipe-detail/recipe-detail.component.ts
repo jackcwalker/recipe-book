@@ -29,7 +29,7 @@ export class RecipeDetailComponent {
       this.route.params,
       this.recipeService.recipes$
     ]).subscribe(([params, recipes]) => {
-      this.id = this.recipeService.getRecipeIndex(params['name']);
+      this.id = this.recipeService.getRecipeIndex(params['route']);
       this.recipe = this.recipeService.getRecipe(this.id);
       this.getCurrentImagePath()
     });
@@ -77,7 +77,7 @@ export class RecipeDetailComponent {
 
   getCurrentImagePath() {
     if (this.recipe) {
-      return this.recipeService.getFullImagePath(this.recipe.name,this.getCurrentImage())
+      return this.recipeService.getFullImagePath(this.recipe.route,this.getCurrentImage())
       .then((value) => {this.currentImagePath = value ? value : null});
     }
   }

@@ -4,7 +4,7 @@ import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { DataStorageService } from "../shared/data-storage.service";
 import { RecipeImage } from "./recipeImage.model";
-import { Observable, ReplaySubject } from "rxjs";
+import { ReplaySubject } from "rxjs";
 
 @Injectable()
 export class RecipeService {
@@ -44,22 +44,17 @@ export class RecipeService {
         this.dataService.storeRecipes(this.recipes);
     }
 
-    getFullImagePath(recipeName: string, image: RecipeImage){
-        return this.dataService.getFullImagePath(this.getRecipeRoute(recipeName),image.path)
-        .then((value) => {return value});
-    }
-
-    getRecipeRoute(recipeName: string){
-        return recipeName.replace(/\s/g, '-');
+    getFullImagePath(route: string, image: RecipeImage){
+        return this.dataService.getFullImagePath(route,image.path);
     }
 
     addIngredientsToList(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
     }
 
-    getRecipeIndex(name:string) {
+    getRecipeIndex(route:string) {
         for (let i = 0; i < this.recipes.length; i++) {
-            if (this.recipes[i].name == name) {
+            if (this.recipes[i].route == route) {
                 return i;
             }
         }
@@ -73,39 +68,38 @@ export class RecipeService {
         console.log('Recipe Service Logger:  Adding Recipe: '+recipe.name)
         this.recipes.push(recipe);
         this.saveAndPushRecipes();
-        return this.updateImages(recipe.name, images);
+        return this.updateImages(recipe.route, images);
     }
 
     updateRecipe(index: number, newRecipe: Recipe, images: RecipeImage[]) {
         console.log('Recipe Service Logger:  Editing Recipe: '+ newRecipe.name)
         this.recipes[index] = newRecipe;
         this.saveAndPushRecipes();
-        return this.updateImages(newRecipe.name, images);
+        return this.updateImages(newRecipe.route, images);
     }
 
     private updateImages(route: string, images: RecipeImage[]){
         console.log('Recipe Service Logger: Updating Images');
+        console.log('Route: '+route);
         const dataOperations: Promise<any>[] = [];
 
         for (let image of images) {
-          if (image.toBeCreated && !image.toBeDeleted) {
-            const newImagePath = route + '/' + image.name;
-            console.log('Edit Logger: Uploading new image: '+newImagePath);
-            dataOperations.push(this.dataService.uploadFile(newImagePath,image.file));
-
-          } else if (image.toBeDeleted) {
-            console.log('Edit Logger: Deleting image: '+route + '/' + image.path);
-            dataOperations.push(this.dataService.deleteFile(route + '/' + image.path));
-          }
+            const fullPath = route + '/' + image.name;
+            if (image.toBeCreated && !image.toBeDeleted) {
+                console.log('Recipe Service Logger: Uploading new image: '+fullPath);
+                dataOperations.push(this.dataService.uploadFile(fullPath,image.file));
+            } else if (!image.toBeCreated && image.toBeDeleted) {
+                console.log('Recipe Service Logger: Deleting image: '+fullPath);
+                dataOperations.push(this.dataService.deleteFile(fullPath));
+            }
         }
-
         return Promise.all(dataOperations);
       }
 
     deleteRecipe(index: number) {
         console.log("Recipe Service Logger: Service Deleting Recipe: " + this.recipes[index].name);
         for (let image of this.recipes[index].images){
-            this.dataService.deleteFile(this.getRecipeRoute(this.recipes[index].name) + '/' + image.path);
+            this.dataService.deleteFile(this.recipes[index].route + '/' + image.path);
         }
         this.recipes.splice(index,1);
         this.saveAndPushRecipes();

@@ -1,6 +1,6 @@
 <div *ngIf = "recipe" >
     <div class="row">
-        <div [ngClass]="mobileLayout?'row':'col-xs-6'">
+        <div [ngClass]="mobileLayout?'row':'col-xs-6'" fxLayoutAlign="center center">
             <mat-card class="recipe-image-card">
                 <img [src]=currentImagePath class="recipe-image">
                 <mat-card-actions>

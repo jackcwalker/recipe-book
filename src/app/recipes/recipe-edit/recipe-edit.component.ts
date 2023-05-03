@@ -184,8 +184,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onFileSelected(event) {
-    const file = event.target.files[0];
-    if (file) {
+    for (let file of event.target.files) {
       console.log('Edit Logger: Image Uploaded');
       const newImage = new RecipeImage(URL.createObjectURL(file));
       newImage.file = file;

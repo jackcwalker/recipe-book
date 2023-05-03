@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
-import { recipeType } from '../shared/recipeType';
 import { RecipeService } from '../recipes/recipe.service';
+import { recipeType } from '../shared/recipeSets.model';
 
 @Component({
   selector: 'app-header',

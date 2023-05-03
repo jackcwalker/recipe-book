@@ -47,12 +47,10 @@
                 <div class="row no-margin"><mat-icon>folder</mat-icon>Category: {{ recipe.catagory }}</div>
             </div>
             <br>
-            <div class="row no-margin">
-                <mat-chip-listbox aria-label="Tags">
-                    <mat-chip *ngFor="let tag of recipe.tags">
-                        {{ tag }}
-                    </mat-chip>
-                </mat-chip-listbox>
+            <div class="row no-margin" style="margin-top:15%">
+                <mat-chip *ngFor="let tag of recipe.tags" style="margin-right:2px">
+                    {{ tag }}
+                </mat-chip>
             </div>
         </div>
     </div>

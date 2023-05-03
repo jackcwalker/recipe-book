@@ -132,6 +132,7 @@ export class RecipeEditComponent implements OnInit {
   onSubmit(){
     console.log('Edit Logger: Form Submitted');
     this.setRoute()
+    const route = this.getRoute();
     console.log(this.recipeForm.value);
     this.uiService.createSnackBar('Submitting Recipe');
     if (this.editMode) {
@@ -148,7 +149,7 @@ export class RecipeEditComponent implements OnInit {
         console.log('Edit Logger: Promise fulfilled');
         console.log(snapshot);
         this.uiService.closeSnackBar();
-        this.router.navigate(['../'], {relativeTo: this.route});
+        this.router.navigate(['/recipes/'+route]);
     });
     }
   }

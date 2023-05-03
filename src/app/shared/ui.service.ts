@@ -2,6 +2,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Injectable, OnDestroy} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable ({ providedIn: 'root' })
 export class UiService implements OnDestroy {
@@ -20,7 +21,9 @@ export class UiService implements OnDestroy {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
-  constructor(breakpointObserver: BreakpointObserver) {
+  constructor(breakpointObserver: BreakpointObserver,
+    private _snackBar: MatSnackBar) {
+
     this.mobileLayout$.next(false);
     this.fullScreen$.next(false);
     breakpointObserver.observe([
@@ -31,6 +34,12 @@ export class UiService implements OnDestroy {
       });
   }
 
+  createSnackBar(message: string){
+    this._snackBar.open(message);
+  }
+  closeSnackBar(){
+    this._snackBar.dismiss()
+  }
   setFullScreen(value: boolean) {
     this.fullScreen = value;
     this.fullScreen$.next(value);

@@ -11,6 +11,7 @@ import {Observable, combineLatest, map, startWith} from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { v4 as uuidv4 } from 'uuid';
+import { UiService } from 'src/app/shared/ui.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -33,7 +34,10 @@ export class RecipeEditComponent implements OnInit {
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router, private dataStorageService: DataStorageService) {
+  constructor(private route: ActivatedRoute, 
+    private recipeService: RecipeService, 
+    private router: Router, 
+    private uiService: UiService) {
     this.filteredTags = this.tagCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => (tag ? this._filterTags(tag) : this.allTags.slice())),
@@ -121,67 +125,36 @@ export class RecipeEditComponent implements OnInit {
     });
   }
 
-  onAddIngredient() {
-    (<FormArray>this.recipeForm.get('ingredients')).push(
-      new FormGroup({
-        'name': new FormControl(null, Validators.required)
-      })
-    );
-  }
-
-  onDeleteIngredient(index: number) {
-    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
-  }
-
-  onAddMethod() {
-    (<FormArray>this.recipeForm.get('method')).push(
-      new FormGroup({
-        'description': new FormControl(null, Validators.required)
-      })
-    );
-  }
-
-  onDeleteMethod(index: number) {
-    (<FormArray>this.recipeForm.get('method')).removeAt(index);
-  }
+  // ================= Routing Related Methods =================
 
   onSubmit(){
     console.log('Edit Logger: Form Submitted');
     console.log(this.recipeForm.value);
-    this.updateImages();
+    this.uiService.createSnackBar('Submitting Recipe');
     if (this.editMode) {
-      this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+      this.recipeService.updateRecipe(this.id, this.recipeForm.value, this.images.concat(this.deletedImages))
+      .then((snapshot) => {
+        console.log('Edit Logger: Promise fulfilled');
+        console.log(snapshot);
+        this.uiService.closeSnackBar();
+        this.router.navigate(['../'], {relativeTo: this.route});
+    });
     } else {
-      console.log('Edit Logger: Adding Recipe: '+this.getCurrentRecipeName())
-      this.recipeService.addRecipe(this.recipeForm.value);
+      this.recipeService.addRecipe(this.recipeForm.value, this.images.concat(this.deletedImages))
+      .then((snapshot) => {
+        console.log('Edit Logger: Promise fulfilled');
+        console.log(snapshot);
+        this.uiService.closeSnackBar();
+        this.router.navigate(['../'], {relativeTo: this.route});
+    });
     }
-    this.router.navigate(['../'], {relativeTo: this.route});
   }
 
   onCancel() {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
-  updateImages(){
-    console.log('Edit Logger: Updating Images');
-    for (let image of this.images) {
-      if (image.toBeCreated) {
-        const newImagePath = this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.name);
-        console.log('Edit Logger: Uploading new image to '+newImagePath);
-        this.dataStorageService.uploadFile(newImagePath,image.file);
-      }
-    }
-    for (let image of this.deletedImages) {
-      if (!image.toBeCreated) {
-        console.log('Edit Logger: Deleting image: '+this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
-        this.dataStorageService.deleteFile(this.recipeService.getRecipeRoute(this.getCurrentRecipeName() + '/' + image.path));
-      }
-    }
-  }
-
-  getCurrentRecipeName(){
-    return (<FormControl> this.recipeForm.get('name')).value;
-  }
+  // ================= Image Related Methods =================
 
   onFileSelected(event) {
     for (let file of event.target.files) {
@@ -201,18 +174,14 @@ export class RecipeEditComponent implements OnInit {
     }
   }
 
-  getCurrentImage() {
-    return this.images[this.imageIndex];
-  }
-
   getCurrentImagePath() {
-    const image = this.getCurrentImage();
+    const image = this.images[this.imageIndex];
     if (image) {
       if (image.toBeCreated) {
         this.currentImagePath = image.path;
       }
       else {
-        return this.recipeService.getFullImagePath(this.getCurrentRecipeName(),image)
+        return this.recipeService.getFullImagePath((<FormControl> this.recipeForm.get('name')).value,image)
         .then((value) => {this.currentImagePath = value ? value : null});
       }
     }
@@ -243,14 +212,44 @@ export class RecipeEditComponent implements OnInit {
     this.onPreviousImage()
   }
 
-  get controlsMethod() {
-    return (<FormArray>this.recipeForm.get('method')).controls;
+  // ================= Ingredient Method Related Methods =================
+
+  onAddIngredient() {
+    (<FormArray>this.recipeForm.get('ingredients')).push(
+      new FormGroup({
+        'name': new FormControl(null, Validators.required)
+      })
+    );
+  }
+
+  onDeleteIngredient(index: number) {
+    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
   }
 
   get controlsIngredient() {
     return (<FormArray>this.recipeForm.get('ingredients')).controls;
   }
 
+  // ================= Recipe Method Related Methods =================
+
+  onAddMethod() {
+    (<FormArray>this.recipeForm.get('method')).push(
+      new FormGroup({
+        'description': new FormControl(null, Validators.required)
+      })
+    );
+  }
+
+  onDeleteMethod(index: number) {
+    (<FormArray>this.recipeForm.get('method')).removeAt(index);
+  }
+
+  get controlsMethod() {
+    return (<FormArray>this.recipeForm.get('method')).controls;
+  }
+
+  // ================= Tag Related Methods =================
+  
   getTags() {
     return (<FormControl> this.recipeForm.get('tags')).value;
   }

@@ -41,7 +41,9 @@
                 <div class="form-group">
                     <mat-form-field class="width100">
                         <mat-label>Author</mat-label>
-                        <input matInput id="author" formControlName="author">
+                        <mat-select matInput id="author" formControlName="author">
+                          <mat-option *ngFor="let user of users" [value]="user">{{user}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
                 <br>

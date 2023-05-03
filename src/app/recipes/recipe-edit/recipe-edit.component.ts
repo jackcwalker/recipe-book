@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { recipeType, tags } from 'src/app/shared/recipeSets.model';
+import { recipeType, tags, users } from 'src/app/shared/recipeSets.model';
 import { RecipeImage } from '../recipeImage.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable, combineLatest, map, startWith} from 'rxjs';
@@ -24,6 +24,7 @@ export class RecipeEditComponent implements OnInit {
   deletedImages: RecipeImage[] = [];
   imageIndex = 0;
   recipeTypes: string[] = Object.values(recipeType);
+  users: string[] = Object.values(users);
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagCtrl = new FormControl('');
   filteredTags: Observable<string[]>;

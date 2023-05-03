@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-xs-6">
                 <input type="file" class="file-input" multiple accept=".jpg,.jpeg,.png" (change)="onFileSelected($event)" #fileUpload>
-                <mat-card class="example-card">
+                <mat-card class="recipe-image-card">
                     <div *ngIf = "images.length > 0" class="row">
-                        <img [src]=currentImagePath class="img-responsive">
+                        <img [src]=currentImagePath class="recipe-image">
                     </div>
                     <div *ngIf = "images.length == 0" class="row">
                         Upload Image

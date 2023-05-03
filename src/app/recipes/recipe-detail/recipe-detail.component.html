@@ -1,10 +1,8 @@
 <div *ngIf = "recipe" >
     <div class="row">
         <div [ngClass]="mobileLayout?'row':'col-xs-6'">
-            <mat-card class="example-card">
-                <div class="row">
-                    <img [src]=currentImagePath class="img-responsive">
-                </div>
+            <mat-card class="recipe-image-card">
+                <img [src]=currentImagePath class="recipe-image">
                 <mat-card-actions>
                     <button type="button" mat-icon-button aria-label="Previous" (click)="onPreviousImage()">
                         <mat-icon>navigate_before</mat-icon>

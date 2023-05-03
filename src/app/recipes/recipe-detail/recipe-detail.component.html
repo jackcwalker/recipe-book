@@ -1,6 +1,6 @@
-<div *ngIf = "recipe" >
-    <div class="row">
-        <div [ngClass]="mobileLayout?'row':'col-xs-6'" fxLayoutAlign="center center">
+<div *ngIf = "recipe">
+    <div class="row no-margin">
+        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-6 no-margin'" fxLayoutAlign="center center">
             <mat-card class="recipe-image-card">
                 <img [src]=currentImagePath class="recipe-image">
                 <mat-card-actions>
@@ -13,8 +13,8 @@
                 </mat-card-actions>
             </mat-card>
         </div>
-        <div [ngClass]="mobileLayout?'row':'col-xs-6'">
-            <div class="row">
+        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-6 no-margin'">
+            <div class="row no-margin">
                 <h1>
                     {{ recipe.name }}
                     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Recipe Menu">
@@ -36,18 +36,18 @@
                     </mat-menu>
                 </h1>
             </div>
-            <div class="row">By {{ recipe.author }}</div>
+            <div class="row no-margin">By {{ recipe.author }}</div>
             <br>
-            <div class="col-xs-6">
-                <div class="row"><mat-icon>access_time</mat-icon>Prep: {{ recipe.prep }} mins</div>
-                <div class="row"><mat-icon>timer</mat-icon>Cook: {{ recipe.cook }} mins</div>
+            <div class="col-xs-6 no-margin">
+                <div class="row g-0 no-margin"><mat-icon>access_time</mat-icon>Prep: {{ recipe.prep }} mins</div>
+                <div class="row g-0 no-margin"><mat-icon>timer</mat-icon>Cook: {{ recipe.cook }} mins</div>
             </div>
-            <div class="col-xs-6">
-                <div class="row"><mat-icon>room_service</mat-icon>Serves: {{ recipe.serves }}</div>
-                <div class="row"><mat-icon>folder</mat-icon>Category: {{ recipe.catagory }}</div>
+            <div class="col-xs-6 no-margin">
+                <div class="row no-margin"><mat-icon>room_service</mat-icon>Serves: {{ recipe.serves }}</div>
+                <div class="row no-margin"><mat-icon>folder</mat-icon>Category: {{ recipe.catagory }}</div>
             </div>
             <br>
-            <div class="row">
+            <div class="row no-margin">
                 <mat-chip-listbox aria-label="Tags">
                     <mat-chip *ngFor="let tag of recipe.tags">
                         {{ tag }}
@@ -57,8 +57,8 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div [ngClass]="mobileLayout?'row':'col-xs-4'">
+    <div class="row no-margin">
+        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-4 no-margin'">
             <h1>Ingredients <button mat-icon-button (click)="onAddToShoppingList()"><mat-icon>add_shopping_cart</mat-icon></button></h1>
             <mat-card *ngIf="recipe.ingredients">
                 <mat-card-content>
@@ -69,7 +69,7 @@
                 </mat-card-content>
             </mat-card>
         </div>
-        <div [ngClass]="mobileLayout?'row':'col-xs-8'">
+        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-8 no-margin'">
             <h1>Method </h1>
             <div *ngFor="let step of recipe.method; let i = index">
                 <mat-card [ngClass]="getCheckedClass(i)">
@@ -85,7 +85,7 @@
         </div>
     </div>
     <hr>
-    <div class="row">
+    <div class="row no-margin">
         <h1>Notes</h1>
         <mat-card style="min-height: 200px;">
             <mat-card-content>

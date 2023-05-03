@@ -84,6 +84,7 @@ export class RecipeEditComponent implements OnInit {
       if (recipe['images']) {
         for (let image of recipe.images) {
           image.toBeCreated = false;
+          image.name = image.path;
           recipeImages.push(
             new FormGroup({
               'path': new FormControl(image.path, Validators.required)

@@ -46,6 +46,10 @@ export class RecipeService {
         return this.dataService.getFullImagePath(route,image.path);
     }
 
+    getThumbPath(reipe: Recipe, image: RecipeImage){
+        return this.dataService.getFullImagePath(reipe.route+'/thumb/',image.path);
+    }
+
     addIngredientsToList(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
     }
@@ -89,11 +93,12 @@ export class RecipeService {
             const thumbPath = route + '/thumb/' + image.name;
             if (image.toBeCreated && !image.toBeDeleted) {
                 console.log('Recipe Service Logger: Uploading new image: '+fullPath);
-                dataOperations.push(this.dataService.uploadFile(fullPath,image.file));
+                dataOperations.push(this.dataService.uploadCompressedFile(fullPath,image.file));
                 dataOperations.push(this.dataService.uploadThumnail(thumbPath,image.file));
             } else if (!image.toBeCreated && image.toBeDeleted) {
                 console.log('Recipe Service Logger: Deleting image: '+fullPath);
                 dataOperations.push(this.dataService.deleteFile(fullPath));
+                dataOperations.push(this.dataService.deleteFile(thumbPath));
             }
         }
         return Promise.all(dataOperations);
@@ -103,6 +108,7 @@ export class RecipeService {
         console.log("Recipe Service Logger: Service Deleting Recipe: " + this.recipes[index].name);
         for (let image of this.recipes[index].images){
             this.dataService.deleteFile(this.recipes[index].route + '/' + image.path);
+            this.dataService.deleteFile(this.recipes[index].route + '/thumb/' + image.path);
         }
         this.recipes.splice(index,1);
         this.saveAndPushRecipes();

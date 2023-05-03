@@ -59,6 +59,13 @@ export class DataStorageService {
         console.log('Data Service Logger: Upload request received for: '+fileName)
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
+        return uploadBytes(storageRef, file);
+      }
+
+    uploadCompressedFile(fileName: string, file: File) {
+        console.log('Data Service Logger: Upload request received for: '+fileName)
+        const storage = getStorage();
+        const storageRef = ref(storage, fileName);
         return this.resizeImage(file).then((compressedImage) => {
             // call method that creates a blob from dataUri
             const imageBlob = this.dataURItoBlob(compressedImage.split(',')[1]);
@@ -91,7 +98,7 @@ export class DataStorageService {
 
     resizeImage(image: File) {
         console.log('Data Service Logger: Original image size:', this.imageCompress.byteCount(URL.createObjectURL(image)));
-        return this.imageCompress.compressFile(URL.createObjectURL(image), this.imageCompress.DOC_ORIENTATION.Default, 100, 100, 400, 600).then(
+        return this.imageCompress.compressFile(URL.createObjectURL(image), this.imageCompress.DOC_ORIENTATION.Default, 100, 100, 1000, 1000).then(
             (image) => {
                 console.log('Data Service Logger: Compressed image size:', this.imageCompress.byteCount(image));
                 return image

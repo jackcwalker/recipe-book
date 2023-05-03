@@ -30,7 +30,6 @@ export class UiService implements OnDestroy {
         Breakpoints.HandsetPortrait
       ]).pipe(takeUntil(this.destroyed)).subscribe(result => {
         this.mobileLayout$.next(result.matches);
-        this.setFullScreen(true);
       });
   }
 

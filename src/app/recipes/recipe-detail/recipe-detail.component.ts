@@ -36,6 +36,7 @@ export class RecipeDetailComponent {
 
     this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {
       this.mobileLayout = mobileLayout;
+      this.uiService.setFullScreen(mobileLayout);
     })
   }
 

@@ -1,6 +1,6 @@
 import { Ingredient } from "../shared/ingredient.model";
 import { MethodStep } from "../shared/methodStep.model";
-import { recipeType } from '../shared/recipeType';
+import { recipeType } from "../shared/recipeSets.model";
 import { RecipeImage } from "./recipeImage.model";
 
 export class Recipe {

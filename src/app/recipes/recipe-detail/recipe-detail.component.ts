@@ -3,6 +3,7 @@ import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { UiService } from 'src/app/shared/ui.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -15,8 +16,10 @@ export class RecipeDetailComponent {
   methodChecked = new Map();
   imageIndex = 0;
   currentImagePath: string;
+  mobileLayout = false;
 
   constructor (private recipeService: RecipeService, 
+    public uiService: UiService,
     private route: ActivatedRoute,
     private router: Router) {
   };
@@ -28,9 +31,13 @@ export class RecipeDetailComponent {
     ]).subscribe(([params, recipes]) => {
       this.id = this.recipeService.getRecipeIndex(params['name']);
       this.recipe = this.recipeService.getRecipe(this.id);
-      this.recipeService.setFullScreen(true);
       this.getCurrentImagePath()
     });
+
+    this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {
+      this.mobileLayout = mobileLayout;
+      this.recipeService.setFullScreen(this.mobileLayout);
+    })
   }
 
   onAddToShoppingList ( ) {

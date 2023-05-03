@@ -25,6 +25,7 @@ import { MatInputModule} from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule} from '@angular/material/core';
 import { MaterialExampleModule } from './shared/material.module';
+import { UiService } from './shared/ui.service';
 
 
 @NgModule({
@@ -59,7 +60,7 @@ import { MaterialExampleModule } from './shared/material.module';
   exports: [
     MatIconModule
   ],
-  providers: [ShoppingListService, RecipeService],
+  providers: [ShoppingListService, RecipeService, UiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

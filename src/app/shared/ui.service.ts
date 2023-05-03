@@ -8,6 +8,8 @@ export class UiService implements OnDestroy {
   destroyed = new Subject<void>();
   currentScreenSize: string;
   mobileLayout$ = new ReplaySubject();
+  fullScreen$ = new ReplaySubject();
+  fullScreen = false;
 
   // Create a map to display breakpoint names for demonstration purposes.
   displayNameMap = new Map([
@@ -20,11 +22,23 @@ export class UiService implements OnDestroy {
 
   constructor(breakpointObserver: BreakpointObserver) {
     this.mobileLayout$.next(false);
+    this.fullScreen$.next(false);
     breakpointObserver.observe([
         Breakpoints.HandsetPortrait
       ]).pipe(takeUntil(this.destroyed)).subscribe(result => {
         this.mobileLayout$.next(result.matches);
+        this.setFullScreen(true);
       });
+  }
+
+  setFullScreen(value: boolean) {
+    this.fullScreen = value;
+    this.fullScreen$.next(value);
+}
+
+  togFullScreen() {
+    this.fullScreen = !this.fullScreen;
+    this.fullScreen$.next(this.fullScreen);
   }
 
   ngOnDestroy() {

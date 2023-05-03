@@ -36,7 +36,6 @@ export class RecipeDetailComponent {
 
     this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {
       this.mobileLayout = mobileLayout;
-      this.recipeService.setFullScreen(this.mobileLayout);
     })
   }
 
@@ -45,7 +44,7 @@ export class RecipeDetailComponent {
   }
 
   onFullScreen () {
-    this.recipeService.setFullScreen(!this.recipeService.fullScreen);
+    this.uiService.togFullScreen();
   }
 
   onEditRecipe() {

@@ -8,9 +8,7 @@ import { ReplaySubject } from "rxjs";
 
 @Injectable()
 export class RecipeService {
-    fullScreenChanged = new EventEmitter<boolean> ();
     gotImageDownloadUrl = new EventEmitter<string> ();
-    fullScreen: boolean = false;
     
     recipes$ = new ReplaySubject();
     
@@ -57,11 +55,6 @@ export class RecipeService {
 
     addIngredientsToList(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
-    }
-
-    setFullScreen(value: boolean) {
-        this.fullScreen = value;
-        this.fullScreenChanged.emit(this.fullScreen);
     }
 
     getRecipeIndex(name:string) {

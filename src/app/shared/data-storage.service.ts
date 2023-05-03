@@ -61,6 +61,8 @@ export class DataStorageService {
         const storage = getStorage();
         const storageRef = ref(storage, fileName);
         uploadBytes(storageRef, file).then((snapshot) => {
+            console.log('Data Service Logger: Upload Response');
+            console.log(snapshot);
             this.fileUploaded.emit(fileName);
         });
       }

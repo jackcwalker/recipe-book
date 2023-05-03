@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule} from '@angular/material/core';
 import { MaterialExampleModule } from './shared/material.module';
 import { UiService } from './shared/ui.service';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 
 @NgModule({
@@ -60,7 +61,7 @@ import { UiService } from './shared/ui.service';
   exports: [
     MatIconModule
   ],
-  providers: [ShoppingListService, RecipeService, UiService],
+  providers: [ShoppingListService, RecipeService, UiService, NgxImageCompressService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

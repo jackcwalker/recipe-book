@@ -82,14 +82,15 @@ export class RecipeService {
 
     private updateImages(route: string, images: RecipeImage[]){
         console.log('Recipe Service Logger: Updating Images');
-        console.log('Route: '+route);
         const dataOperations: Promise<any>[] = [];
 
         for (let image of images) {
             const fullPath = route + '/' + image.name;
+            const thumbPath = route + '/thumb/' + image.name;
             if (image.toBeCreated && !image.toBeDeleted) {
                 console.log('Recipe Service Logger: Uploading new image: '+fullPath);
                 dataOperations.push(this.dataService.uploadFile(fullPath,image.file));
+                dataOperations.push(this.dataService.uploadThumnail(thumbPath,image.file));
             } else if (!image.toBeCreated && image.toBeDeleted) {
                 console.log('Recipe Service Logger: Deleting image: '+fullPath);
                 dataOperations.push(this.dataService.deleteFile(fullPath));

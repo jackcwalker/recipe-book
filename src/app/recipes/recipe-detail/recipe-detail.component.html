@@ -1,6 +1,6 @@
 <div *ngIf = "recipe">
     <div class="row no-margin">
-        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-6 no-margin'">
+        <div [ngClass]="mobileLayout?'row margin10':'col-xs-6 margin10'">
             <mat-card class="recipe-image-card">
                 <img [src]=currentImagePath class="recipe-image">
                 <mat-card-actions style="justify-content: center">
@@ -13,7 +13,7 @@
                 </mat-card-actions>
             </mat-card>
         </div>
-        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-6 no-margin'">
+        <div [ngClass]="mobileLayout?'row margin10':'col-xs-6 margin10'">
             <div class="row no-margin">
                 <h1>
                     {{ recipe.name }}
@@ -56,7 +56,7 @@
     </div>
     <hr>
     <div class="row no-margin">
-        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-4 no-margin'">
+        <div [ngClass]="mobileLayout?'row margin10':'col-xs-4 margin10'">
             <h1>Ingredients <button mat-icon-button (click)="onAddToShoppingList()"><mat-icon>add_shopping_cart</mat-icon></button></h1>
             <mat-card *ngIf="recipe.ingredients">
                 <mat-card-content>
@@ -67,7 +67,7 @@
                 </mat-card-content>
             </mat-card>
         </div>
-        <div [ngClass]="mobileLayout?'row no-margin':'col-xs-8 no-margin'">
+        <div [ngClass]="mobileLayout?'row margin10':'col-xs-8 margin10'">
             <h1>Method </h1>
             <div *ngFor="let step of recipe.method; let i = index">
                 <mat-card [ngClass]="getCheckedClass(i)">
@@ -83,7 +83,7 @@
         </div>
     </div>
     <hr>
-    <div class="row no-margin">
+    <div class="row margin10">
         <h1>Notes</h1>
         <mat-card style="min-height: 200px;">
             <mat-card-content>

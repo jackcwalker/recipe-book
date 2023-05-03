@@ -36,11 +36,9 @@ export class RecipeService {
         this.recipes$.next(this.recipes.slice());
     }
 
-    pushRecipes() {
-        this.recipes$.next(this.recipes.slice());
-    }
     saveAndPushRecipes() {
-        this.pushRecipes()
+        console.log('Recipe Service Logger: Saving & Pushing!');
+        this.recipes$.next(this.recipes.slice());
         this.dataService.storeRecipes(this.recipes);
     }
 
@@ -67,15 +65,19 @@ export class RecipeService {
     addRecipe(recipe: Recipe, images: RecipeImage[]) {
         console.log('Recipe Service Logger:  Adding Recipe: '+recipe.name)
         this.recipes.push(recipe);
-        this.saveAndPushRecipes();
-        return this.updateImages(recipe.route, images);
+        return this.updateImages(recipe.route, images).then(()=>{
+            console.log('Recipe Service Logger: Images Updated');
+            this.saveAndPushRecipes();
+        });
     }
 
     updateRecipe(index: number, newRecipe: Recipe, images: RecipeImage[]) {
         console.log('Recipe Service Logger:  Editing Recipe: '+ newRecipe.name)
         this.recipes[index] = newRecipe;
-        this.saveAndPushRecipes();
-        return this.updateImages(newRecipe.route, images);
+        return this.updateImages(newRecipe.route, images).then(()=>{
+            console.log('Recipe Service Logger: Images Updated');
+            this.saveAndPushRecipes();
+        });
     }
 
     private updateImages(route: string, images: RecipeImage[]){

@@ -116,7 +116,7 @@ export class RecipeEditComponent implements OnInit {
       'name': new FormControl(recipeName, [
         Validators.required, 
         Validators.pattern('[a-zA-Z ]*'),
-        nameExistsValidator(this.recipeService)
+        nameExistsValidator(this.recipeService, this.editMode)
       ]),
       'author': new FormControl(author, Validators.required),
       'serves': new FormControl(serves, Validators.required),
@@ -140,23 +140,25 @@ export class RecipeEditComponent implements OnInit {
     const route = this.getRoute();
     console.log(this.recipeForm.value);
     this.uiService.createSnackBar('Submitting Recipe');
-    if (this.editMode) {
-      this.recipeService.updateRecipe(this.id, this.recipeForm.value, this.images.concat(this.deletedImages))
-      .then((snapshot) => {
-        console.log('Edit Logger: Promise fulfilled');
-        console.log(snapshot);
-        this.uiService.closeSnackBar();
-        this.router.navigate(['../'], {relativeTo: this.route});
-    });
-    } else {
-      this.recipeService.addRecipe(this.recipeForm.value, this.images.concat(this.deletedImages))
-      .then((snapshot) => {
-        console.log('Edit Logger: Promise fulfilled');
-        console.log(snapshot);
-        this.uiService.closeSnackBar();
-        this.router.navigate(['/recipes/'+route]);
-    });
-    }
+    this.recipeService.fetchRecipes().subscribe(() => {
+      if (this.editMode) {
+        this.recipeService.updateRecipe(this.recipeForm.value, this.images.concat(this.deletedImages))
+        .then((snapshot) => {
+          console.log('Edit Logger: Promise fulfilled');
+          console.log(snapshot);
+          this.uiService.closeSnackBar();
+          this.router.navigate(['../'], {relativeTo: this.route});
+      });
+      } else {
+        this.recipeService.addRecipe(this.recipeForm.value, this.images.concat(this.deletedImages))
+        .then((snapshot) => {
+          console.log('Edit Logger: Promise fulfilled');
+          console.log(snapshot);
+          this.uiService.closeSnackBar();
+          this.router.navigate(['/recipes/'+route]);
+      });
+      }
+    })
   }
 
   onCancel() {
@@ -310,8 +312,12 @@ export class RecipeEditComponent implements OnInit {
 }
 
 //================ Form Validation Functions ================
-function nameExistsValidator(recipeService: RecipeService): ValidatorFn {
+function nameExistsValidator(recipeService: RecipeService, editMode: boolean): ValidatorFn {
   return (control: FormControl): ValidationErrors | null => {
-    return recipeService.checkIfNameExists(control.value) ? {'nameExists': {value: control.value}} : null;
+    if (editMode) {
+      return null;
+    } else {
+      return recipeService.checkIfNameExists(control.value) ? {'nameExists': {value: control.value}} : null;
+    }
   };
 }

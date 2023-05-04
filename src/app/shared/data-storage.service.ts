@@ -39,11 +39,9 @@ export class DataStorageService {
     }
     fetchRecipes() {
         console.log('Data Service Logger: Fetching Recipes');
-        this.http.get<Recipe[]>(
+        return this.http.get<Recipe[]>(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
-        ).subscribe(recipes => {
-            this.recipesDownloaded.emit(recipes);
-        });
+        );
     }
 
     getFullImagePath(folder: string, filename: string){

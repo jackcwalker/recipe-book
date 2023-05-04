@@ -16,7 +16,7 @@ export class RecipeService {
 
 
     constructor (private slService: ShoppingListService, private dataService: DataStorageService) { 
-        this.dataService.recipesDownloaded
+        this.dataService.fetchRecipes()
         .subscribe(
           (recipes: Recipe[]) => {
             console.log("Recipe Service Logger: Recipes Downloaded");
@@ -24,7 +24,6 @@ export class RecipeService {
             this.setRecipes(recipes);
           }
         )
-        this.fetchRecipes();
     }
 
     setRecipes (recipes: Recipe[]) {
@@ -75,8 +74,9 @@ export class RecipeService {
         });
     }
 
-    updateRecipe(index: number, newRecipe: Recipe, images: RecipeImage[]) {
+    updateRecipe(newRecipe: Recipe, images: RecipeImage[]) {
         console.log('Recipe Service Logger:  Editing Recipe: '+ newRecipe.name)
+        const index = this.getRecipeIndex(newRecipe.route);
         this.recipes[index] = newRecipe;
         return this.updateImages(newRecipe.route, images).then(()=>{
             console.log('Recipe Service Logger: Images Updated');
@@ -104,7 +104,8 @@ export class RecipeService {
         return Promise.all(dataOperations);
       }
 
-    deleteRecipe(index: number) {
+    deleteRecipe(recipe: Recipe) {
+        const index = this.getRecipeIndex(recipe.route);
         console.log("Recipe Service Logger: Service Deleting Recipe: " + this.recipes[index].name);
         for (let image of this.recipes[index].images){
             this.dataService.deleteFile(this.recipes[index].route + '/' + image.path);
@@ -119,7 +120,7 @@ export class RecipeService {
     }
 
     fetchRecipes() {
-        this.dataService.fetchRecipes();
+        return this.dataService.fetchRecipes();
     }
 
     checkIfNameExists(name: string) {

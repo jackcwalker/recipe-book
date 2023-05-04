@@ -53,8 +53,10 @@ export class RecipeDetailComponent {
   }
 
   onDeleteRecipe() {
-    this.recipeService.deleteRecipe(this.id);
-    this.router.navigate(['/recipes']);
+    this.recipeService.fetchRecipes().subscribe( () => {
+      this.recipeService.deleteRecipe(this.recipe);
+      this.router.navigate(['/recipes']);
+    })
   }
 
   togChecked(index: number) {

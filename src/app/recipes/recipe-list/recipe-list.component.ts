@@ -12,6 +12,7 @@ import { combineLatest } from 'rxjs';
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [];
   filteredRecipes: Recipe[] = [];
+  nameSearch = '';
 
   constructor (private recipeService: RecipeService,
     private router: Router,
@@ -24,16 +25,27 @@ export class RecipeListComponent implements OnInit {
       this.recipeService.recipes$
     ]).subscribe(([params, recipes]) => {
       this.recipes = (<Recipe[]> recipes);
+      this.filteredRecipes = this.recipes;
       if (params['type'] != null){
-        this.filteredRecipes = this.recipes.filter(recipe => recipe.catagory == params['type']);
-      } else {
-        this.filteredRecipes = this.recipes;
+        this.filteredRecipes = this.filteredRecipes.filter(recipe => recipe.catagory == params['type']);
+      };
+      if (params['name'] != null){
+        this.filteredRecipes = this.filteredRecipes.filter(recipe => recipe.name.includes(params['name']));
       }
     });
   }
 
   onNewRecipe() {
     this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  onFilter(nameSearch: string) {
+    this.router.navigate(['/recipes'],
+      {
+        queryParams: { 'name': nameSearch },
+        queryParamsHandling: 'merge' 
+      }
+    );
   }
 
 }

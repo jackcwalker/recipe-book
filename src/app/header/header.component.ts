@@ -14,11 +14,5 @@ export class HeaderComponent {
     this.recipeTypes = Object.values(recipeType);
    }
   ngOnInit(): void {}
-  onSaveData() {
-    this.recipeService.storeRecipes();
-  }
-  onFetchData() {
-    this.recipeService.fetchRecipes();
-  }
 
 }

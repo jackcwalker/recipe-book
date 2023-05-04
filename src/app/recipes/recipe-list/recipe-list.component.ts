@@ -24,12 +24,8 @@ export class RecipeListComponent implements OnInit {
       this.recipeService.recipes$
     ]).subscribe(([params, recipes]) => {
       this.recipes = (<Recipe[]> recipes);
-      console.log('query params:')
-      console.log(params)
       if (params['type'] != null){
-        this.filteredRecipes = this.recipes.filter(recipe => { 
-          recipe.catagory === params['type']
-        });
+        this.filteredRecipes = this.recipes.filter(recipe => recipe.catagory == params['type']);
       } else {
         this.filteredRecipes = this.recipes;
       }

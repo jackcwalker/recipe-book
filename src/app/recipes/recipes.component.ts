@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Recipe } from './recipe.model';
 import { RecipeService } from './recipe.service';
 import { UiService } from '../shared/ui.service';
 import { ActivatedRoute } from '@angular/router';
@@ -29,7 +28,7 @@ export class RecipesComponent implements OnInit {
       if (params['route'] == null){
         this.uiService.setFullScreen(false);
       }
-  });
+    });
   }
 
   

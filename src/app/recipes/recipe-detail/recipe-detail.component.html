@@ -58,7 +58,7 @@
     <hr>
     <div class="row no-margin">
         <div [ngClass]="mobileLayout?'row margin10':'col-xs-4 margin10'">
-            <h1>Ingredients <button mat-icon-button (click)="onAddToShoppingList()"><mat-icon>add_shopping_cart</mat-icon></button></h1>
+            <h1><mat-icon>kitchen</mat-icon> Ingredients <button mat-icon-button (click)="onAddToShoppingList()"><mat-icon>add_shopping_cart</mat-icon></button></h1>
             <mat-card *ngIf="recipe.ingredients">
                 <mat-card-content>
                     <div *ngFor="let ingredient of recipe.ingredients">
@@ -69,7 +69,7 @@
             </mat-card>
         </div>
         <div [ngClass]="mobileLayout?'row margin10':'col-xs-8 margin10'">
-            <h1>Method </h1>
+            <h1><mat-icon>school</mat-icon> Method </h1>
             <div *ngFor="let step of recipe.method; let i = index">
                 <mat-card [ngClass]="getCheckedClass(i)">
                     <mat-card-header>
@@ -85,7 +85,7 @@
     </div>
     <hr>
     <div class="row margin10">
-        <h1>Notes</h1>
+        <h1><mat-icon>rate_review</mat-icon> Notes</h1>
         <mat-card style="min-height: 200px;">
             <mat-card-content>
                 {{ recipe.notes }}

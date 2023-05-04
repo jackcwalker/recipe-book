@@ -33,7 +33,7 @@
                 <h1>Details ({{editMode ? 'Editing' : 'Adding'}})</h1>
                 <div class="form-group">
                     <mat-form-field class="width100">
-                        <mat-label>Name</mat-label>
+                        <mat-label><mat-icon> restaurant_menu</mat-icon> Recipe Name</mat-label>
                         <input matInput id="name" formControlName="name" [readonly]="editMode">
                         <mat-error *ngIf="recipeForm.get('name').hasError('pattern')">
                             Name cannot contain <strong>special</strong>s characters
@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <mat-form-field class="width100">
-                        <mat-label>Author</mat-label>
+                        <mat-label><mat-icon>person</mat-icon> Author</mat-label>
                         <mat-select matInput id="author" formControlName="author">
                           <mat-option *ngFor="let user of users" [value]="user">{{user}}</mat-option>
                         </mat-select>
@@ -61,7 +61,7 @@
                 <div class="col-xs-6">
                     <div class="form-group">
                         <mat-form-field class="width90">
-                            <mat-label><mat-icon>access_time</mat-icon>Prep:</mat-label>
+                            <mat-label><mat-icon>access_time</mat-icon> Prep:</mat-label>
                             <input matInput type="number" id="prep" formControlName="prep">
                             <mat-error *ngIf="recipeForm.get('prep').hasError('required')">
                                 <strong>required</strong>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="form-group">
                         <mat-form-field class="width90">
-                            <mat-label><mat-icon>timer</mat-icon>Cook:</mat-label>
+                            <mat-label><mat-icon>timer</mat-icon> Cook:</mat-label>
                             <input matInput type="number" id="cook" formControlName="cook">
                             <mat-error *ngIf="recipeForm.get('cook').hasError('required')">
                                 <strong>required</strong>
@@ -81,7 +81,7 @@
                 <div class="col-xs-6">
                     <div class="form-group">
                         <mat-form-field class="width90">
-                            <mat-label><mat-icon>room_service</mat-icon>Serves:</mat-label>
+                            <mat-label><mat-icon>room_service</mat-icon> Serves:</mat-label>
                             <input matInput type="number" id="serves" formControlName="serves">
                             <mat-error *ngIf="recipeForm.get('serves').hasError('required')">
                                 <strong>required</strong>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="form-group">
                         <mat-form-field class="width90">
-                            <mat-label><mat-icon>folder</mat-icon>Catagory:</mat-label>
+                            <mat-label><mat-icon>folder</mat-icon> Catagory:</mat-label>
                             <mat-select id="catagory" formControlName="catagory">
                               <mat-option *ngFor="let recipeType of recipeTypes" [value]="recipeType">{{recipeType}}</mat-option>
                             </mat-select>
@@ -101,7 +101,7 @@
                     </div>
                 </div>
                 <mat-form-field class="width100" appearance="fill">
-                    <mat-label>Recipe Tags</mat-label>
+                    <mat-label><mat-icon>local_offer</mat-icon> Recipe Tags</mat-label>
                     <mat-chip-grid #chipGrid aria-label="Tag selection">
                     <mat-chip-row *ngFor="let tag of getTags()" (removed)="removeTag(tag)">
                         {{tag}}
@@ -125,7 +125,7 @@
         <hr>
         <div class="row">
             <div class="col-xs-6" formArrayName="ingredients">
-                <h1>Ingredients <button
+                <h1><mat-icon>kitchen</mat-icon> Ingredients<button
                     type="button"
                     class="btn btn-success"
                     (click)="onAddIngredient()"><mat-icon>playlist_add</mat-icon></button></h1> 
@@ -140,7 +140,7 @@
                 </div>
             </div>
             <div class="col-xs-6" formArrayName="method">
-                <h1>Method <button
+                <h1><mat-icon>school</mat-icon> Method<button
                     type="button"
                     class="btn btn-success"
                     (click)="onAddMethod()"><mat-icon>playlist_add</mat-icon></button></h1> 
@@ -159,14 +159,14 @@
         <hr>
         <div class="row">
             <mat-form-field class="width100">
-                <mat-label>Leave a note</mat-label>
+                <mat-label><mat-icon>rate_review</mat-icon> Leave a note</mat-label>
                 <textarea matInput rows="6" placeholder="Ex. It makes me feel..." formControlName="notes"></textarea>
             </mat-form-field>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button type="submit" class="btn btn-success" [disabled]="!recipeForm.valid"><mat-icon>save</mat-icon>Save</button>
-                <button type="button" class="btn btn-danger" (click)="onCancel()"><mat-icon>cancel</mat-icon>Cancel</button>
+                <button type="submit" class="btn btn-success" [disabled]="!recipeForm.valid"><mat-icon>save</mat-icon> Save</button>
+                <button type="button" class="btn btn-danger" (click)="onCancel()"><mat-icon>cancel</mat-icon> Cancel</button>
             </div>
         </div>
     </form>

@@ -1,8 +1,8 @@
 <div *ngIf = "recipe">
     <div class="row no-margin">
         <div [ngClass]="mobileLayout?'row margin10':'col-xs-6 margin10'">
-            <mat-card class="recipe-image-card">
-                <img [src]=currentImagePath class="recipe-image">
+            <mat-card [ngClass]="mobileLayout?'recipe-image-card-mobile':'recipe-image-card'">
+                <img [src]=currentImagePath [ngClass]="mobileLayout?'recipe-image-mobile':'recipe-image'">
                 <mat-card-actions style="justify-content: center">
                     <button type="button" mat-icon-button aria-label="Previous" (click)="onPreviousImage()">
                         <mat-icon>navigate_before</mat-icon>

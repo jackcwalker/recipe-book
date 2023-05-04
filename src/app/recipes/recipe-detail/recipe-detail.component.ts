@@ -4,6 +4,7 @@ import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { UiService } from 'src/app/shared/ui.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -21,7 +22,8 @@ export class RecipeDetailComponent {
   constructor (private recipeService: RecipeService, 
     public uiService: UiService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    public dialog: MatDialog) {
   };
 
   ngOnInit(){
@@ -53,10 +55,12 @@ export class RecipeDetailComponent {
   }
 
   onDeleteRecipe() {
-    this.recipeService.fetchRecipes().subscribe( () => {
-      this.recipeService.deleteRecipe(this.recipe);
-      this.router.navigate(['/recipes']);
-    })
+    if(confirm("Are you sure to delete "+this.recipe.name+"?")) {
+      this.recipeService.fetchRecipes().subscribe( () => {
+        this.recipeService.deleteRecipe(this.recipe);
+        this.router.navigate(['/recipes']);
+      })
+    }
   }
 
   togChecked(index: number) {

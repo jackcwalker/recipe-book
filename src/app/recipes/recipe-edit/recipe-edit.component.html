@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-xs-6">
                 <input type="file" class="file-input" multiple accept=".jpg,.jpeg,.png" (change)="onFileSelected($event)" #fileUpload>
-                <mat-card class="recipe-image-card">
-                    <img [src]=currentImagePath class="recipe-image" *ngIf = "images.length > 0">
+                <mat-card [ngClass]="mobileLayout?'recipe-image-card-mobile':'recipe-image-card'">
+                    <img [src]=currentImagePath [ngClass]="mobileLayout?'recipe-image-mobile':'recipe-image'" *ngIf = "images.length > 0">
                     <div *ngIf = "images.length == 0" style="justify-content: center; justify-items: center; min-height: 200px; text-align: center;">
                         <mat-icon style="margin-top: 20%; margin-bottom: 20%; transform: scale(5);"> insert_photo</mat-icon>
                     </div>

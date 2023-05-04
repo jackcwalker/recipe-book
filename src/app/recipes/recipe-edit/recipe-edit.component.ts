@@ -10,6 +10,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { UiService } from 'src/app/shared/ui.service';
+import { UserService } from 'src/app/shared/user.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -36,7 +37,8 @@ export class RecipeEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, 
     private recipeService: RecipeService, 
     private router: Router, 
-    private uiService: UiService) {
+    private uiService: UiService,
+    private userService: UserService) {
     this.filteredTags = this.tagCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => (tag ? this._filterTags(tag) : this.allTags.slice())),
@@ -112,13 +114,19 @@ export class RecipeEditComponent implements OnInit {
       }
     }
     
+    let authorControl = new FormControl(author, Validators.required);
+    if (!this.editMode && this.userService.user){
+      authorControl = new FormControl({value: this.userService.user, disabled: true}, Validators.required);
+    }
+    
+
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, [
         Validators.required, 
         Validators.pattern('[a-zA-Z ]*'),
         nameExistsValidator(this.recipeService, this.editMode)
       ]),
-      'author': new FormControl(author, Validators.required),
+      'author': authorControl,
       'serves': new FormControl(serves, Validators.required),
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),
@@ -323,6 +331,5 @@ function nameExistsValidator(recipeService: RecipeService, editMode: boolean): V
 }
 
 function imagesValidator(images: FormArray) {
-  console.log('images length:'+ images.value.length)
   return images.value.length > 0 ? null : {'empty': true};
 }

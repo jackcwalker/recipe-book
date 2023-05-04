@@ -1,3 +1,36 @@
+<p>
+    <mat-toolbar style="min-height: 50px;">
+        <span>JAOMI COOKS</span>
+        <button mat-button color="primary" routerLinkActive="active" routerLink="/recipes">All Recipes</button>
+        <div routerLinkActive="active" *ngFor="let type of recipeTypes">
+            <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
+        </div>
+        <span style="flex: 1 1 auto;"></span>
+        <button mat-button color="accent" [matMenuTriggerFor]="userDrop"><mat-icon style="padding: 0 14px; transform: scale(2.5);">person</mat-icon></button>
+        <mat-menu #userDrop="matMenu">
+            <span *ngFor = "let user of allUsers">
+                <button mat-menu-item (click)="onSetUser(user)">
+                    <span>{{user}}</span>
+                </button>
+            </span>
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <div>
+                <button mat-menu-item>
+                <mat-icon>dialpad</mat-icon>
+                <span>Redial</span>
+                </button>
+            </div>
+          </mat-menu>
+
+        <button mat-button color="accent" routerLinkActive="active" routerLink="/shopping-list"><mat-icon style="padding: 0 14px; transform: scale(2.5);">shopping_cart</mat-icon></button>
+    </mat-toolbar>
+</p>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -14,6 +47,12 @@
             <ul class="nav navbar-nav navbar-right">
                 <li routerLinkActive="active"><a routerLink="/shopping-list"><mat-icon class="material-icons">shopping_cart</mat-icon></a></li>
             </ul>
+            <li class="dropdown" appDropdown>
+                <a style="cursor: pointer;" class="dropdown-toggle" role="button"><mat-icon>Person</mat-icon><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li *ngFor user in userService.allUsers><a style="cursor: pointer;" (click)="onSetUser(user)">{{user}}</a></li>
+                </ul>
+            </li>
         </div>
     </div>
 </nav>

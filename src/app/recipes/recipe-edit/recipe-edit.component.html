@@ -8,6 +8,9 @@
                     <div *ngIf = "images.length == 0" style="justify-content: center; justify-items: center; min-height: 200px; text-align: center;">
                         <mat-icon style="margin-top: 20%; margin-bottom: 20%; transform: scale(5);"> insert_photo</mat-icon>
                     </div>
+                    <mat-error *ngIf="recipeForm.get('images').hasError('empty')">
+                        Image is <strong>required</strong>
+                    </mat-error>
                     <mat-card-actions style="justify-content: center">
                         <button type="button" mat-icon-button aria-label="Previous" (click)="onPreviousImage()">
                             <mat-icon>navigate_before</mat-icon>

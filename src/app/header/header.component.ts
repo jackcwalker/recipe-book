@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { RecipeService } from '../recipes/recipe.service';
 import { recipeType } from '../shared/recipeSets.model';
+import { UserService } from '../shared/user.service';
 
 @Component({
   selector: 'app-header',
@@ -10,9 +11,20 @@ import { recipeType } from '../shared/recipeSets.model';
 
 export class HeaderComponent {
   recipeTypes: string[];
-  constructor(private recipeService: RecipeService) {
+  allUsers: string[];
+
+  constructor(
+    private recipeService: RecipeService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit(): void {
     this.recipeTypes = Object.values(recipeType);
-   }
-  ngOnInit(): void {}
+    this.allUsers = this.userService.getAllUsers();
+  }
+
+  onSetUser(user:string){
+    this.userService.setUser(user);
+  }
 
 }

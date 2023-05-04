@@ -36,6 +36,15 @@
                     <mat-form-field class="width100">
                         <mat-label>Name</mat-label>
                         <input matInput id="name" formControlName="name" [readonly]="editMode">
+                        <mat-error *ngIf="recipeForm.get('name').hasError('pattern')">
+                            Name cannot contain <strong>special</strong>s characters
+                        </mat-error>
+                        <mat-error *ngIf="recipeForm.get('name').hasError('nameExists')">
+                            Name is <strong>duplicated</strong>
+                        </mat-error>
+                        <mat-error *ngIf="recipeForm.get('name').hasError('required')">
+                            Name is <strong>required</strong>
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="form-group">

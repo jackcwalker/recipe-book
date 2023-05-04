@@ -121,4 +121,14 @@ export class RecipeService {
     fetchRecipes() {
         this.dataService.fetchRecipes();
     }
+
+    checkIfNameExists(name: string) {
+        let existingNames = this.recipes.map((recipe) => recipe.name);
+        let existingRoutes = this.recipes.map((recipe) => recipe.route);
+        return (existingNames.includes(name) || existingRoutes.includes(this.formatRoute(name)));
+    }
+
+    formatRoute(name: string) {
+        return name.replace(/\s/g, '-');
+    }
 }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { recipeType, tags, users } from 'src/app/shared/recipeSets.model';
 import { RecipeImage } from '../recipeImage.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -111,9 +111,13 @@ export class RecipeEditComponent implements OnInit {
         }
       }
     }
-
+    
     this.recipeForm = new FormGroup({
-      'name': new FormControl(recipeName, Validators.required),
+      'name': new FormControl(recipeName, [
+        Validators.required, 
+        Validators.pattern('[a-zA-Z ]*'),
+        nameExistsValidator(this.recipeService)
+      ]),
       'author': new FormControl(author, Validators.required),
       'serves': new FormControl(serves, Validators.required),
       'cook': new FormControl(cook, Validators.required),
@@ -225,10 +229,8 @@ export class RecipeEditComponent implements OnInit {
   }
   setRoute() {
     (<FormControl> this.recipeForm.get('route')).setValue(
-      (<FormControl> this.recipeForm.get('name')).value.replace(/\s/g, '-')
+      this.recipeService.formatRoute((<FormControl> this.recipeForm.get('name')).value.replace(/\s/g, '-'))
     );
-    console.log('setting route as'+(<FormControl> this.recipeForm.get('name')).value.replace(/\s/g, '-'));
-    console.log('new route'+(<FormControl> this.recipeForm.get('route')).value);
   }
   // ================= Ingredient Method Related Methods =================
 
@@ -305,4 +307,11 @@ export class RecipeEditComponent implements OnInit {
 
     return this.allTags.filter(tag => tag.toLowerCase().includes(filterValue));
   }
+}
+
+//================ Form Validation Functions ================
+function nameExistsValidator(recipeService: RecipeService): ValidatorFn {
+  return (control: FormControl): ValidationErrors | null => {
+    return recipeService.checkIfNameExists(control.value) ? {'nameExists': {value: control.value}} : null;
+  };
 }

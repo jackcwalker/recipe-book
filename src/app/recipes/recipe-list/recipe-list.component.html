@@ -6,11 +6,37 @@
 <hr>
 <mat-form-field class="example-form-field">
     <mat-label>Search</mat-label>
-    <input matInput type="text" [(ngModel)]="nameSearch" (keydown.enter)="onFilter(nameSearch)">
-    <button matSuffix mat-icon-button aria-label="Clear" (click)="onFilter(nameSearch)">
+    <input matInput type="text" [(ngModel)]="nameSearch" (keydown.enter)="onNameFilter(nameSearch)">
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="onNameFilter(nameSearch)">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
+<hr>
+<form>
+    <mat-form-field class="width100" appearance="fill">
+        <mat-label><mat-icon>local_offer</mat-icon> Recipe Tags</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Tag selection">
+            <mat-chip-row *ngFor="let tag of searchTags" (removed)="removeTag(tag)">
+                {{tag}}
+                <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
+        </mat-chip-grid>
+            <input placeholder="New tag..." #tagInput [formControl]="tagCtrl"
+            [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addTag($event)"/>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                {{tag}}
+            </mat-option>
+        </mat-autocomplete>
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="onTagFilter()">
+            <mat-icon>search</mat-icon>
+        </button>
+    </mat-form-field>
+</form>
 <hr>
 <div class="row">
     <div class="col-xs-12">

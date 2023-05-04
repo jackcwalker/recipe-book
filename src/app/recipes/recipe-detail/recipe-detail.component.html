@@ -23,16 +23,20 @@
                     </button>
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="onEditRecipe()">
-                        <mat-icon>edit</mat-icon>
-                        <span>Edit</span>
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit</span>
                         </button>
                         <button mat-menu-item (click)="onFullScreen()">
-                        <mat-icon>fullscreen</mat-icon>
-                        <span>Full Screen</span>
+                            <mat-icon>fullscreen</mat-icon>
+                            <span>Full Screen</span>
+                        </button>
+                        <button mat-menu-item aria-label="Add to List" (click)="onAddToShoppingList()">
+                            <mat-icon>add_shopping_cart</mat-icon>
+                            <span>Add To List</span>
                         </button>
                         <button mat-menu-item (click)="onDeleteRecipe()">
-                        <mat-icon>delete_forever</mat-icon>
-                        <span>Delete</span>
+                            <mat-icon>delete_forever</mat-icon>
+                            <span>Delete</span>
                         </button>
                     </mat-menu>
                 </h1>
@@ -58,7 +62,7 @@
     <hr>
     <div class="row no-margin">
         <div [ngClass]="mobileLayout?'row margin10':'col-xs-4 margin10'">
-            <h1><mat-icon>kitchen</mat-icon> Ingredients <button mat-icon-button (click)="onAddToShoppingList()"><mat-icon>add_shopping_cart</mat-icon></button></h1>
+            <h1><mat-icon>kitchen</mat-icon> Ingredients</h1>
             <mat-card *ngIf="recipe.ingredients">
                 <mat-card-content>
                     <div *ngFor="let ingredient of recipe.ingredients">

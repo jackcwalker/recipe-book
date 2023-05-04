@@ -6,8 +6,6 @@ export class ShoppingListService{
     startedEditing = new EventEmitter<number>() ;
 
     ingredients: Ingredient[] = [
-        new Ingredient('Eggs'),
-        new Ingredient('Tomatoes'),
     ];
 
     getIngredient(index: number){

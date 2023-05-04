@@ -52,7 +52,7 @@ export class RecipeListComponent implements OnInit {
         this.filteredRecipes = this.filteredRecipes.filter(recipe => recipe.catagory == params['type']);
       };
       if (params['name'] != null){
-        this.filteredRecipes = this.filteredRecipes.filter(recipe => recipe.name.includes(params['name']));
+        this.filteredRecipes = this.filteredRecipes.filter(recipe => recipe.name.toLowerCase().includes(params['name'].toLowerCase()));
       }
       if (params['tag'] != null){
         for (let tag of params['tag']){

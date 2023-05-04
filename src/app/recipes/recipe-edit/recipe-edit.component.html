@@ -125,9 +125,9 @@
         <hr>
         <div class="row">
             <div class="col-xs-6" formArrayName="ingredients">
-                <h1><mat-icon>kitchen</mat-icon> Ingredients<button
+                <h1><mat-icon>kitchen</mat-icon> Ingredients <button
                     type="button"
-                    class="btn btn-success"
+                    mat-mini-fab color="primary"
                     (click)="onAddIngredient()"><mat-icon>playlist_add</mat-icon></button></h1> 
                 <div class="row" *ngFor="let ingredientCtrl of controlsIngredient; let i = index"
                     [formGroupName]="i">
@@ -140,9 +140,9 @@
                 </div>
             </div>
             <div class="col-xs-6" formArrayName="method">
-                <h1><mat-icon>school</mat-icon> Method<button
+                <h1><mat-icon>school</mat-icon> Method <button
                     type="button"
-                    class="btn btn-success"
+                    mat-mini-fab color="primary"
                     (click)="onAddMethod()"><mat-icon>playlist_add</mat-icon></button></h1> 
                 <div class="row" *ngFor="let methodCtrl of controlsMethod; let i = index"
                     [formGroupName]="i">
@@ -165,8 +165,8 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button type="submit" class="btn btn-success" [disabled]="!recipeForm.valid"><mat-icon>save</mat-icon> Save</button>
-                <button type="button" class="btn btn-danger" (click)="onCancel()"><mat-icon>cancel</mat-icon> Cancel</button>
+                <button type="submit" mat-raised-button color="primary" [disabled]="!recipeForm.valid" style="margin-right: 1%;"><mat-icon>save</mat-icon> Save</button>
+                <button type="button" mat-raised-button color="warn" (click)="onCancel()"><mat-icon>cancel</mat-icon> Cancel</button>
             </div>
         </div>
     </form>

@@ -5,18 +5,17 @@
                 <input type="file" class="file-input" multiple accept=".jpg,.jpeg,.png" (change)="onFileSelected($event)" #fileUpload>
                 <mat-card class="recipe-image-card">
                     <img [src]=currentImagePath class="recipe-image" *ngIf = "images.length > 0">
-                    <div *ngIf = "images.length == 0" class="row">
-                        Upload Image
+                    <div *ngIf = "images.length == 0" style="justify-content: center; justify-items: center; min-height: 200px; text-align: center;">
+                        <mat-icon style="margin-top: 20%; margin-bottom: 20%; transform: scale(5);"> insert_photo</mat-icon>
                     </div>
-                    <mat-card-actions>
+                    <mat-card-actions style="justify-content: center">
                         <button type="button" mat-icon-button aria-label="Previous" (click)="onPreviousImage()">
                             <mat-icon>navigate_before</mat-icon>
                         </button>
                         <div class="file-upload">
-                            {{"Current Image" || "No file uploaded yet."}}
+                            {{images.length > 0 ? imageIndex+1 : '0'}} / {{images.length}}
                             <button
-                                type="button"
-                                class="btn btn-success"
+                                type="button" mat-icon-button
                                 (click)="fileUpload.click()">
                                 <mat-icon>attach_file</mat-icon>
                             </button>
@@ -53,6 +52,9 @@
                         <mat-select matInput id="author" formControlName="author">
                           <mat-option *ngFor="let user of users" [value]="user">{{user}}</mat-option>
                         </mat-select>
+                        <mat-error *ngIf="recipeForm.get('author').hasError('required')">
+                            Author is <strong>required</strong>
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <br>
@@ -61,12 +63,18 @@
                         <mat-form-field class="width90">
                             <mat-label><mat-icon>access_time</mat-icon>Prep:</mat-label>
                             <input matInput type="number" id="prep" formControlName="prep">
+                            <mat-error *ngIf="recipeForm.get('prep').hasError('required')">
+                                <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
                         <mat-form-field class="width90">
                             <mat-label><mat-icon>timer</mat-icon>Cook:</mat-label>
                             <input matInput type="number" id="cook" formControlName="cook">
+                            <mat-error *ngIf="recipeForm.get('cook').hasError('required')">
+                                <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -75,6 +83,9 @@
                         <mat-form-field class="width90">
                             <mat-label><mat-icon>room_service</mat-icon>Serves:</mat-label>
                             <input matInput type="number" id="serves" formControlName="serves">
+                            <mat-error *ngIf="recipeForm.get('serves').hasError('required')">
+                                <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
@@ -83,6 +94,9 @@
                             <mat-select id="catagory" formControlName="catagory">
                               <mat-option *ngFor="let recipeType of recipeTypes" [value]="recipeType">{{recipeType}}</mat-option>
                             </mat-select>
+                            <mat-error *ngIf="recipeForm.get('catagory').hasError('required')">
+                                <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>

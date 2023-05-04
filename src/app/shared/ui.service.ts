@@ -2,7 +2,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Injectable, OnDestroy} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Injectable ({ providedIn: 'root' })
 export class UiService implements OnDestroy {
@@ -35,6 +35,11 @@ export class UiService implements OnDestroy {
 
   createSnackBar(message: string){
     this._snackBar.open(message);
+  }
+  createTimedSnackBar(message: string, seconds: number){
+    let config = new MatSnackBarConfig();
+    config.duration = seconds*1000;
+    this._snackBar.open(message,"",config);
   }
   closeSnackBar(){
     this._snackBar.dismiss()

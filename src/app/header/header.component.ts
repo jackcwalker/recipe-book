@@ -2,6 +2,7 @@ import { Component} from '@angular/core';
 import { RecipeService } from '../recipes/recipe.service';
 import { recipeType } from '../shared/recipeSets.model';
 import { UserService } from '../shared/user.service';
+import { UiService } from '../shared/ui.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,8 @@ export class HeaderComponent {
 
   constructor(
     private recipeService: RecipeService,
-    private userService: UserService
+    private userService: UserService,
+    private uiService: UiService
   ) {}
 
   ngOnInit(): void {
@@ -24,6 +26,7 @@ export class HeaderComponent {
   }
 
   onSetUser(user:string){
+    this.uiService.createTimedSnackBar('Signed In',5);
     this.userService.setUser(user);
   }
 

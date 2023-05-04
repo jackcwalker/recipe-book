@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
-import { FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Form, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { recipeType, tags, users } from 'src/app/shared/recipeSets.model';
 import { RecipeImage } from '../recipeImage.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -65,7 +65,7 @@ export class RecipeEditComponent implements OnInit {
     let notes = '';
     let route: string;
     let tags: string[] = [];
-    let recipeImages = new FormArray([]);
+    let recipeImages = new FormArray([],imagesValidator);
     let recipeMethod = new FormArray([]);
     let recipeIngredients = new FormArray([]);
     
@@ -320,4 +320,9 @@ function nameExistsValidator(recipeService: RecipeService, editMode: boolean): V
       return recipeService.checkIfNameExists(control.value) ? {'nameExists': {value: control.value}} : null;
     }
   };
+}
+
+function imagesValidator(images: FormArray) {
+  console.log('images length:'+ images.value.length)
+  return images.value.length > 0 ? null : {'empty': true};
 }

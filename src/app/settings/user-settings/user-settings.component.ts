@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from 'src/app/shared/user.model';
 import { UserService } from 'src/app/shared/user.service';
 
 @Component({
@@ -7,17 +8,12 @@ import { UserService } from 'src/app/shared/user.service';
   styleUrls: ['./user-settings.component.css']
 })
 export class UserSettingsComponent {
-
+  currentUser: User = null
   constructor (
     private userService: UserService) {
-  }
-
-  getCurrentUserName(){
-    return this.userService.currentUser.name;
-  }
-
-  getCurrentTags(){
-    return this.userService.currentUser.tags;
+      this.userService.currentUser$.subscribe((user: User)=>{
+        this.currentUser = user;
+      })
   }
   
   onSaveAutoFilter(tags: string[]){

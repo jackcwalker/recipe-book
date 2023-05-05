@@ -3,13 +3,15 @@ import {Injectable} from '@angular/core';
 import { users } from './recipeSets.model';
 import { User } from './user.model';
 import { DataStorageService } from './data-storage.service';
+import { ReplaySubject } from 'rxjs';
 
 
 @Injectable ({ providedIn: 'root' })
 
 export class UserService {
-    currentUser: User = null;
+    private currentUser: User = null;
     private userTable: User[] =[];
+    currentUser$ = new ReplaySubject();
     
     constructor(
         private cookieService: CookieService,
@@ -39,6 +41,7 @@ export class UserService {
             console.log('User Service: Add new user '+this.currentUser.name);
             this.dataService.saveUsers(this.userTable);
         }
+        this.currentUser$.next(this.currentUser);
     }
 
     loadCookieUser(){
@@ -67,6 +70,7 @@ export class UserService {
 
     saveTags(tags: string[]){
         this.currentUser.tags=tags;
+        this.currentUser$.next(this.currentUser);
         console.log('User Service: Saving tags for' + this.currentUser.name + this.currentUser.tags);
         this.dataService.saveUsers(this.userTable);
     }

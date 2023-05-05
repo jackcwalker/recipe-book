@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
-import { Form, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { recipeType, tags, users } from 'src/app/shared/recipeSets.model';
+import { FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { recipeType, tags } from 'src/app/shared/recipeSets.model';
 import { RecipeImage } from '../recipeImage.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable, combineLatest, map, startWith} from 'rxjs';
@@ -11,6 +11,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { UiService } from 'src/app/shared/ui.service';
 import { UserService } from 'src/app/shared/user.service';
+import { User } from 'src/app/shared/user.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -25,12 +26,13 @@ export class RecipeEditComponent implements OnInit {
   deletedImages: RecipeImage[] = [];
   imageIndex = 0;
   recipeTypes: string[] = Object.values(recipeType);
-  users: string[] = Object.values(users);
+  allUsers: string[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagCtrl = new FormControl('');
   filteredTags: Observable<string[]>;
   allTags: string[] = tags;
   currentImagePath: string;
+  currentUser: User;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
@@ -46,6 +48,7 @@ export class RecipeEditComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.allUsers = this.userService.getAllUsers();
     combineLatest([
       this.route.params,
       this.recipeService.recipes$
@@ -54,6 +57,9 @@ export class RecipeEditComponent implements OnInit {
       this.editMode = params['route'] != null;
       this.initForm();
       this.getCurrentImagePath()
+    })
+    this.userService.currentUser$.subscribe((user: User)=>{
+      this.currentUser = user;
     })
   }
 
@@ -115,8 +121,8 @@ export class RecipeEditComponent implements OnInit {
     }
     
     let authorControl = new FormControl(author, Validators.required);
-    if (!this.editMode && this.userService.currentUser){
-      authorControl = new FormControl({value: this.userService.currentUser.name, disabled: true}, Validators.required);
+    if (!this.editMode && this.currentUser){
+      authorControl = new FormControl({value: this.currentUser.name, disabled: true}, Validators.required);
     }
     
 

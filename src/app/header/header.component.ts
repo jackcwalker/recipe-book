@@ -1,5 +1,4 @@
 import { Component} from '@angular/core';
-import { RecipeService } from '../recipes/recipe.service';
 import { recipeType } from '../shared/recipeSets.model';
 import { UserService } from '../shared/user.service';
 import { UiService } from '../shared/ui.service';
@@ -15,7 +14,6 @@ export class HeaderComponent {
   allUsers: string[];
 
   constructor(
-    private recipeService: RecipeService,
     private userService: UserService,
     private uiService: UiService
   ) {}

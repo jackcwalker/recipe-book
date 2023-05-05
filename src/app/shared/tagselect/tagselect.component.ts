@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -26,9 +26,7 @@ export class TagSelectComponent {
 
     constructor (private router: Router,
       public route: ActivatedRoute) {
-        if (this.selectedTags.length>0){
-          console.log('initial tags set as '+this.selectedTags)
-        }
+        console.log('constructed!'+this.selectedTags);
     }
 
     ngOnInit() {
@@ -36,10 +34,17 @@ export class TagSelectComponent {
         startWith(null),
         map((tag: string | null) => (tag ? this._filterTags(tag) : this.allTags.slice())),
       );
+      console.log('initialised!'+this.selectedTags);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+      this.onSearchRequest();
     }
 
     onSearchRequest() {
-      this.searchRequest.emit(this.selectedTags);
+      if (this.searchMode){
+        this.searchRequest.emit(this.selectedTags);
+      }
     }
 
     // ================= Tag Related Methods =================
@@ -56,7 +61,7 @@ export class TagSelectComponent {
       event.chipInput!.clear();
   
       this.tagCtrl.setValue(null);
-      this.onSearchRequest()
+      this.onSearchRequest();
     }
   
     removeTag(tag: string): void {
@@ -65,13 +70,14 @@ export class TagSelectComponent {
       if (index >= 0) {
         this.selectedTags.splice(index, 1);
       }
-      this.onSearchRequest()
+      this.onSearchRequest();
     }
   
     selectedTag(event: MatAutocompleteSelectedEvent): void {
       this.selectedTags.push(event.option.viewValue);
       this.tagInput.nativeElement.value = '';
       this.tagCtrl.setValue(null);
+      this.onSearchRequest();
     }
   
     private _filterTags(value: string): string[] {

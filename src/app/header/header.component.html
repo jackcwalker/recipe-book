@@ -1,7 +1,7 @@
 <p>
     <mat-toolbar style="min-height: 50px;">
         <span>JAOMI COOKS</span>
-        <button mat-button color="primary" routerLinkActive="active" routerLink="/recipes">All Recipes</button>
+        <button mat-button color="primary" routerLinkActive="active" routerLink="/recipes" queryParamsHandling='merge'>All Recipes</button>
         <div routerLinkActive="active" *ngFor="let type of recipeTypes">
             <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
         </div>

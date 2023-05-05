@@ -8,11 +8,13 @@ import { UserService } from 'src/app/shared/user.service';
   styleUrls: ['./user-settings.component.css']
 })
 export class UserSettingsComponent {
-  currentUser: User = null
+  currentName: string = null
+  currentTags: string[] = []
   constructor (
     private userService: UserService) {
       this.userService.currentUser$.subscribe((user: User)=>{
-        this.currentUser = user;
+        this.currentName = user.name;
+        this.currentTags = user.tags.slice();
       })
   }
   

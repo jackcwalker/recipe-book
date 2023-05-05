@@ -16,7 +16,7 @@ export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [];
   filteredRecipes: Recipe[] = [];
   nameSearch = '';
-  currentUser: User;
+  currentTags: string[];
 
   constructor (private recipeService: RecipeService,
     private userService: UserService,
@@ -26,7 +26,7 @@ export class RecipeListComponent implements OnInit {
 
   ngOnInit() {
     this.userService.currentUser$.subscribe((user: User)=>{
-      this.currentUser = user;
+      this.currentTags = user.tags.slice();
     })
     combineLatest([
       this.route.queryParams,
@@ -66,7 +66,7 @@ export class RecipeListComponent implements OnInit {
   }
 
   onTagFilter(searchTags: string[]) {
-    console.log('searching!')
+    console.log('searching for:'+searchTags)
     this.router.navigate(['/recipes'],
       {
         queryParams: { 'tag': searchTags },

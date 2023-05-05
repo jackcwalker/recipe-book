@@ -12,7 +12,7 @@
     </button>
   </mat-form-field>
 <hr>
-<app-tagselect #tagselect [selectedTags]="currentUser ? currentUser.tags : ''" [searchMode]="true" (searchRequest)="onTagFilter($event)"></app-tagselect>
+<app-tagselect #tagselect [selectedTags]="currentTags ? currentTags : ''" [searchMode]="true" (searchRequest)="onTagFilter($event)"></app-tagselect>
 <hr>
 <div class="row">
     <div class="col-xs-12">

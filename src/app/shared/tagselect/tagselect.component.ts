@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -13,18 +13,20 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./tagselect.component.css']
 })
 export class TagSelectComponent {
-
+    @Input() selectedTags: string[] = [];
     searchMode = false
     // Tag OBjects
     separatorKeysCodes: number[] = [ENTER, COMMA];
     tagCtrl = new FormControl('');
     filteredTags: Observable<string[]>;
     allTags: string[] = tags;
-    selectedTags: string[] = [];
     @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
     constructor (private router: Router,
       public route: ActivatedRoute) {
+        if (this.selectedTags.length>0){
+          console.log('initial tags set as '+this.selectedTags)
+        }
     }
 
     ngOnInit() {

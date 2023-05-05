@@ -3,6 +3,8 @@ import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { UserService } from 'src/app/shared/user.service';
+import { User } from 'src/app/shared/user.model';
 
 @Component({
   selector: 'app-recipe-list',
@@ -14,14 +16,18 @@ export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [];
   filteredRecipes: Recipe[] = [];
   nameSearch = '';
+  currentUser: User;
 
   constructor (private recipeService: RecipeService,
+    private userService: UserService,
     private router: Router,
     public route: ActivatedRoute) {
   }
 
   ngOnInit() {
-
+    this.userService.currentUser$.subscribe((user: User)=>{
+      this.currentUser = user;
+    })
     combineLatest([
       this.route.queryParams,
       this.recipeService.recipes$

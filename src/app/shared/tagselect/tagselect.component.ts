@@ -42,48 +42,40 @@ export class TagSelectComponent {
       this.searchRequest.emit(this.selectedTags);
     }
 
-      // ================= Tag Related Methods =================
-  
-      addTag(event: MatChipInputEvent): void {
-        const value = (event.value || '').trim();
-    
-        // Add our tag
-        if (value) {
-          this.selectedTags.push(value);
-        }
-    
-        // Clear the input value
-        event.chipInput!.clear();
-    
-        this.tagCtrl.setValue(null);
-      }
-    
-      removeTag(tag: string): void {
-        const index = this.selectedTags.indexOf(tag);
-    
-        if (index >= 0) {
-          this.selectedTags.splice(index, 1);
-        }
-      }
-    
-      selectedTag(event: MatAutocompleteSelectedEvent): void {
-        this.selectedTags.push(event.option.viewValue);
-        this.tagInput.nativeElement.value = '';
-        this.tagCtrl.setValue(null);
-      }
-    
-      private _filterTags(value: string): string[] {
-        const filterValue = value.toLowerCase();
-        return this.allTags.filter(tag => tag.toLowerCase().includes(filterValue));
-      }
+    // ================= Tag Related Methods =================
 
-      onTagFilter() {
-        console.log('searching!')
-        this.router.navigate(['/recipes'],
-          {
-            queryParams: { 'tag': this.selectedTags },
-            queryParamsHandling: 'merge' 
-          }
-        );
+    addTag(event: MatChipInputEvent): void {
+      const value = (event.value || '').trim();
+  
+      // Add our tag
+      if (value) {
+        this.selectedTags.push(value);
       }
+  
+      // Clear the input value
+      event.chipInput!.clear();
+  
+      this.tagCtrl.setValue(null);
+      this.onSearchRequest()
+    }
+  
+    removeTag(tag: string): void {
+      const index = this.selectedTags.indexOf(tag);
+  
+      if (index >= 0) {
+        this.selectedTags.splice(index, 1);
+      }
+      this.onSearchRequest()
+    }
+  
+    selectedTag(event: MatAutocompleteSelectedEvent): void {
+      this.selectedTags.push(event.option.viewValue);
+      this.tagInput.nativeElement.value = '';
+      this.tagCtrl.setValue(null);
+    }
+  
+    private _filterTags(value: string): string[] {
+      const filterValue = value.toLowerCase();
+      return this.allTags.filter(tag => tag.toLowerCase().includes(filterValue));
+    }
 }

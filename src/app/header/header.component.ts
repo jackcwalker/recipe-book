@@ -12,6 +12,7 @@ import { UiService } from '../shared/ui.service';
 export class HeaderComponent {
   recipeTypes: string[];
   allUsers: string[];
+  mobileLayout = false;
 
   constructor(
     private userService: UserService,
@@ -21,6 +22,12 @@ export class HeaderComponent {
   ngOnInit(): void {
     this.recipeTypes = Object.values(recipeType);
     this.allUsers = this.userService.getAllUsers();
+    this.uiService.mobileLayout$
+    .subscribe(
+    (mobileLayout: boolean) => {
+      this.mobileLayout = mobileLayout;
+    }
+  );
   }
 
   onSetUser(user:string){

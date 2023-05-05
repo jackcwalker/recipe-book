@@ -12,6 +12,10 @@ export class UserSettingsComponent {
   constructor (
     private userService: UserService) {
   }
+
+  getCurrentUserName(){
+    return this.userService.currentUser.name;
+  }
   
 
   onSaveAutoFilter(tags: string[]){

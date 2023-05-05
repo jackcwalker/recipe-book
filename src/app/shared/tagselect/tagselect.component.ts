@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -14,7 +14,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class TagSelectComponent {
     @Input() selectedTags: string[] = [];
-    searchMode = false
+    @Input() searchMode: boolean = false;
+    @Output() searchRequest = new EventEmitter<string[]>() ;
+
     // Tag OBjects
     separatorKeysCodes: number[] = [ENTER, COMMA];
     tagCtrl = new FormControl('');
@@ -34,6 +36,10 @@ export class TagSelectComponent {
         startWith(null),
         map((tag: string | null) => (tag ? this._filterTags(tag) : this.allTags.slice())),
       );
+    }
+
+    onSearchRequest() {
+      this.searchRequest.emit(this.selectedTags);
     }
 
       // ================= Tag Related Methods =================

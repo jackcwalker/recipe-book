@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { UserService } from 'src/app/shared/user.service';
 
 @Component({
@@ -21,7 +20,6 @@ export class UserSettingsComponent {
     return this.userService.currentUser.tags;
   }
   
-
   onSaveAutoFilter(tags: string[]){
     this.userService.saveTags(tags)
   }

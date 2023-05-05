@@ -26,7 +26,9 @@ export class RecipeListComponent implements OnInit {
 
   ngOnInit() {
     this.userService.currentUser$.subscribe((user: User)=>{
-      this.currentTags = user.tags.slice();
+      if (user.tags){
+        this.currentTags = user.tags.slice();
+      }
     })
     combineLatest([
       this.route.queryParams,

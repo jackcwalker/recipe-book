@@ -14,7 +14,9 @@ export class UserSettingsComponent {
     private userService: UserService) {
       this.userService.currentUser$.subscribe((user: User)=>{
         this.currentName = user.name;
-        this.currentTags = user.tags.slice();
+        if (user.tags){
+          this.currentTags = user.tags.slice();
+        }
       })
   }
   

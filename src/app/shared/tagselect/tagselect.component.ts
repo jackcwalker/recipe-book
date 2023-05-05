@@ -26,7 +26,6 @@ export class TagSelectComponent {
 
     constructor (private router: Router,
       public route: ActivatedRoute) {
-        console.log('constructed!'+this.selectedTags);
     }
 
     ngOnInit() {
@@ -34,7 +33,6 @@ export class TagSelectComponent {
         startWith(null),
         map((tag: string | null) => (tag ? this._filterTags(tag) : this.allTags.slice())),
       );
-      console.log('initialised!'+this.selectedTags);
     }
 
     ngOnChanges(changes: SimpleChanges) {

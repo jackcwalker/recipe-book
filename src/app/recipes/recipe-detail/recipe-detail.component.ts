@@ -34,6 +34,7 @@ export class RecipeDetailComponent {
       this.id = this.recipeService.getRecipeIndex(params['route']);
       this.recipe = this.recipeService.getRecipe(this.id);
       this.getCurrentImagePath()
+      this.imageIndex = 0;
     });
 
     this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {

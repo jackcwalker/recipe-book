@@ -17,43 +17,47 @@ export class UserService {
     ) {
         this.dataService.loadUsers().subscribe((users)=>{
             this.userTable = users;
-            this.getCurrentUser();
+            this.loadCookieUser();
         });
         
     }
 
     setUser(user: string){
         this.cookieService.set('User', user);
-        console.log('Setting User: '+this.currentUser.name);
+        this.setCurrentUser(user);
+        console.log('User Service: User cookie set as '+user);
     }
 
-    getCurrentUser(){
-        const username = this.cookieService.get('User');
+    setCurrentUser(username: string){
         const index = this.getUserIndex(username);
+        if (this.getUserIndex(username) != null){
+            this.currentUser = this.userTable[index];
+            console.log('User Service: Current user is '+this.currentUser.name);
+        } else{
+            this.currentUser = new User(username);
+            this.userTable.push(this.currentUser);
+            console.log('User Service: Add new user '+this.currentUser.name);
+            this.dataService.saveUsers(this.userTable);
+        }
+    }
+
+    loadCookieUser(){
+        const username = this.cookieService.get('User');
         if (username){
-            if (this.getUserIndex(username) != null){
-                this.currentUser = this.userTable[index];
-                console.log('Got User: '+this.currentUser.name);
-            } else{
-                this.currentUser = new User(username);
-                this.userTable.push(this.currentUser);
-                console.log('Added User: '+this.currentUser.name);
-                this.dataService.saveUsers(this.userTable);
-            }
+            this.setCurrentUser(username);
         } else {
             this.currentUser = null
-            console.log('No User Cookie Found');
+            console.log('User Service: No User Cookie Found');
         }
     }
 
     getUserIndex(name:string) {
         for (let i = 0; i < this.userTable.length; i++) {
             if (this.userTable[i].name == name) {
-                console.log('User found'+i);
                 return i;
             }
         }
-        console.log('User not found');
+        console.log('User Service: User not found in table');
         return null;
     }
 
@@ -63,6 +67,7 @@ export class UserService {
 
     saveTags(tags: string[]){
         this.currentUser.tags=tags;
+        console.log('User Service: Saving tags for' + this.currentUser.name + this.currentUser.tags);
         this.dataService.saveUsers(this.userTable);
     }
 }

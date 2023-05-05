@@ -23,7 +23,6 @@ export class UserSettingsComponent {
   
 
   onSaveAutoFilter(tags: string[]){
-    console.log('Savings Tags:'+tags)
     this.userService.saveTags(tags)
   }
 }

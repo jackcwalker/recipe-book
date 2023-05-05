@@ -15,7 +15,11 @@ export class UserService {
         private cookieService: CookieService,
         private dataService: DataStorageService
     ) {
-        this.loadUser();
+        this.dataService.loadUsers().subscribe((users)=>{
+            this.userTable = users;
+            this.getCurrentUser();
+        });
+        
     }
 
     setUser(user: string){
@@ -23,12 +27,34 @@ export class UserService {
         console.log('Setting User: '+this.currentUser.name);
     }
 
-    loadUser(){
-        if (this.cookieService.get('User')){
-            this.currentUser = new User(this.cookieService.get('User'));
-            console.log('Got User: '+this.currentUser.name);
+    getCurrentUser(){
+        const username = this.cookieService.get('User');
+        const index = this.getUserIndex(username);
+        if (username){
+            if (this.getUserIndex(username) != null){
+                this.currentUser = this.userTable[index];
+                console.log('Got User: '+this.currentUser.name);
+            } else{
+                this.currentUser = new User(username);
+                this.userTable.push(this.currentUser);
+                console.log('Added User: '+this.currentUser.name);
+                this.dataService.saveUsers(this.userTable);
+            }
+        } else {
+            this.currentUser = null
+            console.log('No User Cookie Found');
         }
-        console.log('No User Cookie Found');
+    }
+
+    getUserIndex(name:string) {
+        for (let i = 0; i < this.userTable.length; i++) {
+            if (this.userTable[i].name == name) {
+                console.log('User found'+i);
+                return i;
+            }
+        }
+        console.log('User not found');
+        return null;
     }
 
     getAllUsers(){

@@ -49,6 +49,12 @@ export class DataStorageService {
             console.log(response);
         });
     }
+    loadUsers() {
+        console.log('User Service Logger: Getting User Table');
+        return this.http.get<User[]>(
+            "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/users.json",
+        );
+    }
     fetchRecipes() {
         console.log('Data Service Logger: Fetching Recipes');
         return this.http.get<Recipe[]>(

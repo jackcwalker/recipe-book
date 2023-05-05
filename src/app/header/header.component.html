@@ -4,10 +4,10 @@
         <ng-container *ngIf="mobileLayout">
             <button mat-button color="primary" [matMenuTriggerFor]="menuDrop"><mat-icon style="padding: 0 14px; transform: scale(2.5);">menu</mat-icon></button>
             <mat-menu #menuDrop="matMenu">
-                <button mat-button color="primary" routerLinkActive="active" routerLink="/recipes" queryParamsHandling='merge'>All Recipes</button>
-                <div routerLinkActive="active" *ngFor="let type of recipeTypes">
-                    <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
-                </div>
+                <button mat-button color="primary" routerLinkActive="active" routerLink="/recipes" [queryParams]="{ 'type': null}" queryParamsHandling='merge'>All Recipes</button>
+                <span routerLinkActive="active" *ngFor="let type of recipeTypes">
+                    <button mat-menu-item [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
+                </span>
             </mat-menu>
         </ng-container>
          <!-- Mobile Menu -->
@@ -16,7 +16,7 @@
 
          <!-- Full Size Menu -->
         <ng-container *ngIf="!mobileLayout">
-            <button *ngIf="!mobileLayout" mat-button color="primary" routerLinkActive="active" routerLink="/recipes" queryParamsHandling='merge'>All Recipes</button>
+            <button *ngIf="!mobileLayout" mat-button color="primary" routerLinkActive="active" routerLink="/recipes" [queryParams]="{ 'type': null}" queryParamsHandling='merge'>All Recipes</button>
             <div routerLinkActive="active" *ngFor="let type of recipeTypes">
                 <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
             </div>

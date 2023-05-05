@@ -28,7 +28,7 @@ export class RecipeService {
 
     setRecipes (recipes: Recipe[]) {
         if (recipes) {
-            this.recipes = recipes;
+            this.recipes = recipes.sort((a,b)=>a.name.localeCompare(b.name));
         } else {
             this.recipes = []
         }

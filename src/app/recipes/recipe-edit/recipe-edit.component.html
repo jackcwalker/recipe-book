@@ -52,10 +52,10 @@
                 <div class="form-group">
                     <mat-form-field class="width100">
                         <mat-label><mat-icon>person</mat-icon> Author</mat-label>
-                        <mat-select matInput *ngIf ="!editMode || !userService.user" id="author" formControlName="author">
+                        <mat-select matInput *ngIf ="!editMode || !userService.currentUser" id="author" formControlName="author">
                           <mat-option *ngFor="let user of users" [value]="user">{{user}}</mat-option>
                         </mat-select>
-                        <input matInput *ngIf ="editMode || userService.user" id="author" formControlName="author" class="grayout" [readonly]="editMode">
+                        <input matInput *ngIf ="editMode || userService.currentUser" id="author" formControlName="author" class="grayout" [readonly]="editMode">
                         <mat-error *ngIf="recipeForm.get('author').hasError('required')">
                             Author is <strong>required</strong>
                         </mat-error>

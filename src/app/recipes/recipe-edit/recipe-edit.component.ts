@@ -115,8 +115,8 @@ export class RecipeEditComponent implements OnInit {
     }
     
     let authorControl = new FormControl(author, Validators.required);
-    if (!this.editMode && this.userService.user){
-      authorControl = new FormControl({value: this.userService.user, disabled: true}, Validators.required);
+    if (!this.editMode && this.userService.currentUser){
+      authorControl = new FormControl({value: this.userService.currentUser.name, disabled: true}, Validators.required);
     }
     
 

@@ -6,6 +6,7 @@
             <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
         </div>
         <span style="flex: 1 1 auto;"></span>
+        <button mat-button color="accent" routerLinkActive="active" routerLink="/shopping-list"><mat-icon style="padding: 0 14px; transform: scale(2.5);">shopping_cart</mat-icon></button>
         <button mat-button color="accent" [matMenuTriggerFor]="userDrop"><mat-icon style="padding: 0 14px; transform: scale(2.5);">person</mat-icon></button>
         <mat-menu #userDrop="matMenu">
             <span *ngFor = "let user of allUsers">
@@ -14,7 +15,7 @@
                 </button>
             </span>
         </mat-menu>
-        <button mat-button color="accent" routerLinkActive="active" routerLink="/shopping-list"><mat-icon style="padding: 0 14px; transform: scale(2.5);">shopping_cart</mat-icon></button>
+        <button mat-button color="accent" routerLinkActive="active" routerLink="/user-settings"><mat-icon style="padding: 0 14px; transform: scale(2.5);">settings</mat-icon></button>
     </mat-toolbar>
 </p>
 

@@ -26,7 +26,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule} from '@angular/material/core';
 import { MaterialExampleModule } from './shared/material.module';
 import { UiService } from './shared/ui.service';
-import {NgxImageCompressService} from 'ngx-image-compress';
+import { NgxImageCompressService} from 'ngx-image-compress';
+import { UserSettingsComponent } from './settings/user-settings/user-settings.component';
+import { TagSelectComponent } from './shared/tagselect/tagselect.component';
 
 
 @NgModule({
@@ -37,11 +39,13 @@ import {NgxImageCompressService} from 'ngx-image-compress';
     RecipeDetailComponent,
     RecipeListComponent,
     RecipeItemComponent,
+    TagSelectComponent,
     ShoppingListComponent,
     ShoppingEditComponent,
     DropdownDirective,
     RecipeStartComponent,
-    RecipeEditComponent
+    RecipeEditComponent,
+    UserSettingsComponent
   ],
   imports: [
     BrowserModule,

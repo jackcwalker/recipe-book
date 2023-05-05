@@ -4,6 +4,7 @@ import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 import { NgxImageCompressService} from 'ngx-image-compress';
+import { User } from "./user.model";
 
 @Injectable ({ providedIn: 'root' })
 export class DataStorageService {
@@ -34,6 +35,17 @@ export class DataStorageService {
         )
         .subscribe(response => {
             console.log('Data Service Logger: Storing Request Response:');
+            console.log(response);
+        });
+    }
+    saveUsers(users: User[]) {
+        console.log('Data Service Logger: Storing User Table');
+        this.http.put(
+            "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/users.json",
+            users
+        )
+        .subscribe(response => {
+            console.log('Data Service Logger: Storing User Request Response:');
             console.log(response);
         });
     }

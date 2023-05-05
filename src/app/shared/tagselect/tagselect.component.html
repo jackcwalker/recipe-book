@@ -1,0 +1,27 @@
+<p>tagselect works!</p>
+
+<form>
+    <mat-form-field class="width100" appearance="fill">
+        <mat-label><mat-icon>local_offer</mat-icon> Recipe Tags</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Tag selection">
+            <mat-chip-row *ngFor="let tag of selectedTags" (removed)="removeTag(tag)">
+                {{tag}}
+                <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
+        </mat-chip-grid>
+            <input placeholder="New tag..." #tagInput [formControl]="tagCtrl"
+            [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addTag($event)"/>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                {{tag}}
+            </mat-option>
+        </mat-autocomplete>
+        <button *ngIf="searchMode" matSuffix mat-icon-button aria-label="Clear" (click)="onTagFilter()">
+            <mat-icon>search</mat-icon>
+        </button>
+    </mat-form-field>
+</form>

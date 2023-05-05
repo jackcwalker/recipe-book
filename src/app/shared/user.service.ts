@@ -63,7 +63,6 @@ export class UserService {
 
     saveTags(tags: string[]){
         this.currentUser.tags=tags;
-        this.userTable.push(this.currentUser);
         this.dataService.saveUsers(this.userTable);
     }
 }

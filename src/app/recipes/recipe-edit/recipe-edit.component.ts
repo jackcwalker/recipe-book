@@ -60,6 +60,10 @@ export class RecipeEditComponent implements OnInit {
     })
     this.userService.currentUser$.subscribe((user: User)=>{
       this.currentUser = user;
+      if (user) {
+        (<FormControl> this.recipeForm.get('author')).setValue(user.name);
+        (<FormControl> this.recipeForm.get('author')).disable();
+      }
     })
   }
 
@@ -120,11 +124,6 @@ export class RecipeEditComponent implements OnInit {
       }
     }
     
-    let authorControl = new FormControl(author, Validators.required);
-    if (!this.editMode && this.currentUser){
-      authorControl = new FormControl({value: this.currentUser.name, disabled: true}, Validators.required);
-    }
-    
 
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, [
@@ -132,7 +131,7 @@ export class RecipeEditComponent implements OnInit {
         Validators.pattern('[a-zA-Z ]*'),
         nameExistsValidator(this.recipeService, this.editMode)
       ]),
-      'author': authorControl,
+      'author': new FormControl(author, Validators.required),
       'serves': new FormControl(serves, Validators.required),
       'cook': new FormControl(cook, Validators.required),
       'prep': new FormControl(prep, Validators.required),

@@ -1,11 +1,29 @@
 <p>
     <mat-toolbar style="min-height: 50px;">
-        <span>JAOMI COOKS</span>
-        <button mat-button color="primary" routerLinkActive="active" routerLink="/recipes" queryParamsHandling='merge'>All Recipes</button>
-        <div routerLinkActive="active" *ngFor="let type of recipeTypes">
-            <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
-        </div>
-        <span style="flex: 1 1 auto;"></span>
+        <!-- Mobile Menu -->
+        <ng-container *ngIf="mobileLayout">
+            <button mat-button color="primary" [matMenuTriggerFor]="menuDrop"><mat-icon style="padding: 0 14px; transform: scale(2.5);">menu</mat-icon></button>
+            <mat-menu #menuDrop="matMenu">
+                <button mat-button color="primary" routerLinkActive="active" routerLink="/recipes" queryParamsHandling='merge'>All Recipes</button>
+                <div routerLinkActive="active" *ngFor="let type of recipeTypes">
+                    <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
+                </div>
+            </mat-menu>
+        </ng-container>
+         <!-- Mobile Menu -->
+
+        <span>SCRAN</span>
+
+         <!-- Full Size Menu -->
+        <ng-container *ngIf="!mobileLayout">
+            <button *ngIf="!mobileLayout" mat-button color="primary" routerLinkActive="active" routerLink="/recipes" queryParamsHandling='merge'>All Recipes</button>
+            <div routerLinkActive="active" *ngFor="let type of recipeTypes">
+                <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>
+            </div>
+            <span style="flex: 1 1 auto;"></span>
+        </ng-container>
+         <!-- Full Size Menu -->
+
         <button mat-button color="accent" routerLinkActive="active" routerLink="/shopping-list"><mat-icon style="padding: 0 14px; transform: scale(2.5);">shopping_cart</mat-icon></button>
         <button mat-button color="accent" [matMenuTriggerFor]="userDrop"><mat-icon style="padding: 0 14px; transform: scale(2.5);">person</mat-icon></button>
         <mat-menu #userDrop="matMenu">

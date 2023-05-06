@@ -17,6 +17,7 @@
         <div [ngClass]="mobileLayout?'row margin10':'col-xs-6 margin10'">
             <div class="row no-margin">
                 <h1>
+                    {{ recipe.name }}
                     <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" aria-label="Recipe Menu">
                         <mat-icon>more_vert</mat-icon>
                     </button>
@@ -38,7 +39,6 @@
                             <span>Delete</span>
                         </button>
                     </mat-menu>
-                    {{ recipe.name }}
                 </h1>
             </div>
             <div class="row no-margin">By {{ recipe.author }}</div>

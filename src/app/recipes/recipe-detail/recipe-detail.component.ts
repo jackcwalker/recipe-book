@@ -49,6 +49,7 @@ export class RecipeDetailComponent {
       } else{
         this.currentUsername=null;
       }
+      this.setUserPermissions()
     })
       
     this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {

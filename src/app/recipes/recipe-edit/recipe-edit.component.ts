@@ -33,6 +33,7 @@ export class RecipeEditComponent implements OnInit {
   allTags: string[] = tags;
   currentImagePath: string;
   currentUser: User;
+  mobileLayout = false;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
@@ -64,6 +65,10 @@ export class RecipeEditComponent implements OnInit {
         (<FormControl> this.recipeForm.get('author')).setValue(user.name);
         (<FormControl> this.recipeForm.get('author')).disable();
       }
+    })
+    this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {
+      this.mobileLayout = mobileLayout;
+      this.uiService.setFullScreen(mobileLayout);
     })
   }
 

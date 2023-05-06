@@ -155,7 +155,7 @@ export class RecipeEditComponent implements OnInit {
     this.uiService.createSnackBar('Submitting Recipe');
     this.recipeService.fetchRecipes().subscribe(() => {
       if (this.editMode) {
-        this.recipeService.updateRecipe(this.recipeForm.value, this.images.concat(this.deletedImages))
+        this.recipeService.updateRecipe(this.recipeForm.getRawValue(), this.images.concat(this.deletedImages))
         .then((snapshot) => {
           console.log('Edit Logger: Promise fulfilled');
           console.log(snapshot);
@@ -163,7 +163,7 @@ export class RecipeEditComponent implements OnInit {
           this.router.navigate(['../'], {relativeTo: this.route});
       });
       } else {
-        this.recipeService.addRecipe(this.recipeForm.value, this.images.concat(this.deletedImages))
+        this.recipeService.addRecipe(this.recipeForm.getRawValue(), this.images.concat(this.deletedImages))
         .then((snapshot) => {
           console.log('Edit Logger: Promise fulfilled');
           console.log(snapshot);

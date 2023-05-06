@@ -4,5 +4,5 @@ Current User: <strong>{{currentName ? currentName : 'No User Selected'}}</strong
 <hr>
 <h3>Saved Automatic Filters:</h3>
 <br>
-<app-tagselect #tagselect [selectedTags]="currentTags ? currentTags : ''"></app-tagselect>
+<app-tagselect #tagselect [selectedTags]="currentTags ? currentTags : []"></app-tagselect>
 <button mat-raised-button (click)="onSaveAutoFilter(tagselect.selectedTags)">Save</button>

@@ -5,6 +5,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { UiService } from 'src/app/shared/ui.service';
 import { MatDialog } from '@angular/material/dialog';
+import { UserService } from 'src/app/shared/user.service';
+import { User } from 'src/app/shared/user.model';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -18,36 +20,51 @@ export class RecipeDetailComponent {
   imageIndex = 0;
   currentImagePath: string;
   mobileLayout = false;
+  userCanEdit = false;
+  currentUsername: string = null;
 
   constructor (private recipeService: RecipeService, 
-    public uiService: UiService,
+    private uiService: UiService,
     private route: ActivatedRoute,
     private router: Router,
+    private userService: UserService,
     public dialog: MatDialog) {
   };
 
   ngOnInit(){
     combineLatest([
       this.route.params,
-      this.recipeService.recipes$
+      this.recipeService.recipes$,
     ]).subscribe(([params, recipes]) => {
       this.id = this.recipeService.getRecipeIndex(params['route']);
       this.recipe = this.recipeService.getRecipe(this.id);
       this.getCurrentImagePath()
       this.imageIndex = 0;
+      this.setUserPermissions()
     });
-
+    
+    this.userService.currentUser$.subscribe((user: User)=>{
+      if (user){
+        this.currentUsername=user.name;
+      } else{
+        this.currentUsername=null;
+      }
+    })
+      
     this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {
       this.mobileLayout = mobileLayout;
       this.uiService.setFullScreen(mobileLayout);
     })
   }
 
-  onAddToShoppingList ( ) {
+  setUserPermissions() {
+    this.userCanEdit = (this.recipe.author === this.currentUsername);
+  }
+  onAddToShoppingList() {
     this.recipeService.addIngredientsToList(this.recipe.ingredients);
   }
 
-  onFullScreen () {
+  onFullScreen() {
     this.uiService.togFullScreen();
   }
 

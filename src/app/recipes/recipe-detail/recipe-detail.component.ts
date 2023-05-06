@@ -125,4 +125,13 @@ export class RecipeDetailComponent {
     this.getCurrentImagePath();
   }
 
+  onCopy() {
+    let url = document.location.href
+    navigator.clipboard.writeText(url).then(function() {
+        console.log('URL Copied!');
+    }, function() {
+        console.log('Copy error')
+    });
+  }
+
 }

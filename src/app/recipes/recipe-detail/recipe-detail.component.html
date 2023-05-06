@@ -34,6 +34,10 @@
                             <mat-icon>add_shopping_cart</mat-icon>
                             <span>Add To List</span>
                         </button>
+                        <button mat-menu-item (click)="onCopy()">
+                            <mat-icon>link</mat-icon>
+                            <span>Copy Link</span>
+                        </button>
                         <button mat-menu-item (click)="onDeleteRecipe()" *ngIf="userCanEdit">
                             <mat-icon>delete_forever</mat-icon>
                             <span>Delete</span>

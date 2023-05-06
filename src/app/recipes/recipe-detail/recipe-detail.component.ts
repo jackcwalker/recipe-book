@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, switchMap } from 'rxjs';
 import { UiService } from 'src/app/shared/ui.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/shared/user.service';
@@ -32,15 +32,13 @@ export class RecipeDetailComponent {
   };
 
   ngOnInit(){
-    combineLatest([
-      this.route.params,
-      this.recipeService.recipes$,
-    ]).subscribe(([params, recipes]) => {
-      this.id = this.recipeService.getRecipeIndex(params['route']);
-      this.recipe = this.recipeService.getRecipe(this.id);
-      this.getCurrentImagePath()
-      this.imageIndex = 0;
-      this.setUserPermissions()
+
+    this.route.params.pipe( switchMap( params => this.recipeService.getRecipe(params['route'])))
+    .subscribe( (recipe: Recipe) => {
+        this.recipe = recipe;
+        this.getCurrentImagePath()
+        this.imageIndex = 0;
+        this.setUserPermissions()
     });
     
     this.userService.currentUser$.subscribe((user: User)=>{
@@ -59,7 +57,9 @@ export class RecipeDetailComponent {
   }
 
   setUserPermissions() {
-    this.userCanEdit = (this.recipe.author === this.currentUsername);
+    if (this.currentUsername != null && this.recipe != null) {
+      this.userCanEdit = (this.recipe.author === this.currentUsername);
+    }
   }
   onAddToShoppingList() {
     this.recipeService.addIngredientsToList(this.recipe.ingredients);
@@ -70,15 +70,18 @@ export class RecipeDetailComponent {
   }
 
   onEditRecipe() {
-    this.router.navigate(['edit'], {relativeTo: this.route});
+    this.router.navigate(['edit'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge'
+    });
   }
 
   onDeleteRecipe() {
     if(confirm("Are you sure to delete "+this.recipe.name+"?")) {
-      this.recipeService.fetchRecipes().subscribe( () => {
-        this.recipeService.deleteRecipe(this.recipe);
-        this.router.navigate(['/recipes']);
-      })
+      this.recipeService.deleteRecipe(this.recipe);
+      this.router.navigate(['/recipes'],{
+        queryParamsHandling: 'merge'
+      });
     }
   }
 

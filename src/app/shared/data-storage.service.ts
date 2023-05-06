@@ -38,6 +38,30 @@ export class DataStorageService {
             console.log(response);
         });
     }
+
+    storeRecipe(recipe: Recipe) {
+        console.log('Data Service Logger: Storing '+recipe.name);
+        this.http.put(
+            "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipe/"+recipe.route+".json",
+            recipe
+        )
+        .subscribe(response => {
+            console.log('Data Service Logger: Storing Request Response for '+recipe.name);
+            console.log(response);
+        });
+    }
+
+    deleteRecipe(recipe: Recipe) {
+        console.log('Data Service Logger: Deleting '+recipe.name);
+        this.http.delete(
+            "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes/"+recipe.route+".json"
+        )
+        .subscribe(response => {
+            console.log('Data Service Logger: Deleting Request Response for '+recipe.name);
+            console.log(response);
+        });
+    }
+
     saveUsers(users: User[]) {
         console.log('Data Service Logger: Storing User Table');
         this.http.put(
@@ -55,6 +79,7 @@ export class DataStorageService {
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/users.json",
         );
     }
+
     fetchRecipes() {
         console.log('Data Service Logger: Fetching Recipes');
         return this.http.get<Recipe[]>(

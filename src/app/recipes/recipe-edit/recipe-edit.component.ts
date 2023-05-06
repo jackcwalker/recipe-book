@@ -5,13 +5,14 @@ import { FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Valid
 import { recipeType, tags } from 'src/app/shared/recipeSets.model';
 import { RecipeImage } from '../recipeImage.model';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Observable, combineLatest, map, startWith} from 'rxjs';
+import {Observable, combineLatest, map, startWith, switchMap} from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { UiService } from 'src/app/shared/ui.service';
 import { UserService } from 'src/app/shared/user.service';
 import { User } from 'src/app/shared/user.model';
+import { Recipe } from '../recipe.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -32,7 +33,7 @@ export class RecipeEditComponent implements OnInit {
   filteredTags: Observable<string[]>;
   allTags: string[] = tags;
   currentImagePath: string;
-  currentUser: User;
+  currentUsername: string;
   mobileLayout = false;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
@@ -50,21 +51,19 @@ export class RecipeEditComponent implements OnInit {
 
   ngOnInit() {
     this.allUsers = this.userService.getAllUsers();
-    combineLatest([
-      this.route.params,
-      this.recipeService.recipes$
-    ]).subscribe(([params, recipes]) => {
-      this.id = this.recipeService.getRecipeIndex(params['route']);
+
+    this.route.params.pipe( switchMap( (params) => {
       this.editMode = params['route'] != null;
-      this.initForm();
-      this.getCurrentImagePath()
-    })
+      return this.recipeService.getRecipe(params['route'])
+      })).subscribe( (recipe: Recipe) => {
+        this.initForm(recipe);
+        this.getCurrentImagePath()
+        this.setUserPermissions();
+    });
+
     this.userService.currentUser$.subscribe((user: User)=>{
-      this.currentUser = user;
-      if (user) {
-        (<FormControl> this.recipeForm.get('author')).setValue(user.name);
-        (<FormControl> this.recipeForm.get('author')).disable();
-      }
+      this.currentUsername = user.name;
+      this.setUserPermissions();
     })
     this.uiService.mobileLayout$.subscribe((mobileLayout: boolean) => {
       this.mobileLayout = mobileLayout;
@@ -72,7 +71,14 @@ export class RecipeEditComponent implements OnInit {
     })
   }
 
-  private initForm() {
+  setUserPermissions() {
+    if (this.currentUsername != null && this.recipeForm != null) {
+      (<FormControl> this.recipeForm.get('author')).setValue(this.currentUsername);
+      (<FormControl> this.recipeForm.get('author')).disable();
+    }
+  }
+
+  private initForm(existingRecipe: Recipe) {
     let recipeName = '';
     let author = '';
     let serves: number;
@@ -87,7 +93,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeIngredients = new FormArray([]);
     
     if (this.editMode) {
-      const recipe = this.recipeService.getRecipe(this.id);
+      const recipe = existingRecipe;
       recipeName = recipe.name;
       this.images = recipe.images;
       author = recipe.author;
@@ -150,7 +156,7 @@ export class RecipeEditComponent implements OnInit {
     });
   }
 
-  // ================= Routing Related Methods =================
+  // ================= Submit/Cancel Related Methods =================
 
   onSubmit(){
     console.log('Edit Logger: Form Submitted');
@@ -158,29 +164,22 @@ export class RecipeEditComponent implements OnInit {
     const route = this.getRoute();
     console.log(this.recipeForm.value);
     this.uiService.createSnackBar('Submitting Recipe');
-    this.recipeService.fetchRecipes().subscribe(() => {
-      if (this.editMode) {
-        this.recipeService.updateRecipe(this.recipeForm.getRawValue(), this.images.concat(this.deletedImages))
-        .then((snapshot) => {
-          console.log('Edit Logger: Promise fulfilled');
-          console.log(snapshot);
-          this.uiService.closeSnackBar();
-          this.router.navigate(['../'], {relativeTo: this.route});
+    this.recipeService.setRecipe(this.recipeForm.getRawValue(), this.images.concat(this.deletedImages))
+    .subscribe((snapshot) => {
+      console.log('Edit Logger: Promise fulfilled');
+      console.log(snapshot);
+      this.uiService.closeSnackBar();
+      this.router.navigate(['/recipes/'+route],{
+        queryParamsHandling: 'merge'
       });
-      } else {
-        this.recipeService.addRecipe(this.recipeForm.getRawValue(), this.images.concat(this.deletedImages))
-        .then((snapshot) => {
-          console.log('Edit Logger: Promise fulfilled');
-          console.log(snapshot);
-          this.uiService.closeSnackBar();
-          this.router.navigate(['/recipes/'+route]);
-      });
-      }
-    })
+  });
   }
 
   onCancel() {
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['../'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge'
+    });
   }
 
   // ================= Image Related Methods =================

@@ -59,7 +59,7 @@ export class RecipeListComponent implements OnInit {
   }
 
   onNameFilter(nameSearch: string) {
-    this.router.navigate(['/recipes'],
+    this.router.navigate([],
       {
         queryParams: { 'name': nameSearch },
         queryParamsHandling: 'merge' 
@@ -68,8 +68,7 @@ export class RecipeListComponent implements OnInit {
   }
 
   onTagFilter(searchTags: string[]) {
-    console.log('searching for:'+searchTags)
-    this.router.navigate(['/recipes'],
+    this.router.navigate([],
       {
         queryParams: { 'tag': searchTags },
         queryParamsHandling: 'merge' 

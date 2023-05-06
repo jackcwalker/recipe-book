@@ -1,5 +1,8 @@
 <p>
     <mat-toolbar style="min-height: 50px;">
+        <a routerLinkActive="active" routerLink="/recipes" [queryParams]="{ 'type': null}" queryParamsHandling='merge'>
+            <img src="https://firebasestorage.googleapis.com/v0/b/recipe-book-85758.appspot.com/o/Logos%2Fsmall-logo.png?alt=media&token=a36b3a2a-e104-412f-99e3-c2ee58ccb6c3" alt="logo" class="img-responsive" style="max-height: 50px;">
+        </a>
         <!-- Mobile Menu -->
         <ng-container *ngIf="mobileLayout">
             <button mat-button color="primary" [matMenuTriggerFor]="menuDrop"><mat-icon style="padding: 0 14px; transform: scale(2.5);">menu</mat-icon></button>
@@ -11,11 +14,12 @@
             </mat-menu>
         </ng-container>
          <!-- Mobile Menu -->
-
-        <span>SCRAN</span>
-
+        
          <!-- Full Size Menu -->
         <ng-container *ngIf="!mobileLayout">
+            <button mat-button style="margin-left: 1%; margin-right: 1%;" color="accent" routerLinkActive="active" routerLink="/recipes" [queryParams]="{ 'type': null}" queryParamsHandling='merge'>
+                <strong>TASTY SCRAN</strong>
+            </button>
             <button *ngIf="!mobileLayout" mat-button color="primary" routerLinkActive="active" routerLink="/recipes" [queryParams]="{ 'type': null}" queryParamsHandling='merge'>All Recipes</button>
             <div routerLinkActive="active" *ngFor="let type of recipeTypes">
                 <button mat-button [routerLink]="['/recipes']" [queryParams]="{ 'type': type}" queryParamsHandling='merge'>{{type}}</button>

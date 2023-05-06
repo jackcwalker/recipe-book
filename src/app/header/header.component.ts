@@ -31,7 +31,7 @@ export class HeaderComponent {
   }
 
   onSetUser(user:string){
-    this.uiService.createTimedSnackBar('Signed In',2);
+    this.uiService.createTimedSnackBar('Signed In as '+user,2);
     this.userService.setUser(user);
   }
 

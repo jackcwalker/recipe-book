@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/shared/user.service';
 import { User } from 'src/app/shared/user.model';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { RecipeComment } from 'src/app/shared/recipeComment.model';
 
 @Component({
@@ -25,7 +25,7 @@ export class RecipeDetailComponent {
   mobileLayout = false;
   userCanEdit = false;
   currentUsername: string = null;
-  commentForm = new FormControl('');
+  commentForm = new FormControl('', Validators.required);
 
   constructor (private recipeService: RecipeService, 
     private uiService: UiService,
@@ -148,7 +148,11 @@ export class RecipeDetailComponent {
 
   onSubmitComment() {
     console.log(this.commentForm)
-    this.recipeService.addComment(this.recipe, new RecipeComment(this.currentUsername, this.commentForm.value))
+    let commenter = this.currentUsername;
+    if (this.currentUsername == null) {
+      commenter = 'Anonymous';
+    }
+    this.recipeService.addComment(this.recipe, new RecipeComment(commenter, this.commentForm.value))
   }
 
 }

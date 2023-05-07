@@ -4,7 +4,7 @@ import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { DataStorageService } from "../shared/data-storage.service";
 import { RecipeImage } from "./recipeImage.model";
-import { ReplaySubject, map, switchMap, take } from "rxjs";
+import { ReplaySubject, forkJoin, map, switchMap, take } from "rxjs";
 
 @Injectable()
 export class RecipeService {
@@ -39,20 +39,19 @@ export class RecipeService {
                 } else {
                     return null;
                 }
-                
             })
         );
     }
 
     setRecipe(recipe: Recipe, images: RecipeImage[]) {
         console.log('Recipe Service Logger: Setting Recipe: '+recipe.name)
-        return this._getRecipes().pipe( switchMap( (recipes: Recipe[]) => {
-            this._addRecipe(recipe, recipes);
-            return this.updateImages(recipe.route, images).then(()=>{
-                console.log('Recipe Service Logger: Images Updated');
-                this.dataService.storeRecipe(recipe);
-                this._pushAndSaveRecipes(recipes);
-            });
+        return this._getRecipes().pipe( switchMap( (recipes) => {
+            recipes = this._addRecipe(recipe,recipes);
+            return forkJoin(
+                [this.dataService.storeRecipe(recipe),
+                this.updateImages(recipe.route, images),
+                this._pushAndSaveRecipes(recipes)]
+            )
         }))
     }
 
@@ -106,7 +105,7 @@ export class RecipeService {
 
     private _pushAndSaveRecipes(recipes: Recipe[]) {
         this._pushRecipes(recipes);
-        this._storeRecipes(recipes);
+        return this._storeRecipes(recipes);
     }
 
     private _pushRecipes(recipes: Recipe[]) {
@@ -124,7 +123,7 @@ export class RecipeService {
 
     private _storeRecipes(recipes: Recipe[]) {
         console.log('Recipe Service Logger: Saving & Pushing!');
-        this.dataService.storeRecipes(recipes);
+        return this.dataService.storeRecipes(recipes);
     }
 
     private _getRecipeIndex(route:string, recipes:Recipe[]) {
@@ -138,7 +137,7 @@ export class RecipeService {
 
     private _addRecipe(newRecipe: Recipe, recipes: Recipe[]) {
         const index = this._getRecipeIndex(newRecipe.route, recipes);
-        if (index) {
+        if (index != null) {
             recipes[index] = newRecipe;
         } else {
             recipes.push(newRecipe);

@@ -29,27 +29,27 @@ export class DataStorageService {
 
     storeRecipes(recipes: Recipe[]) {
         console.log('Data Service Logger: Storing Recipes');
-        this.http.put(
+        return this.http.put(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json",
             recipes
-        )
-        .subscribe(response => {
-            console.log('Data Service Logger: Storing Request Response:');
+        ).pipe( (response) => {
+            console.log('Data Service Logger: Storing All Recipes:');
             console.log(response);
-        });
+            return response;
+        })
     }
 
     storeRecipe(recipe: Recipe) {
         console.log('Data Service Logger: Storing '+recipe.name);
-        this.http.put(
+        return this.http.put(
             "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipe/"+recipe.route+".json",
             recipe
-        )
-        .subscribe(response => {
+        ).pipe( (response) => {
             console.log('Data Service Logger: Storing Request Response for '+recipe.name);
             console.log(response);
-        });
-    }
+            return response;
+        })
+    };
 
     deleteRecipe(recipe: Recipe) {
         console.log('Data Service Logger: Deleting '+recipe.name);

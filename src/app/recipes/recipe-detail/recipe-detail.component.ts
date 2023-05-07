@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, switchMap } from 'rxjs';
 import { UiService } from 'src/app/shared/ui.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/shared/user.service';
 import { User } from 'src/app/shared/user.model';
+import { Params } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -33,13 +34,22 @@ export class RecipeDetailComponent {
 
   ngOnInit(){
 
-    this.route.params.pipe( switchMap( params => this.recipeService.getRecipe(params['route'])))
+    combineLatest([
+      this.route.params,
+      this.recipeService.recipes$,
+    ]).pipe( switchMap( ([params, recipes]) => this.recipeService.getRecipe(params['route'])))
     .subscribe( (recipe: Recipe) => {
+        console.log('recipes changed...ill update')
+        console.log(recipe)
         this.recipe = recipe;
         this.getCurrentImagePath()
         this.imageIndex = 0;
         this.setUserPermissions()
     });
+
+    this.recipeService.recipes$.subscribe((recipes: Recipe[]) => {
+      
+    })
     
     this.userService.currentUser$.subscribe((user: User)=>{
       if (user){

@@ -123,7 +123,7 @@ export class RecipeDetailComponent {
     if (this.imageIndex-1 < 0){
       this.imageIndex = this.recipe.images.length-1;
     } else {
-      this.imageIndex = 0;
+      this.imageIndex = this.imageIndex-1;
     }
     this.getCurrentImagePath();
   }

@@ -120,7 +120,7 @@
         <div *ngFor="let comment of recipe.comments; let i = index">
             <mat-card>
                 <mat-card-header [ngClass]="i%2==0 ? 'comment-left' : 'comment-right'">
-                <mat-card-subtitle><strong>{{comment.name}} says</strong></mat-card-subtitle>
+                <mat-card-subtitle><strong>({{comment.date}}) {{comment.name}} says</strong></mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content [ngClass]="i%2==0 ? 'comment-left' : 'comment-right'">
                     {{ comment.comment }}

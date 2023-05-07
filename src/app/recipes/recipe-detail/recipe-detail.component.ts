@@ -147,12 +147,15 @@ export class RecipeDetailComponent {
   }
 
   onSubmitComment() {
-    console.log(this.commentForm)
     let commenter = this.currentUsername;
     if (this.currentUsername == null) {
       commenter = 'Anonymous';
     }
-    this.recipeService.addComment(this.recipe, new RecipeComment(commenter, this.commentForm.value))
+    this.recipeService.addComment(this.recipe, new RecipeComment(commenter, this.commentForm.value)).subscribe(()=>{
+      this.commentForm.setValue('');
+      console.log('Recipe Detail Logger: Added comment');
+      this.uiService.createTimedSnackBar('Successfully Added Comment',2)
+  });
   }
 
 }

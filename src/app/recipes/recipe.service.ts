@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "./recipe.model";
 import { DataStorageService } from "../shared/data-storage.service";
 import { RecipeImage } from "./recipeImage.model";
-import { ReplaySubject, forkJoin, switchMap, take } from "rxjs";
+import { ReplaySubject, forkJoin, of, switchMap, take } from "rxjs";
 import { RecipeComment } from "../shared/recipeComment.model";
 
 @Injectable()
@@ -34,10 +34,12 @@ export class RecipeService {
         return this._getRecipes().pipe( switchMap( (recipes) => {
             recipes = this._addRecipe(recipe,recipes);
             return forkJoin(
-                [this.dataService.storeRecipe(recipe),
-                this.updateImages(recipe.route, images),
-                this._pushAndSaveRecipes(recipes)]
+                [of(recipes),
+                this.dataService.storeRecipe(recipe),
+                this.updateImages(recipe.route, images)]
             )
+        })).pipe( switchMap( ([recipes, recipe, images]) => {
+            return this._pushAndSaveRecipes(recipes)
         }))
     }
 
@@ -64,10 +66,7 @@ export class RecipeService {
         } else {
             recipe.comments = [comment];
         }
-        this.setRecipe(recipe, recipe.images).subscribe(()=>{
-            console.log('Recipe Service Logger: Added comment ' + comment);
-        });
-        
+        return this.setRecipe(recipe, recipe.images);
     }
 
     checkIfNameExists(name: string) {

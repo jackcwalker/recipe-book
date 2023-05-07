@@ -163,12 +163,13 @@ export class RecipeEditComponent implements OnInit {
     console.log(this.recipeForm.value);
     this.setRoute()
     const route = this.getRoute();
-    this.uiService.createSnackBar('Submitting Recipe');
+    this.uiService.createSnackBar('Submitting Recipe '+this.recipeForm.value.name);
     this.recipeService.setRecipe(this.recipeForm.getRawValue(), this.images.concat(this.deletedImages))
     .subscribe((snapshot) => {
       console.log('Edit Logger: Promise fulfilled');
       console.log(snapshot);
       this.uiService.closeSnackBar();
+      this.uiService.createTimedSnackBar('Recipe Successfully Added',2);
       this.router.navigate(['/recipes/'+route],{
         queryParamsHandling: 'merge'
       });

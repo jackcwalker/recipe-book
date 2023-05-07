@@ -1,4 +1,4 @@
-export class Comment {
+export class RecipeComment {
     name: string;
     comment: string;
     date = new Date();

@@ -1,10 +1,9 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "./recipe.model";
-import { Ingredient } from "../shared/ingredient.model";
-import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { DataStorageService } from "../shared/data-storage.service";
 import { RecipeImage } from "./recipeImage.model";
-import { ReplaySubject, forkJoin, map, switchMap, take } from "rxjs";
+import { ReplaySubject, forkJoin, switchMap, take } from "rxjs";
+import { RecipeComment } from "../shared/recipeComment.model";
 
 @Injectable()
 export class RecipeService {
@@ -57,6 +56,18 @@ export class RecipeService {
             }
             );
         })
+    }
+
+    addComment(recipe: Recipe, comment: RecipeComment){
+        if (recipe.comments) {
+            recipe.comments.push(comment);
+        } else {
+            recipe.comments = [comment];
+        }
+        this.setRecipe(recipe, recipe.images).subscribe(()=>{
+            console.log('Recipe Service Logger: Added comment ' + comment);
+        });
+        
     }
 
     checkIfNameExists(name: string) {

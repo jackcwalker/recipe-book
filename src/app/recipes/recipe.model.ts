@@ -1,6 +1,7 @@
 import { Ingredient } from "../shared/ingredient.model";
 import { MethodStep } from "../shared/methodStep.model";
 import { recipeType } from "../shared/recipeSets.model";
+import { RecipeComment } from "../shared/recipeComment.model";
 import { RecipeImage } from "./recipeImage.model";
 
 export class Recipe {
@@ -16,6 +17,7 @@ export class Recipe {
     public notes: string;
     public tags: string[];
     public route: string;
+    public comments: RecipeComment[];
 
     constructor(
         name: string, 

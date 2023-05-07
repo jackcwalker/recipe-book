@@ -11,3 +11,15 @@
   padding-right: 1%;
   padding-left: 1%;
 }
+
+.comment-right {
+  display: flex;
+  justify-content: right; /* align horizontal */
+  align-items: right; /* align vertical */
+}
+
+.comment-left {
+  display: flex;
+  justify-content: left; /* align horizontal */
+  align-items: left; /* align vertical */
+}

@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/shared/user.service';
 import { User } from 'src/app/shared/user.model';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
+import { FormControl } from '@angular/forms';
+import { RecipeComment } from 'src/app/shared/recipeComment.model';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -23,6 +25,7 @@ export class RecipeDetailComponent {
   mobileLayout = false;
   userCanEdit = false;
   currentUsername: string = null;
+  commentForm = new FormControl('');
 
   constructor (private recipeService: RecipeService, 
     private uiService: UiService,
@@ -45,10 +48,6 @@ export class RecipeDetailComponent {
         this.imageIndex = 0;
         this.setUserPermissions()
     });
-
-    this.recipeService.recipes$.subscribe((recipes: Recipe[]) => {
-      
-    })
     
     this.userService.currentUser$.subscribe((user: User)=>{
       if (user){
@@ -145,6 +144,11 @@ export class RecipeDetailComponent {
     }, function() {
         console.log('Copy error')
     });
+  }
+
+  onSubmitComment() {
+    console.log(this.commentForm)
+    this.recipeService.addComment(this.recipe, new RecipeComment(this.currentUsername, this.commentForm.value))
   }
 
 }

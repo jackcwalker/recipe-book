@@ -98,12 +98,39 @@
     <hr>
     <!-- Notes -->
     <div class="row margin10">
-        <h1><mat-icon>rate_review</mat-icon> Notes</h1>
+        <h1><mat-icon>rate_review</mat-icon> Author's Notes</h1>
         <mat-card style="min-height: 50px;">
             <mat-card-content>
                 {{ recipe.notes }}
             </mat-card-content>
         </mat-card>
+    </div>
+    <!-- Comments -->
+    <h1><mat-icon>school</mat-icon> Comments </h1>
+    <form (ngSubmit)="onSubmitComment()">
+        <div class="row margin10">
+            <mat-form-field class="width100">
+                <mat-label><mat-icon>rate_review</mat-icon> Leave a note</mat-label>
+                <textarea matInput rows="6" placeholder="Ex. I tried this and..." [formControl]="commentForm"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="row margin10">
+            <div class="col-xs-12">
+                <button type="submit" mat-raised-button color="accent" [disabled]="!commentForm.valid"><mat-icon>save</mat-icon>Comment</button>
+            </div>
+        </div>
+    </form>
+    <div class="row margin10">
+        <div *ngFor="let comment of recipe.comments; let i = index">
+            <mat-card>
+                <mat-card-header [ngClass]="i%2==0 ? 'comment-left' : 'comment-right'">
+                <mat-card-subtitle><strong>{{comment.name}} says</strong></mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content [ngClass]="i%2==0 ? 'comment-left' : 'comment-right'">
+                    {{ comment.comment }}
+                </mat-card-content>
+            </mat-card>
+        </div>
     </div>
 </div>
 <div *ngIf = "!recipe" >

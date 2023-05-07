@@ -160,9 +160,9 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit(){
     console.log('Edit Logger: Form Submitted');
+    console.log(this.recipeForm.value);
     this.setRoute()
     const route = this.getRoute();
-    console.log(this.recipeForm.value);
     this.uiService.createSnackBar('Submitting Recipe');
     this.recipeService.setRecipe(this.recipeForm.getRawValue(), this.images.concat(this.deletedImages))
     .subscribe((snapshot) => {

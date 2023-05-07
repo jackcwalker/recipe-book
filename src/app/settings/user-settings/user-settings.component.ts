@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UiService } from 'src/app/shared/ui.service';
 import { User } from 'src/app/shared/user.model';
 import { UserService } from 'src/app/shared/user.service';
 
@@ -11,7 +12,8 @@ export class UserSettingsComponent {
   currentName: string = null
   currentTags: string[] = []
   constructor (
-    private userService: UserService) {
+    private userService: UserService,
+    private uiService: UiService) {
       this.userService.currentUser$.subscribe((user: User)=>{
         this.currentName = user.name;
         if (user.tags){
@@ -22,6 +24,7 @@ export class UserSettingsComponent {
   
   onSaveAutoFilter(tags: string[]){
     this.userService.saveTags(tags)
+    this.uiService.createTimedSnackBar('Tags Saved!',2);
   }
 }
 

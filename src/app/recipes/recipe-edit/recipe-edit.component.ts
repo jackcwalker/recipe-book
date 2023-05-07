@@ -102,7 +102,9 @@ export class RecipeEditComponent implements OnInit {
       prep = recipe.prep;
       catagory = recipe.catagory;
       notes = recipe.notes;
-      tags = recipe.tags;
+      if (recipe.tags){
+        tags = recipe.tags;
+      }
       route = recipe.route;
       if (recipe['images']) {
         for (let image of recipe.images) {

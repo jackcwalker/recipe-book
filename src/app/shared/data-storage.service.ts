@@ -51,6 +51,13 @@ export class DataStorageService {
         })
     };
 
+    getRecipe(route: string) {
+        console.log('Data Service Logger: Getting '+route);
+        return this.http.get<Recipe>(
+            "https://recipe-book-85758-default-rtdb.asia-southeast1.firebasedatabase.app/recipe/"+route+".json",
+        );
+    };
+
     deleteRecipe(recipe: Recipe) {
         console.log('Data Service Logger: Deleting '+recipe.name);
         this.http.delete(

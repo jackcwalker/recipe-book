@@ -14,7 +14,7 @@ export class RecipeService {
     recipes$ = new ReplaySubject();
 
 
-    constructor (private slService: ShoppingListService, private dataService: DataStorageService) { 
+    constructor (private dataService: DataStorageService) { 
         this._fetchRecipes();
     }
 
@@ -26,21 +26,8 @@ export class RecipeService {
         return this.dataService.getFullImagePath(reipe.route+'/thumb/',image.path);
     }
 
-    addIngredientsToList(ingredients: Ingredient[]) {
-        this.slService.addIngredients(ingredients);
-    }
-
     getRecipe(route: string){
-        return this._getRecipes().pipe(
-            map( (recipes: Recipe[]) => {
-                const index = this._getRecipeIndex(route, recipes);
-                if (index != null) {
-                    return recipes[index];
-                } else {
-                    return null;
-                }
-            })
-        );
+        return this.dataService.getRecipe(route);
     }
 
     setRecipe(recipe: Recipe, images: RecipeImage[]) {

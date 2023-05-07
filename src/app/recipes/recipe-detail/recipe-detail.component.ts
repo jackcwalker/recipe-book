@@ -7,7 +7,7 @@ import { UiService } from 'src/app/shared/ui.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/shared/user.service';
 import { User } from 'src/app/shared/user.model';
-import { Params } from '@angular/router';
+import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -29,7 +29,8 @@ export class RecipeDetailComponent {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private slService: ShoppingListService) {
   };
 
   ngOnInit(){
@@ -39,8 +40,6 @@ export class RecipeDetailComponent {
       this.recipeService.recipes$,
     ]).pipe( switchMap( ([params, recipes]) => this.recipeService.getRecipe(params['route'])))
     .subscribe( (recipe: Recipe) => {
-        console.log('recipes changed...ill update')
-        console.log(recipe)
         this.recipe = recipe;
         this.getCurrentImagePath()
         this.imageIndex = 0;
@@ -72,7 +71,7 @@ export class RecipeDetailComponent {
     }
   }
   onAddToShoppingList() {
-    this.recipeService.addIngredientsToList(this.recipe.ingredients);
+    this.slService.addIngredients(this.recipe.ingredients);
   }
 
   onFullScreen() {

@@ -13,6 +13,7 @@ import { UiService } from 'src/app/shared/ui.service';
 import { UserService } from 'src/app/shared/user.service';
 import { User } from 'src/app/shared/user.model';
 import { Recipe } from '../recipe.model';
+import { RecipeComment } from 'src/app/shared/recipeComment.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -84,6 +85,7 @@ export class RecipeEditComponent implements OnInit {
     let serves: number;
     let cook: number;
     let prep: number;
+    let comments: RecipeComment[] = [];
     let catagory = '';
     let notes = '';
     let route: string;
@@ -102,6 +104,9 @@ export class RecipeEditComponent implements OnInit {
       prep = recipe.prep;
       catagory = recipe.catagory;
       notes = recipe.notes;
+      if (recipe.comments){
+        comments = recipe.comments;
+      }
       if (recipe.tags){
         tags = recipe.tags;
       }
@@ -155,6 +160,7 @@ export class RecipeEditComponent implements OnInit {
       'method': recipeMethod,
       'ingredients': recipeIngredients,
       'route': new FormControl(route),
+      'comments': new FormControl(comments),
     });
   }
 

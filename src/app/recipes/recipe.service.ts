@@ -52,7 +52,10 @@ export class RecipeService {
             const index = this._getRecipeIndex(recipe.route, recipes);
             recipes.splice(index,1);
             this.dataService.deleteRecipe(recipe);
-            this._pushAndSaveRecipes(recipes);
+            this._pushAndSaveRecipes(recipes).subscribe( () => {
+                console.log('Recipe Service Logger: Deletion Complete')
+            }
+            );
         })
     }
 
@@ -91,13 +94,13 @@ export class RecipeService {
     }
 
     private _pushAndSaveRecipes(recipes: Recipe[]) {
+        console.log("Pushing and saving:");
+        console.log(recipes);
         this._pushRecipes(recipes);
         return this._storeRecipes(recipes);
     }
 
     private _pushRecipes(recipes: Recipe[]) {
-        console.log("Recipe Service Logger: Recipes Downloaded");
-        console.log(recipes)
         if (recipes) {
             recipes.sort((a,b)=>a.name.localeCompare(b.name));
             } else {
@@ -109,7 +112,8 @@ export class RecipeService {
     }
 
     private _storeRecipes(recipes: Recipe[]) {
-        console.log('Recipe Service Logger: Saving & Pushing!');
+        console.log('Recipe Service Logger: Saving Recipes');
+        console.log(recipes)
         return this.dataService.storeRecipes(recipes);
     }
 

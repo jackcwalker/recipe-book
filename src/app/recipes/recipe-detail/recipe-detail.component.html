@@ -85,7 +85,7 @@
             <div *ngFor="let step of recipe.method; let i = index">
                 <mat-card [ngClass]="getCheckedClass(i)">
                     <mat-card-header>
-                    <mat-card-subtitle>Step {{i}}</mat-card-subtitle>
+                    <mat-card-subtitle>Step {{i+1}}</mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>
                         <mat-checkbox (click)="togChecked(i)" [ngClass]="getCheckedClass(i)"></mat-checkbox>

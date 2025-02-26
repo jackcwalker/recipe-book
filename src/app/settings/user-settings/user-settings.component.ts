@@ -4,9 +4,10 @@ import { User } from 'src/app/shared/user.model';
 import { UserService } from 'src/app/shared/user.service';
 
 @Component({
-  selector: 'app-user-settings',
-  templateUrl: './user-settings.component.html',
-  styleUrls: ['./user-settings.component.css']
+    selector: 'app-user-settings',
+    templateUrl: './user-settings.component.html',
+    styleUrls: ['./user-settings.component.css'],
+    standalone: false
 })
 export class UserSettingsComponent {
   currentName: string = null

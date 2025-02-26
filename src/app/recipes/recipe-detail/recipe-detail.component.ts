@@ -12,9 +12,10 @@ import { FormControl, Validators } from '@angular/forms';
 import { RecipeComment } from 'src/app/shared/recipeComment.model';
 
 @Component({
-  selector: 'app-recipe-detail',
-  templateUrl: './recipe-detail.component.html',
-  styleUrls: ['./recipe-detail.component.css']
+    selector: 'app-recipe-detail',
+    templateUrl: './recipe-detail.component.html',
+    styleUrls: ['./recipe-detail.component.css'],
+    standalone: false
 })
 export class RecipeDetailComponent {
   recipe: Recipe;

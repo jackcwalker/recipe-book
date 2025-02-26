@@ -8,9 +8,10 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-tagselect',
-  templateUrl: './tagselect.component.html',
-  styleUrls: ['./tagselect.component.css']
+    selector: 'app-tagselect',
+    templateUrl: './tagselect.component.html',
+    styleUrls: ['./tagselect.component.css'],
+    standalone: false
 })
 export class TagSelectComponent {
     @Input() selectedTags: string[] = [];

@@ -7,9 +7,10 @@ import { UserService } from 'src/app/shared/user.service';
 import { User } from 'src/app/shared/user.model';
 
 @Component({
-  selector: 'app-recipe-list',
-  templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.css']
+    selector: 'app-recipe-list',
+    templateUrl: './recipe-list.component.html',
+    styleUrls: ['./recipe-list.component.css'],
+    standalone: false
 })
 
 export class RecipeListComponent implements OnInit {

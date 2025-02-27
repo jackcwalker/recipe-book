@@ -2,6 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "../recipes/recipe.model";
 import { initializeApp, FirebaseApp } from "firebase/app";
+import { Auth, getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+
 import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 import { NgxImageCompressService} from 'ngx-image-compress';
 import { User } from "./user.model";
@@ -9,10 +11,10 @@ import { User } from "./user.model";
 @Injectable ({ providedIn: 'root' })
 export class DataStorageService {
     private app: FirebaseApp;
+    private auth: Auth;
     recipesDownloaded = new EventEmitter<Recipe[]> ();
 
-    constructor (private http: HttpClient,
-        private imageCompress: NgxImageCompressService) {
+    constructor(private http: HttpClient, private imageCompress: NgxImageCompressService) {
         const firebaseConfig = {
             apiKey: "AIzaSyBjxygOGDjR1RGb6fNReHhJG_xRY7LLuHM",
             authDomain: "recipe-book-85758.firebaseapp.com",
@@ -22,9 +24,28 @@ export class DataStorageService {
             messagingSenderId: "468286750333",
             appId: "1:468286750333:web:7e0a85caff79e0a996fb14",
             measurementId: "G-9HD8V5LLQN"
-          };
-    
+        };
+
         this.app = initializeApp(firebaseConfig);
+        this.auth = getAuth(this.app);
+
+        // Sign in anonymously
+        signInAnonymously(this.auth)
+            .then(() => {
+                console.log("Signed in anonymously");
+            })
+            .catch((error) => {
+                console.error("Anonymous sign-in failed:", error);
+            });
+
+        // Monitor authentication state
+        onAuthStateChanged(this.auth, (user) => {
+            if (user) {
+                console.log("Authenticated as:", user.uid);
+            } else {
+                console.log("User signed out.");
+            }
+        });
     }
 
     storeRecipes(recipes: Recipe[]) {

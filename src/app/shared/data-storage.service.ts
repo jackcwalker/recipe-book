@@ -25,6 +25,7 @@ export class DataStorageService {
             appId: "1:468286750333:web:7e0a85caff79e0a996fb14",
             measurementId: "G-9HD8V5LLQN"
         };
+        console.log('Initalising Data Storage Service')
 
         this.app = initializeApp(firebaseConfig);
         this.auth = getAuth(this.app);
